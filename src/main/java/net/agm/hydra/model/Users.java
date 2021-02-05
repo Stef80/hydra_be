@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 10.50.46 by Hibernate Tools 5.2.12.Final
+// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,8 +24,7 @@ public class Users implements java.io.Serializable {
 	private String password;
 	private String workplace;
 	private String expetiseArea;
-	private Set<Tasks> taskses = new HashSet<Tasks>(0);
-	private Set<Updates> updateses = new HashSet<Updates>(0);
+	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 	private Set<Roles> roleses = new HashSet<Roles>(0);
 
 	public Users() {
@@ -43,7 +42,7 @@ public class Users implements java.io.Serializable {
 	}
 
 	public Users(long userId, String email, String name, String surname, String password, String workplace,
-			String expetiseArea, Set<Tasks> taskses, Set<Updates> updateses, Set<Roles> roleses) {
+			String expetiseArea, Set<Assigned> assigneds, Set<Roles> roleses) {
 		this.userId = userId;
 		this.email = email;
 		this.name = name;
@@ -51,8 +50,7 @@ public class Users implements java.io.Serializable {
 		this.password = password;
 		this.workplace = workplace;
 		this.expetiseArea = expetiseArea;
-		this.taskses = taskses;
-		this.updateses = updateses;
+		this.assigneds = assigneds;
 		this.roleses = roleses;
 	}
 
@@ -122,21 +120,12 @@ public class Users implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
-	public Set<Tasks> getTaskses() {
-		return this.taskses;
+	public Set<Assigned> getAssigneds() {
+		return this.assigneds;
 	}
 
-	public void setTaskses(Set<Tasks> taskses) {
-		this.taskses = taskses;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
-	public Set<Updates> getUpdateses() {
-		return this.updateses;
-	}
-
-	public void setUpdateses(Set<Updates> updateses) {
-		this.updateses = updateses;
+	public void setAssigneds(Set<Assigned> assigneds) {
+		this.assigneds = assigneds;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")

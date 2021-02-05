@@ -2,6 +2,7 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
+	<table-filter match-name="assigned" match-schema="public"></table-filter>
 	<table-filter match-name="projects" match-schema="public"></table-filter>
 	<table-filter match-name="roles" match-schema="public"></table-filter>
 	<table-filter match-name="tasks" match-schema="public"></table-filter>

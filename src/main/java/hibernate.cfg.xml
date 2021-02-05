@@ -14,6 +14,7 @@
         <mapping class="net.agm.hydra.model.Roles"/>
         <mapping class="net.agm.hydra.model.Projects"/>
         <mapping class="net.agm.hydra.model.Updates"/>
+        <mapping class="net.agm.hydra.model.Assigned"/>
         <mapping class="net.agm.hydra.model.Tasks"/>
         <mapping class="net.agm.hydra.model.Users"/>
     </session-factory>

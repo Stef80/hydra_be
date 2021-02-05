@@ -1,15 +1,17 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 10.50.46 by Hibernate Tools 5.2.12.Final
+// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,32 +25,32 @@ public class Tasks implements java.io.Serializable {
 
 	private long taskId;
 	private Projects projects;
-	private Users users;
+	private String taskName;
 	private Date dateOfRegistation;
 	private String state;
 	private BigDecimal totalWorked;
-	private Updates updates;
+	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 
 	public Tasks() {
 	}
 
-	public Tasks(long taskId, Projects projects, Users users, Date dateOfRegistation, String state) {
+	public Tasks(long taskId, Projects projects, String taskName, Date dateOfRegistation, String state) {
 		this.taskId = taskId;
 		this.projects = projects;
-		this.users = users;
+		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
 		this.state = state;
 	}
 
-	public Tasks(long taskId, Projects projects, Users users, Date dateOfRegistation, String state,
-			BigDecimal totalWorked, Updates updates) {
+	public Tasks(long taskId, Projects projects, String taskName, Date dateOfRegistation, String state,
+			BigDecimal totalWorked, Set<Assigned> assigneds) {
 		this.taskId = taskId;
 		this.projects = projects;
-		this.users = users;
+		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
 		this.state = state;
 		this.totalWorked = totalWorked;
-		this.updates = updates;
+		this.assigneds = assigneds;
 	}
 
 	@Id
@@ -72,14 +74,13 @@ public class Tasks implements java.io.Serializable {
 		this.projects = projects;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	public Users getUsers() {
-		return this.users;
+	@Column(name = "task_name", nullable = false)
+	public String getTaskName() {
+		return this.taskName;
 	}
 
-	public void setUsers(Users users) {
-		this.users = users;
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -110,13 +111,13 @@ public class Tasks implements java.io.Serializable {
 		this.totalWorked = totalWorked;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "tasks")
-	public Updates getUpdates() {
-		return this.updates;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
+	public Set<Assigned> getAssigneds() {
+		return this.assigneds;
 	}
 
-	public void setUpdates(Updates updates) {
-		this.updates = updates;
+	public void setAssigneds(Set<Assigned> assigneds) {
+		this.assigneds = assigneds;
 	}
 
 }
