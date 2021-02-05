@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
+// Generated 5-feb-2021 11.57.39 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -21,31 +21,31 @@ import javax.persistence.TemporalType;
 public class Projects implements java.io.Serializable {
 
 	private long projectId;
-	private String name;
 	private String description;
-	private Date startDate;
 	private Date endDate;
+	private String name;
+	private Date startDate;
 	private int totalDays;
 	private Set<Tasks> taskses = new HashSet<Tasks>(0);
 
 	public Projects() {
 	}
 
-	public Projects(long projectId, String name, Date startDate, Date endDate, int totalDays) {
+	public Projects(long projectId, Date endDate, String name, Date startDate, int totalDays) {
 		this.projectId = projectId;
+		this.endDate = endDate;
 		this.name = name;
 		this.startDate = startDate;
-		this.endDate = endDate;
 		this.totalDays = totalDays;
 	}
 
-	public Projects(long projectId, String name, String description, Date startDate, Date endDate, int totalDays,
+	public Projects(long projectId, String description, Date endDate, String name, Date startDate, int totalDays,
 			Set<Tasks> taskses) {
 		this.projectId = projectId;
-		this.name = name;
 		this.description = description;
-		this.startDate = startDate;
 		this.endDate = endDate;
+		this.name = name;
+		this.startDate = startDate;
 		this.totalDays = totalDays;
 		this.taskses = taskses;
 	}
@@ -61,15 +61,6 @@ public class Projects implements java.io.Serializable {
 		this.projectId = projectId;
 	}
 
-	@Column(name = "name", nullable = false)
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@Column(name = "description")
 	public String getDescription() {
 		return this.description;
@@ -80,16 +71,6 @@ public class Projects implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "start_date", nullable = false, length = 13)
-	public Date getStartDate() {
-		return this.startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	@Temporal(TemporalType.DATE)
 	@Column(name = "end_date", nullable = false, length = 13)
 	public Date getEndDate() {
 		return this.endDate;
@@ -97,6 +78,25 @@ public class Projects implements java.io.Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	@Column(name = "name", nullable = false)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "start_date", nullable = false, length = 13)
+	public Date getStartDate() {
+		return this.startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
 	@Column(name = "total_days", nullable = false)

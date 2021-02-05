@@ -1,7 +1,6 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
+// Generated 5-feb-2021 11.57.39 by Hibernate Tools 5.2.12.Final
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,30 +24,30 @@ public class Tasks implements java.io.Serializable {
 
 	private long taskId;
 	private Projects projects;
-	private String taskName;
 	private Date dateOfRegistation;
 	private String state;
-	private BigDecimal totalWorked;
+	private String taskName;
+	private Byte totalWorked;
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 
 	public Tasks() {
 	}
 
-	public Tasks(long taskId, Projects projects, String taskName, Date dateOfRegistation, String state) {
+	public Tasks(long taskId, Projects projects, Date dateOfRegistation, String state, String taskName) {
 		this.taskId = taskId;
 		this.projects = projects;
-		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
 		this.state = state;
+		this.taskName = taskName;
 	}
 
-	public Tasks(long taskId, Projects projects, String taskName, Date dateOfRegistation, String state,
-			BigDecimal totalWorked, Set<Assigned> assigneds) {
+	public Tasks(long taskId, Projects projects, Date dateOfRegistation, String state, String taskName,
+			Byte totalWorked, Set<Assigned> assigneds) {
 		this.taskId = taskId;
 		this.projects = projects;
-		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
 		this.state = state;
+		this.taskName = taskName;
 		this.totalWorked = totalWorked;
 		this.assigneds = assigneds;
 	}
@@ -74,15 +73,6 @@ public class Tasks implements java.io.Serializable {
 		this.projects = projects;
 	}
 
-	@Column(name = "task_name", nullable = false)
-	public String getTaskName() {
-		return this.taskName;
-	}
-
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
-	}
-
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_registation", nullable = false, length = 13)
 	public Date getDateOfRegistation() {
@@ -102,12 +92,21 @@ public class Tasks implements java.io.Serializable {
 		this.state = state;
 	}
 
-	@Column(name = "total_worked", precision = 2)
-	public BigDecimal getTotalWorked() {
+	@Column(name = "task_name", nullable = false)
+	public String getTaskName() {
+		return this.taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+
+	@Column(name = "total_worked", precision = 2, scale = 0)
+	public Byte getTotalWorked() {
 		return this.totalWorked;
 	}
 
-	public void setTotalWorked(BigDecimal totalWorked) {
+	public void setTotalWorked(Byte totalWorked) {
 		this.totalWorked = totalWorked;
 	}
 

@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
+// Generated 5-feb-2021 11.57.39 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;

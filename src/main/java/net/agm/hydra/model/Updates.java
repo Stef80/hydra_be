@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
+// Generated 5-feb-2021 11.57.39 by Hibernate Tools 5.2.12.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -56,8 +56,8 @@ public class Updates implements java.io.Serializable {
 		this.assigned = assigned;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "date_of_publish", nullable = false, length = 13)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_of_publish", nullable = false, length = 29)
 	public Date getDateOfPublish() {
 		return this.dateOfPublish;
 	}
@@ -66,7 +66,7 @@ public class Updates implements java.io.Serializable {
 		this.dateOfPublish = dateOfPublish;
 	}
 
-	@Column(name = "hours_of_working", nullable = false, precision = 131089, scale = 0)
+	@Column(name = "hours_of_working", nullable = false, precision = 3)
 	public BigDecimal getHoursOfWorking() {
 		return this.hoursOfWorking;
 	}

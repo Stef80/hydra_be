@@ -44,8 +44,7 @@ FOREIGN KEY(task_id) REFERENCES Tasks  ON DELETE CASCADE
 CREATE TABLE Updates(
      update_id  BIGSERIAL PRIMARY KEY,
      assigned_id BIGINT NOT NULL,
-     date_of_publish DATE NOT NULL,
+     date_of_publish TIMESTAMP NOT NULL,
      hours_of_working DECIMAL(3,2) NOT NULL,
      FOREIGN KEY(assigned_id)REFERENCES Assigned ON DELETE CASCADE
-  
 );

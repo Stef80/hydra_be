@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 4-feb-2021 17.45.49 by Hibernate Tools 5.2.12.Final
+// Generated 5-feb-2021 11.57.39 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,37 +19,37 @@ public class Users implements java.io.Serializable {
 
 	private long userId;
 	private String email;
-	private String name;
-	private String surname;
-	private String password;
-	private String workplace;
 	private String expetiseArea;
+	private String name;
+	private String password;
+	private String surname;
+	private String workplace;
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 	private Set<Roles> roleses = new HashSet<Roles>(0);
 
 	public Users() {
 	}
 
-	public Users(long userId, String email, String name, String surname, String password, String workplace,
-			String expetiseArea) {
+	public Users(long userId, String email, String expetiseArea, String name, String password, String surname,
+			String workplace) {
 		this.userId = userId;
 		this.email = email;
-		this.name = name;
-		this.surname = surname;
-		this.password = password;
-		this.workplace = workplace;
 		this.expetiseArea = expetiseArea;
+		this.name = name;
+		this.password = password;
+		this.surname = surname;
+		this.workplace = workplace;
 	}
 
-	public Users(long userId, String email, String name, String surname, String password, String workplace,
-			String expetiseArea, Set<Assigned> assigneds, Set<Roles> roleses) {
+	public Users(long userId, String email, String expetiseArea, String name, String password, String surname,
+			String workplace, Set<Assigned> assigneds, Set<Roles> roleses) {
 		this.userId = userId;
 		this.email = email;
-		this.name = name;
-		this.surname = surname;
-		this.password = password;
-		this.workplace = workplace;
 		this.expetiseArea = expetiseArea;
+		this.name = name;
+		this.password = password;
+		this.surname = surname;
+		this.workplace = workplace;
 		this.assigneds = assigneds;
 		this.roleses = roleses;
 	}
@@ -74,6 +74,15 @@ public class Users implements java.io.Serializable {
 		this.email = email;
 	}
 
+	@Column(name = "expetise_area", nullable = false)
+	public String getExpetiseArea() {
+		return this.expetiseArea;
+	}
+
+	public void setExpetiseArea(String expetiseArea) {
+		this.expetiseArea = expetiseArea;
+	}
+
 	@Column(name = "name", nullable = false)
 	public String getName() {
 		return this.name;
@@ -81,15 +90,6 @@ public class Users implements java.io.Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Column(name = "surname", nullable = false)
-	public String getSurname() {
-		return this.surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
 	}
 
 	@Column(name = "password", nullable = false)
@@ -101,6 +101,15 @@ public class Users implements java.io.Serializable {
 		this.password = password;
 	}
 
+	@Column(name = "surname", nullable = false)
+	public String getSurname() {
+		return this.surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
 	@Column(name = "workplace", nullable = false)
 	public String getWorkplace() {
 		return this.workplace;
@@ -108,15 +117,6 @@ public class Users implements java.io.Serializable {
 
 	public void setWorkplace(String workplace) {
 		this.workplace = workplace;
-	}
-
-	@Column(name = "expetise_area", nullable = false)
-	public String getExpetiseArea() {
-		return this.expetiseArea;
-	}
-
-	public void setExpetiseArea(String expetiseArea) {
-		this.expetiseArea = expetiseArea;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
