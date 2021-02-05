@@ -8,7 +8,7 @@ public interface TasksService {
 	
 	Tasks getTaskById(Long id);
 	
-	Tasks updateTaskById(Long id);
+	Tasks updateTask(Tasks t);
 	
 	Tasks newTask(Tasks t);
 	

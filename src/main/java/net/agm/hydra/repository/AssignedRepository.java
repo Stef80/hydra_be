@@ -6,4 +6,5 @@ import net.agm.hydra.model.Assigned;
 
 public interface AssignedRepository extends JpaRepository<Assigned, Long> {
 
+	Assigned findByUserIdAndTaskId(Long userId,Long taskId);
 }
