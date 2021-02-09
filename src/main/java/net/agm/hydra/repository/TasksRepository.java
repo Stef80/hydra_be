@@ -9,8 +9,9 @@ import net.agm.hydra.model.Tasks;
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Long> {
 	
-	List<Tasks> findByUserId(Long id);
-	List<Tasks>  findByProjectId(Long id);
-	List<Tasks> findByProjectIdAndUserId(Long projectId, Long userId);
+	
+	List<Tasks>  findByProjects_Id(Long id);
+	
+	List<Tasks> findAllByProjects_IdAndAssigneds_Users_Id(Long projectId, Long userId);
 
 }

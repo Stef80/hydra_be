@@ -2,7 +2,28 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
-	<table-filter match-name="assigned" match-schema="public"></table-filter>
+<type-mapping>
+	<sql-type jdbc-type="VARCHAR"
+		hibernate-type="net.agm.hydra.datamodel.Role" length="18"
+		not-null="true">
+	</sql-type>
+	<sql-type jdbc-type="VARCHAR"
+		hibernate-type="net.agm.hydra.datamodel.Status" length="20"
+		not-null="true">
+	</sql-type>
+	<sql-type jdbc-type="TIMESTAMP"
+		hibernate-type="java.time.LocalDateTime" not-null="true">
+	</sql-type>
+	<sql-type jdbc-type="BIGINT" hibernate-type="java.lang.Long"
+		not-null="true">
+	</sql-type>
+	<sql-type jdbc-type="NUMERIC" hibernate-type="Double" precision="2"
+		not-null="false">
+	</sql-type>
+	<sql-type jdbc-type="DATE" hibernate-type="java.time.LocalDate" not-null="true">
+	</sql-type>
+</type-mapping>
+<table-filter match-name="assigned" match-schema="public"></table-filter>
 	<table-filter match-name="projects" match-schema="public"></table-filter>
 	<table-filter match-name="roles" match-schema="public"></table-filter>
 	<table-filter match-name="tasks" match-schema="public"></table-filter>

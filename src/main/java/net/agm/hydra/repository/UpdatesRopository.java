@@ -11,11 +11,11 @@ import net.agm.hydra.model.Updates;
 public interface UpdatesRopository extends JpaRepository<Updates,Long> {
 	
 
-	@Query("select u from Updates u join u.assigned a where a.userId = ? ")
-	List<Updates> findAllByAssigned_UserId(Long userId);
+	
+	List<Updates> findAllByAssigned_Users_Id(Long userId);
     
-	@Query("select u from Updates u join u.assigned a where a.taskId = ? ")
-	List<Updates> findAllByAssigned_TaskId(Long taskId);
-	@Query("select u from Updates u join u.assigned a where a.taskId = ? and a.userId = ?")
-    List<Updates> findAllByAssigned_TaskId_UserId(Long taskId, Long userId);
+	
+	List<Updates> findAllByAssigned_Tasks_Id(Long taskId);
+	
+    List<Updates> findAllByAssigned_Tasks_IdAndAssigned_Users_Id(Long taskId, Long userId);
 }

@@ -33,7 +33,7 @@ public class UpdateServiceImpl implements UpdateService {
 
 	@Override
 	public Updates addUpdates(Updates u) {
-		if(u != null && u.getUpdateId() == 0) {
+		if(u != null && u.getId() == 0) {
 			return updatesRopository.save(u);
 		}
 		return null;
@@ -42,7 +42,7 @@ public class UpdateServiceImpl implements UpdateService {
 	@Override
 	public List<Updates> getUpdatesOfUserById(Long userId) {
 	   if(userId > 0 && userRepository.findById(userId) != null) {
-		   updatesRopository.findAllByAssigned_UserId(userId);
+		   updatesRopository.findAllByAssigned_Users_Id(userId);
 	   }
 		return null;
 	}
@@ -50,7 +50,7 @@ public class UpdateServiceImpl implements UpdateService {
 	@Override
 	public List<Updates> getUpdatesOfTasksById(Long taskId) {
 		if(taskId > 0 && tasksRepository.findById(taskId) != null) {
-			return updatesRopository.findAllByAssigned_TaskId(taskId);
+			return updatesRopository.findAllByAssigned_Tasks_Id(taskId);
 		}
 		return null;
 	}
@@ -59,8 +59,8 @@ public class UpdateServiceImpl implements UpdateService {
 	public List<Updates> getUpdatesTaskByUserId(Long taskId, Long userId) {
 		if(taskId > 0 && tasksRepository.findById(taskId) != null
 				&& userId > 0 && userRepository.findById(userId) != null) {
-			if(assignedRepository.findByUserIdAndTaskId(userId, taskId) != null)
-		        return updatesRopository.findAllByAssigned_TaskId_UserId(taskId, userId);
+			if(assignedRepository.findAllByUsers_IdAndTasks_Id(userId, taskId) != null)
+		        return updatesRopository.findAllByAssigned_Tasks_IdAndAssigned_Users_Id(taskId, userId);
 		}
 		return null;
 	}

@@ -16,7 +16,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 
 	@Override
 	public Projects getProjectById(Long id) {	
-		if(id != null)
+		if(id != null && id > 0)
 			return projectRepositoy.findById(id).orElse(new Projects());
 		return null;
 	}
@@ -29,7 +29,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 	@Override
 	public Projects newProject(Projects p) {
 		Projects c = null;
-		if(p!= null && p.getProjectId() == 0) {
+		if(p!= null && p.getId() == 0) {
 			c =  projectRepositoy.save(p);
 		}	
 		return c;
@@ -37,7 +37,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 
 	@Override
 	public Projects updateProject(Projects p) {
-		if(p != null && getProjectById(p.getProjectId()) != null) {
+		if(p != null && getProjectById(p.getId()) != null) {
 			return	projectRepositoy.save(p);
 		}
 

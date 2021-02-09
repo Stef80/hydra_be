@@ -1,5 +1,6 @@
 package net.agm.hydra.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class TaskSErviceImpl implements TasksService {
 
 	@Override
 	public Tasks updateTask(Tasks t) {
-		if(t != null && getTaskById(t.getTaskId()) != null) {
+		if(t != null && getTaskById(t.getId()) != null) {
 			return tasksRepositroy.save(t);
 		}
 		return null;
@@ -46,7 +47,7 @@ public class TaskSErviceImpl implements TasksService {
 
 	@Override
 	public Tasks newTask(Tasks t) {
-		if(t != null && t.getTaskId() > 0) {
+		if(t != null && t.getId() > 0) {
 			return tasksRepositroy.save(t);
 		}
 		return null;
@@ -55,7 +56,7 @@ public class TaskSErviceImpl implements TasksService {
 	@Override
 	public List<Tasks> getTasksByProjectId(Long projectId) {
 		if(projectId > 0 && projectsRepository.findById(projectId) != null) {
-			return tasksRepositroy.findByProjectId(projectId);
+			return tasksRepositroy.findByProjects_Id(projectId);
 		}
 		return null;
 	}
@@ -63,7 +64,12 @@ public class TaskSErviceImpl implements TasksService {
 	@Override
 	public List<Tasks> getTasksByUserId(Long userId) {
 		if(userId >0 && usersRepository.findById(userId) != null) {
-			return tasksRepositroy.findByUserId(userId);
+			List<Assigned> assignedTasks = assignedRepository.findAllByUsers_Id(userId);
+			List<Tasks> tasks = new ArrayList<>();
+			for (Assigned assigned : assignedTasks) {
+				 tasks.add(assigned.getTasks());
+			}
+			return tasks;
 		}
 		return null;
 	}
@@ -73,7 +79,7 @@ public class TaskSErviceImpl implements TasksService {
 		if(userId > 0 && projectId > 0 && 
 				projectsRepository.findById(projectId)!= null &&
 				usersRepository.findById(userId) != null) {
-			return tasksRepositroy.findByProjectIdAndUserId(projectId, userId);
+			return tasksRepositroy.findAllByProjects_IdAndAssigneds_Users_Id(projectId, userId);
 		}
 
 		return null;
