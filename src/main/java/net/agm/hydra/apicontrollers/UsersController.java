@@ -72,12 +72,12 @@ public class UsersController {
 		RolesDto roleDto = new RolesDto();
 		List<Role> roleList = new ArrayList<>();
 		if(userId != null && userId > 0) {
-			List<Roles> tmp = roleService.getRolesFromUser(userId);
+			List<Roles> roleses = roleService.getRolesFromUser(userId);
 			try {
-				for (Roles roles : tmp) {
+				for (Roles roles : roleses ) {
 					roleList.add(roles.getRole());
 				}
-				roleDto.setUserEmail(tmp.get(0).getUsers().getEmail());
+				roleDto.setUserEmail(roleses.get(0).getUsers().getEmail());
 				roleDto.setRole(roleList);
 			} catch (RoleException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());

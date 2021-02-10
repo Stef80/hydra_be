@@ -18,7 +18,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 	@Override
 	public Projects getProjectById(Long id) {	
 		if(id != null && id > 0)
-			return projectRepositoy.findById(id).orElse(new Projects());
+			return projectRepositoy.findById(id).orElseThrow(ProjectException :: new);
 		 throw new ProjectException();
 	}
 
