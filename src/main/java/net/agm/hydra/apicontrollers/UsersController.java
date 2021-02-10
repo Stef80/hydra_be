@@ -3,10 +3,12 @@ package net.agm.hydra.apicontrollers;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.hibernate.Hibernate;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +19,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import net.agm.hydra.datamodel.Role;
+import net.agm.hydra.exception.RoleException;
+import net.agm.hydra.exception.UserException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Roles;
 import net.agm.hydra.model.Users;
 import net.agm.hydra.model.dto.RolesDto;
 import net.agm.hydra.services.RoleService;
 import net.agm.hydra.services.UsersService;
+import net.bytebuddy.asm.Advice.Return;
 
 @RestController
 @RequestMapping("/api/user")
@@ -39,70 +45,91 @@ public class UsersController {
 
 	@GetMapping
 	public List<Users> gellAll() {
-		return userService.getUsers();
+		List<Users> tmp = userService.getUsers();
+		return tmp ;
 	}
 
 
 	@PostMapping(value ="/addrole/{role}")
 	public @ResponseBody Roles addRoleToUser(@RequestBody Users user, @PathVariable("role") String role) {
 		logger.info("Log: addRoleToUser()" );
-		Roles newRole = roleService.addRoletoUser(user, role);
-		if(newRole != null) {
-			logger.info("role added");
-			return newRole;
+		if(user != null && !role.equals("") && role != null) {
+			try {
+				Roles newRole = roleService.addRoletoUser(user, role);
+				logger.info("role added");
+				return newRole;
+			}catch (RoleException e) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+			}
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 
-	@GetMapping("/roles")
-	public List<RolesDto> getRolesOfUser(Long userId) {
-		List<RolesDto> roleList = new ArrayList<>();
+	@GetMapping("/roles/{userId}")
+	public RolesDto getRolesOfUser(@PathVariable("userId") Long userId) {
+		RolesDto roleDto = new RolesDto();
+		List<Role> roleList = new ArrayList<>();
 		if(userId != null && userId > 0) {
 			List<Roles> tmp = roleService.getRolesFromUser(userId);
-			if(tmp != null &&tmp.size() > 0 ) {
+			try {
 				for (Roles roles : tmp) {
-					roleList.add(new RolesDto(roles.getUsers().getEmail(),roles.getRole()));
+					roleList.add(roles.getRole());
 				}
-			}else {
-				throw new UserNotFoundException();
+				roleDto.setUserEmail(tmp.get(0).getUsers().getEmail());
+				roleDto.setRole(roleList);
+			} catch (RoleException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
 		}
-		return roleList;
+		return roleDto;
 	}
 
 
 	@GetMapping("/{id}")
 	public Users getUserById(@PathVariable("id") Long id) {
+		Users user = null;
 		logger.info("Log: getUserById()" );
-		Users user = userService.getUserById(id);
-		if(user != null) {
-			return user;
-		}else{
-			throw new UserNotFoundException();
+		try {
+			user = userService.getUserById(id);
+		}catch (UserNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 		}
-
+		return user;
 	}
-
+	
+	
+	@GetMapping("/{email}")
+	public Users getUserById(@PathVariable("email") String email) {
+		logger.info("Log: getUserByEmail()" );
+		Users user = null;
+		try {
+			user = userService.getUserByMail(email);
+		}catch (UserNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+		}
+		return user;
+	}
 
 	@PostMapping("/adduser")
 	public Users newUser(@RequestBody Users user) {
+		Users tmp = null;
 		logger.info("Log: newUser()"  );
 		if(user != null) {
-			Users newUser = userService.newUser(user);
-			if(newUser != null) {
-				return newUser;
-			}else {
-				throw new UserNotFoundException();
-			}
+			try {
+			tmp = userService.newUser(user);
+			} catch (UserException e) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());		
+				}
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+	   return user;
 	}
+	
 
 
 	@PutMapping
@@ -119,6 +146,22 @@ public class UsersController {
 		} else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@PutMapping("/delete")
+	public Users deleteUserFromId(Long id) {
+		Users tmp = null;
+		if(id != null && id > 0 ) {
+			tmp = userService.deleteUserById(id);
+			if(tmp != null) {
+				tmp.setStatus(0);
+				return tmp;
+			}else {
+				throw new UserNotFoundException();
+			}
+		}
+
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	}
 
 

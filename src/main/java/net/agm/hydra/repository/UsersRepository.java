@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 import net.agm.hydra.model.Users;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
+	
+	Users findUsersByEmail(String email);
 
 }

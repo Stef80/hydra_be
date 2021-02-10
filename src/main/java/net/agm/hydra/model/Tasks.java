@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 9-feb-2021 15.20.01 by Hibernate Tools 5.2.12.Final
+// Generated 10-feb-2021 11.31.06 by Hibernate Tools 5.2.12.Final
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -14,10 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import net.agm.hydra.datamodel.Status;
 
 /**
@@ -67,8 +63,7 @@ public class Tasks implements java.io.Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-    
-	@JsonBackReference
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id", nullable = false)
 	public Projects getProjects() {
@@ -114,8 +109,7 @@ public class Tasks implements java.io.Serializable {
 	public void setTotalWorked(Double totalWorked) {
 		this.totalWorked = totalWorked;
 	}
-	
-    @JsonManagedReference
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
 	public Set<Assigned> getAssigneds() {
 		return this.assigneds;

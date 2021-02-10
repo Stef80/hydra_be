@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 9-feb-2021 15.20.01 by Hibernate Tools 5.2.12.Final
+// Generated 10-feb-2021 11.31.06 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import net.agm.hydra.datamodel.Role;
 
 /**
@@ -46,8 +42,7 @@ public class Roles implements java.io.Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	@JsonManagedReference(value = "users" )
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	public Users getUsers() {

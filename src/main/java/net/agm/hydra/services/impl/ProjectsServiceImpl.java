@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.model.Projects;
 import net.agm.hydra.repository.ProjectsRepository;
 import net.agm.hydra.services.ProjectsService;
@@ -18,7 +19,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 	public Projects getProjectById(Long id) {	
 		if(id != null && id > 0)
 			return projectRepositoy.findById(id).orElse(new Projects());
-		return null;
+		 throw new ProjectException();
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 			return	projectRepositoy.save(p);
 		}
 
-		return null;
+		throw new ProjectException();
 	}
 
 	@Override

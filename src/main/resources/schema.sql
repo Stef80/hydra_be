@@ -5,7 +5,8 @@ name      VARCHAR(255) NOT NULL,
 surname   VARCHAR(255) NOT NULL,
 password  VARCHAR(255) NOT NULL,
 workplace VARCHAR(255) NOT NULL,
-expertise_area VARCHAR(255) NOT NULL);
+expertise_area VARCHAR(255) NOT NULL,
+status INT Default 1);
 
 CREATE TABLE Roles(
   id BIGSERIAL PRIMARY KEY,

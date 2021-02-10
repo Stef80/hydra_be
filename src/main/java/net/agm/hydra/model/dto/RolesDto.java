@@ -1,5 +1,7 @@
 package net.agm.hydra.model.dto;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 import lombok.AllArgsConstructor;
@@ -16,8 +18,22 @@ public class RolesDto {
 	
 	
 	String userEmail;
-	Role role;
-
+	List<Role> role;
 	
+	
+	
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+	public List<Role> getRole() {
+		return role;
+	}
+	public void setRole(List<Role> role) {
+		this.role = role;
+	}
+
 		
 }
