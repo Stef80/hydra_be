@@ -49,9 +49,9 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users newUser(Users u) {
-		String email = u.getEmail();
-		Users tmp = getUserByMail(email);
-		if(tmp == null) {
+//		String email = u.getEmail();
+//		Users tmp = getUserByMail(email);
+		if(u != null) {
 		return usersRepository.save(u);
 		}else {
 			throw new UserException();

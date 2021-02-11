@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.exception.ProjectException;
+import net.agm.hydra.exception.TaskException;
+import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Tasks;
 import net.agm.hydra.model.Users;
@@ -15,7 +18,9 @@ import net.agm.hydra.repository.TasksRepository;
 import net.agm.hydra.repository.UsersRepository;
 import net.agm.hydra.services.TasksService;
 @Service
-public class TaskSErviceImpl implements TasksService {
+public class TasksServiceImpl  implements TasksService {
+
+
 
 	@Autowired
 	TasksRepository tasksRepositroy;
@@ -29,20 +34,29 @@ public class TaskSErviceImpl implements TasksService {
 	@Autowired
 	AssignedRepository assignedRepository;
 
+
+	@Override
+	public List<Tasks> getAll() {
+		return tasksRepositroy.findAll();
+	}
+
 	@Override
 	public Tasks getTaskById(Long id) {
-		if(id > 0 && id != null) {
-			return tasksRepositroy.findById(id).orElse(new Tasks());
-		}
-		return null;
+		return tasksRepositroy.findById(id).orElseThrow(TaskException::new);
+
 	}
 
 	@Override
 	public Tasks updateTask(Tasks t) {
-		if(t != null && getTaskById(t.getId()) != null) {
-			return tasksRepositroy.save(t);
-		}
-		return null;
+		if(t != null ) {
+			if(tasksRepositroy.findById(t.getId()).isPresent()) {
+				return tasksRepositroy.save(t);
+			} else {
+				throw new TaskException();
+			}
+		}else {
+			throw new TaskException();
+		}	
 	}
 
 	@Override
@@ -50,7 +64,7 @@ public class TaskSErviceImpl implements TasksService {
 		if(t != null && t.getId() > 0) {
 			return tasksRepositroy.save(t);
 		}
-		return null;
+		throw new TaskException();
 	}
 
 	@Override
@@ -58,45 +72,56 @@ public class TaskSErviceImpl implements TasksService {
 		if(projectId > 0 && projectsRepository.findById(projectId) != null) {
 			return tasksRepositroy.findByProjects_Id(projectId);
 		}
-		return null;
+		throw new ProjectException();
 	}
 
 	@Override
 	public List<Tasks> getTasksByUserId(Long userId) {
-		if(userId >0 && usersRepository.findById(userId) != null) {
+		if(userId > 0 && usersRepository.findById(userId) != null) {
 			List<Assigned> assignedTasks = assignedRepository.findAllByUsers_Id(userId);
 			List<Tasks> tasks = new ArrayList<>();
 			for (Assigned assigned : assignedTasks) {
-				 tasks.add(assigned.getTasks());
+				tasks.add(assigned.getTasks());
 			}
 			return tasks;
 		}
-		return null;
+		throw new UserNotFoundException();
 	}
 
 	@Override
 	public List<Tasks> getTasksByUserAndProjectId(Long userId, Long projectId) {
-		if(userId > 0 && projectId > 0 && 
-				projectsRepository.findById(projectId)!= null &&
-				usersRepository.findById(userId) != null) {
-			return tasksRepositroy.findAllByProjects_IdAndAssigneds_Users_Id(projectId, userId);
+		List<Tasks> tasksList = null;
+		if(userId > 0 && usersRepository.findById(userId) != null) {
+			if(projectId > 0 && projectsRepository.findById(projectId)!= null) {
+				tasksList = tasksRepositroy.findAllByProjects_IdAndAssigneds_Users_Id(projectId, userId);
+			}else {
+				throw new UserNotFoundException();
+			}
+		} else {
+			throw new ProjectException();
 		}
 
-		return null;
+		return tasksList;
 	}
 
 	@Override
-	public boolean assignUserToTask(Long userId, Long taskId) {
+	public Assigned assignUserToTask(Long userId, Long taskId) {
+		Assigned as = null;
 		if(userId > 0  && taskId > 0 ) {
 			Users user = usersRepository.findById(userId).orElse(null);
-			Tasks task = getTaskById(taskId);
-			if(  user != null && task != null) {
-				Assigned as = new Assigned(0L, task, user);
-				assignedRepository.save(as);
-				return true;
+			if(  user != null ) {
+				Tasks task = tasksRepositroy.findById(taskId).orElse(null);
+				if(task != null) {
+				Assigned asi = new Assigned(null, task, user);
+				    as =  assignedRepository.save(asi);
+				}else {
+					throw new UserNotFoundException();
+				}
+			} else {
+				throw new TaskException();
 			}
 		}
-		return false;
+	   return as;
 	}
 
 }

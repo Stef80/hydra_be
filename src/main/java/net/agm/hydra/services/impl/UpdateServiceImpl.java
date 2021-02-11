@@ -33,7 +33,7 @@ public class UpdateServiceImpl implements UpdateService {
 
 	@Override
 	public Updates addUpdates(Updates u) {
-		if(u != null && u.getId() == 0) {
+		if(u != null && u.getId() == null) {
 			return updatesRopository.save(u);
 		}
 		return null;

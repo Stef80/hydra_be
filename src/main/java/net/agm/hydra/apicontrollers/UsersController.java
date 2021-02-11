@@ -48,6 +48,23 @@ public class UsersController {
 		List<Users> tmp = userService.getUsers();
 		return tmp ;
 	}
+	
+	
+	@PostMapping
+	public Users newUser(@RequestBody Users user) {
+		Users newUser = null;
+		logger.info("Log: newUser()"  );
+		if(user != null) {
+			try {
+			newUser = userService.newUser(user);
+			} catch (RuntimeException e) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());		
+			}
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+	   return newUser;
+	}
+	
 
 
 	@PostMapping(value ="/addrole/{role}")
@@ -55,11 +72,14 @@ public class UsersController {
 		logger.info("Log: addRoleToUser()" );
 		if(user != null && !role.equals("") && role != null) {
 			try {
+				userService.getUserById(user.getId());
 				Roles newRole = roleService.addRoletoUser(user, role);
 				logger.info("role added");
 				return newRole;
 			}catch (RoleException e) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+			}catch (UserNotFoundException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,"pROVA MESSAGGIO");
 			}
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -94,7 +114,7 @@ public class UsersController {
 	public Users getUserById(@PathVariable("id") Long id) {
 		Users user = null;
 		logger.info("Log: getUserById()" );
-		try {
+		try { 
 			user = userService.getUserById(id);
 		}catch (UserNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
@@ -115,21 +135,7 @@ public class UsersController {
 		return user;
 	}
 
-	@PostMapping("/adduser")
-	public Users newUser(@RequestBody Users user) {
-		Users tmp = null;
-		logger.info("Log: newUser()"  );
-		if(user != null) {
-			try {
-			tmp = userService.newUser(user);
-			} catch (UserException e) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());		
-				}
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}
-	   return user;
-	}
-	
+
 
 
 	@PutMapping
@@ -150,6 +156,7 @@ public class UsersController {
 
 	@PutMapping("/delete")
 	public Users deleteUserFromId(Long id) {
+		logger.info("Log: deleteUsersFromId()" );
 		Users tmp = null;
 		if(id != null && id > 0 ) {
 			tmp = userService.deleteUserById(id);
