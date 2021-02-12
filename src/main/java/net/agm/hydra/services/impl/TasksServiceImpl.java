@@ -110,9 +110,9 @@ public class TasksServiceImpl  implements TasksService {
 		if(userId > 0  && taskId > 0 ) {
 			Users user = usersRepository.findById(userId).orElse(null);
 			if(  user != null ) {
-				Tasks task = tasksRepositroy.findById(taskId).orElse(null);
+				Tasks task = tasksRepositroy.findById(taskId).orElse(null);  
 				if(task != null) {
-				Assigned asi = new Assigned(null, task, user);
+				Assigned asi = new Assigned(task, user);
 				    as =  assignedRepository.save(asi);
 				}else {
 					throw new UserNotFoundException();

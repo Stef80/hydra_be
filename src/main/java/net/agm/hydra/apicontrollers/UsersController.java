@@ -49,41 +49,65 @@ public class UsersController {
 		return tmp ;
 	}
 	
+	@GetMapping("/active")
+	public List<Users> gellAllActive() {
+		List<Users> active = new ArrayList<>();
+		List<Users> tmp = userService.getUsers();
+		for (Users users : tmp) {
+			if(users.isActived()) {
+				active.add(users);
+			}
+		}
+		return active ;
+	}
+
 	
-	@PostMapping
+	@GetMapping("/cancelled")
+	public List<Users> gellAllCancelled() {
+		List<Users> active = new ArrayList<>();
+		List<Users> tmp = userService.getUsers();
+		for (Users users : tmp) {
+			if(!users.isActived()) {
+				active.add(users);
+			}
+		}
+		return active ;
+	}
+
+	@PostMapping("/adduser")
 	public Users newUser(@RequestBody Users user) {
 		Users newUser = null;
-		logger.info("Log: newUser()"  );
-		if(user != null) {
-			try {
+		logger.info("Log: newUser()");
+		try {
 			newUser = userService.newUser(user);
-			} catch (RuntimeException e) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());		
-			}
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		} catch (RuntimeException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());		
 		}
-	   return newUser;
+       
+		return newUser;
 	}
-	
 
 
-	@PostMapping(value ="/addrole/{role}")
-	public @ResponseBody Roles addRoleToUser(@RequestBody Users user, @PathVariable("role") String role) {
+
+	@PostMapping("/email/{email}/addrole/{role}")
+	public  Roles addRoleToUser(@PathVariable("email") String email, @PathVariable("role") String role) {
 		logger.info("Log: addRoleToUser()" );
-		if(user != null && !role.equals("") && role != null) {
+		Roles newRole = null;
+		if( email != null && !role.equals("") && role != null) {
 			try {
-				userService.getUserById(user.getId());
-				Roles newRole = roleService.addRoletoUser(user, role);
+			    newRole = roleService.addRoletoUser(email, role);
 				logger.info("role added");
-				return newRole;
+			
 			}catch (RoleException e) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 			}catch (UserNotFoundException e) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND,"pROVA MESSAGGIO");
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
+		
+		return newRole;
 	}
 
 
@@ -92,14 +116,14 @@ public class UsersController {
 		RolesDto roleDto = new RolesDto();
 		List<Role> roleList = new ArrayList<>();
 		if(userId != null && userId > 0) {
-			List<Roles> roleses = roleService.getRolesFromUser(userId);
 			try {
+				List<Roles> roleses = roleService.getRolesFromUser(userId);
 				for (Roles roles : roleses ) {
 					roleList.add(roles.getRole());
 				}
 				roleDto.setUserEmail(roleses.get(0).getUsers().getEmail());
 				roleDto.setRole(roleList);
-			} catch (RoleException e) {
+			} catch (RoleException|UserNotFoundException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
 		}else {
@@ -121,8 +145,8 @@ public class UsersController {
 		}
 		return user;
 	}
-	
-	
+
+
 	@GetMapping("/{email}")
 	public Users getUserById(@PathVariable("email") String email) {
 		logger.info("Log: getUserByEmail()" );
@@ -139,7 +163,7 @@ public class UsersController {
 
 
 	@PutMapping
-	public Users updateUser(Users user) {
+	public Users updateUser(@RequestBody Users user) {
 		logger.info("Log: updateUser()" );
 		Users tmp = null;
 		if(user != null) {
@@ -157,18 +181,13 @@ public class UsersController {
 	@PutMapping("/delete")
 	public Users deleteUserFromId(Long id) {
 		logger.info("Log: deleteUsersFromId()" );
-		Users tmp = null;
-		if(id != null && id > 0 ) {
-			tmp = userService.deleteUserById(id);
-			if(tmp != null) {
-				tmp.setStatus(0);
-				return tmp;
-			}else {
-				throw new UserNotFoundException();
-			}
+		Users user = null;
+		try {
+			user = userService.deleteUserById(id);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-
-		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		return user;	
 	}
 
 

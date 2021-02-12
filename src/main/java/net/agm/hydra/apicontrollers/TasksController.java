@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.exception.TaskException;
+import net.agm.hydra.exception.UserNotFoundException;
+import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Tasks;
 import net.agm.hydra.model.dto.TasksDto;
 import net.agm.hydra.services.TasksService;
@@ -47,20 +50,65 @@ public class TasksController {
 		Tasks task = null;
 		try {
 			task = taskService.getTaskById(id);
-		} catch (Exception e) {
+		} catch (TaskException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		return task;
 	}
 	
 	@GetMapping("/user/{id]")
-	public List<TasksDto> getTaskByUserId(@PathVariable("id") Long id) {
-		List<TasksDto> dtoList = new  ArrayList<>();
-		List<Tasks> taksList = null;
+	public List<Tasks> getTaskByUserId(@PathVariable("id") Long id) {
+	//	List<TasksDto> dtoList = new  ArrayList<>(); 
+		//TODO : verificare quali valori sono necessari ritornare 
+		List<Tasks> taskList = null;
+		try {
+			taskList = taskService.getTasksByUserId(id);
+		} catch (TaskException|UserNotFoundException e) {
+			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
 		
-		return dtoList;
+		return taskList;
 	}
 	
+	
+	
+	@GetMapping("project/{id}")
+	public List<Tasks> getTasksByProjectId(@PathVariable("id") Long id) {
+		List<Tasks> tasksList = null;
+		try {
+			tasksList = taskService.getTasksByProjectId(id);
+		} catch (ProjectException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
+		
+		return tasksList;
+	}
+	
+	
+	@GetMapping("user/{user_id}/project/{project_id}")
+	public List<Tasks> getTasksByUserAndProject(@PathVariable("user_id") Long userId, @PathVariable("project_id") Long projectId) {
+		List<Tasks> tasksList = null;
+		try {
+			tasksList = taskService.getTasksByUserAndProjectId(userId, projectId);
+		} catch (ProjectException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
+		
+		return tasksList;
+	}
+	
+	
+	@PostMapping("/assign/{user_id}/{task_id}")
+	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId) {
+		Assigned newAssign = null;
+		try {
+			newAssign = taskService.assignUserToTask(userId, taskId);
+		} catch (UserNotFoundException|TaskException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		} 
+		return newAssign;
+	}
 	
 	
 }

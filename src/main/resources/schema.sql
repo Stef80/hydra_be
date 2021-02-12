@@ -6,13 +6,14 @@ surname   VARCHAR(255) NOT NULL,
 password  VARCHAR(255) NOT NULL,
 workplace VARCHAR(255) NOT NULL,
 expertise_area VARCHAR(255) NOT NULL,
-status INT Default 1);
+actived BOOLEAN NOT NULL);
 
 CREATE TABLE Roles(
   id BIGSERIAL PRIMARY KEY,
  user_id BIGINT NOT NULL,
 role VARCHAR(18) NOT NULL,
-FOREIGN KEY(user_id) REFERENCES Users ON DELETE CASCADE
+FOREIGN KEY(user_id) REFERENCES Users ON DELETE CASCADE,
+UNIQUE(role,user_id)
 );
 
 
@@ -40,14 +41,15 @@ id BIGSERIAL PRIMARY KEY,
 user_id BIGINT NOT NULL,
 task_id BIGINT NOT NULL,
 FOREIGN KEY(user_id) REFERENCES Users ON DELETE CASCADE,
-FOREIGN KEY(task_id) REFERENCES Tasks  ON DELETE CASCADE
+FOREIGN KEY(task_id) REFERENCES Tasks  ON DELETE CASCADE,
+UNIQUE(user_id,task_id)
 );
 
 CREATE TABLE Updates(
      id  BIGSERIAL PRIMARY KEY ,
      assigned_id BIGINT NOT NULL,
      date_of_publish TIMESTAMP NOT NULL,
-     hours_of_working DECIMAL(3,2) NOT NULL,
+     hours_of_working DECIMAL(2,2) NOT NULL,
      FOREIGN KEY(assigned_id)REFERENCES Assigned ON DELETE CASCADE
 );
 

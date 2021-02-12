@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 10-feb-2021 11.31.06 by Hibernate Tools 5.2.12.Final
+// Generated 12-feb-2021 17.03.58 by Hibernate Tools 5.2.12.Final
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,17 +34,15 @@ public class Tasks implements java.io.Serializable {
 	public Tasks() {
 	}
 
-	public Tasks(Long id, Projects projects, String taskName, LocalDate dateOfRegistation, Status status) {
-		this.id = id;
+	public Tasks(Projects projects, String taskName, LocalDate dateOfRegistation, Status status) {
 		this.projects = projects;
 		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
 		this.status = status;
 	}
 
-	public Tasks(Long id, Projects projects, String taskName, LocalDate dateOfRegistation, Status status,
-			Double totalWorked, Set<Assigned> assigneds) {
-		this.id = id;
+	public Tasks(Projects projects, String taskName, LocalDate dateOfRegistation, Status status, Double totalWorked,
+			Set<Assigned> assigneds) {
 		this.projects = projects;
 		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
@@ -54,7 +52,8 @@ public class Tasks implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
+
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return this.id;

@@ -49,10 +49,10 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users newUser(Users u) {
-//		String email = u.getEmail();
-//		Users tmp = getUserByMail(email);
+		//		String email = u.getEmail();
+		//		Users tmp = getUserByMail(email);
 		if(u != null) {
-		return usersRepository.save(u);
+			return usersRepository.save(u);
 		}else {
 			throw new UserException();
 		}
@@ -60,17 +60,30 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users updateUser(Users u) {
-		Users tmp = getUserById(u.getId());
-		if(u != null && tmp != null ){
-			usersRepository.save(u);
+		Users user = null;
+		if(u != null ) {
+			user = getUserById(u.getId());
+			if(user != null ){
+				user = usersRepository.save(u); 
+			} else {
+				throw new UserNotFoundException();
+			}
+		} else {
+			throw new UserException();
 		}
-		return u;
+		return user;
 	}
 
 	@Override
 	public Users deleteUserById(Long id) {
-
-		return null ;
+		Users deletedUser = null;
+		if(id > 0 && id != null) {
+			deletedUser = getUserById(id);
+			deletedUser.setActived(false);;
+			usersRepository.save(deletedUser);
+			return deletedUser;
+		}
+		throw new UserException() ;
 	}
 
 }

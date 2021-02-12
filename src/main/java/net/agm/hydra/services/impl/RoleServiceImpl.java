@@ -13,6 +13,7 @@ import net.agm.hydra.model.Users;
 import net.agm.hydra.repository.RolesRepository;
 import net.agm.hydra.repository.UsersRepository;
 import net.agm.hydra.services.RoleService;
+import net.agm.hydra.services.UsersService;
 
 
 @Service
@@ -22,30 +23,29 @@ public class RoleServiceImpl implements RoleService {
 	RolesRepository roleRepository;
 	
 	@Autowired
-	UsersRepository userRepositoy;
+	UsersService userService;
 
 	@Override
-	public Roles addRoletoUser(Users user, String role) {
-		Role trueRole = Role.valueOf(role.trim().toUpperCase());
-		Users tmp =  userRepositoy.findById(user.getId()).orElse(null);
-		if(trueRole != null && tmp != null) {
-			List<Role> roleList = tmp.getRoleses().stream()
-					.map(r -> r.getRole())
-					.filter(r -> r.equals(trueRole))
-					.collect(Collectors.toList());
-			if(roleList.isEmpty()) {
-			return roleRepository.save(new Roles(null,user,trueRole));
+	public Roles addRoletoUser(String email, String role) {
+		Roles newRole = null;
+		if(role != null && email != null) {
+			Role trueRole = Role.valueOf(role.trim().toUpperCase());
+			Users tmpUser = userService.getUserByMail(email);
+			newRole = roleRepository.save(new Roles(tmpUser,trueRole));
+			if(tmpUser.getRoleses().isEmpty() && newRole != null) {
+				tmpUser.setActived(true);
+				userService.updateUser(tmpUser);
+			}
 			}else {
-				
 				throw new RoleException();
 			}
-		}
-		return null;
+		return newRole;
 	}
 
 	@Override
 	public List<Roles> getRolesFromUser(Long userId) {
 		List<Roles> rolesList = null;
+		 userService.getUserById(userId);
 		rolesList = roleRepository.findAllByUsers_Id(userId);
 		if(rolesList.size() > 0) {
 		return rolesList;

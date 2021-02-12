@@ -1,13 +1,12 @@
 package net.agm.hydra.model;
-// Generated 10-feb-2021 11.31.06 by Hibernate Tools 5.2.12.Final
+// Generated 12-feb-2021 17.03.58 by Hibernate Tools 5.2.12.Final
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,20 +22,20 @@ public class Updates implements java.io.Serializable {
 	private Long id;
 	private Assigned assigned;
 	private LocalDateTime dateOfPublish;
-	private BigDecimal hoursOfWorking;
+	private Double hoursOfWorking;
 
 	public Updates() {
 	}
 
-	public Updates(Long id, Assigned assigned, LocalDateTime dateOfPublish, BigDecimal hoursOfWorking) {
-		this.id = id;
+	public Updates(Assigned assigned, LocalDateTime dateOfPublish, Double hoursOfWorking) {
 		this.assigned = assigned;
 		this.dateOfPublish = dateOfPublish;
 		this.hoursOfWorking = hoursOfWorking;
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
+
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return this.id;
@@ -65,12 +64,12 @@ public class Updates implements java.io.Serializable {
 		this.dateOfPublish = dateOfPublish;
 	}
 
-	@Column(name = "hours_of_working", nullable = false, precision = 3)
-	public BigDecimal getHoursOfWorking() {
+	@Column(name = "hours_of_working", nullable = false, precision = 2)
+	public Double getHoursOfWorking() {
 		return this.hoursOfWorking;
 	}
 
-	public void setHoursOfWorking(BigDecimal hoursOfWorking) {
+	public void setHoursOfWorking(Double hoursOfWorking) {
 		this.hoursOfWorking = hoursOfWorking;
 	}
 
