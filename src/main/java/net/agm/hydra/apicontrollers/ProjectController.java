@@ -2,6 +2,8 @@ package net.agm.hydra.apicontrollers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,28 +13,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.model.Projects;
 import net.agm.hydra.services.ProjectsService;
 
-@Controller
-@RequestMapping("/api/project")
+@RestController
+@RequestMapping("api/project")
 public class ProjectController {
 	
 	
 	@Autowired
 	ProjectsService projectService;
 	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	
 	@GetMapping
 	public List<Projects> getAll(){
-		return projectService.getAll();
+		List<Projects> list =projectService.getAll();
+		logger.info("project-getAll()" + list.toString());
+		return list;
 	}
 	
 	
-	@PostMapping
+	@PostMapping("/addproject")
 	public Projects newProject(@RequestBody Projects p) {
+		logger.info("project-addproject: " + p);
 		if(p != null) {
 			try {
 				return projectService.newProject(p);

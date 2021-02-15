@@ -30,7 +30,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 	@Override
 	public Projects newProject(Projects p) {
 		Projects c = null;
-		if(p!= null && p.getId() == 0) {
+		if(p!= null && p.getId() == null) {
 			c =  projectRepositoy.save(p);
 		}	
 		return c;

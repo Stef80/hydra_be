@@ -1,10 +1,17 @@
 package net.agm.hydra.services.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.exception.UpdateException;
+import net.agm.hydra.exception.UserNotFoundException;
+import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Updates;
 import net.agm.hydra.repository.AssignedRepository;
 import net.agm.hydra.repository.TasksRepository;
@@ -28,6 +35,9 @@ public class UpdateServiceImpl implements UpdateService {
 
 	@Autowired
 	AssignedRepository assignedRepository;
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
 	@Override
 	public List<Updates> getAll() {
@@ -35,19 +45,43 @@ public class UpdateServiceImpl implements UpdateService {
 	}
 
 	@Override
-	public Updates addUpdates(Updates u) {
-		if(u != null && u.getId() == null) {
-			return updatesRopository.save(u);
+	public Updates addUpdates(Map<String, Object> body) {
+		Updates u = new Updates();
+		if(body != null) {
+			Long assignedId =((Integer) body.get("assigned")).longValue();
+			Assigned assigned = assignedRepository.findById(assignedId).orElse(null);
+			logger.info("service-addUppdate body: " , body);
+
+			Float hours =((Double) body.get("hours")).floatValue();
+			if(assigned != null && hours != null) {
+		
+				u.setAssigned(assigned);
+				u.setDateOfPublish(new Date());
+				u.setHoursOfWorking(hours);
+				
+				logger.info("service-addUppdate update:" , u);
+
+				u = updatesRopository.save(u);
+			} else {
+				throw new UpdateException();
+			}
+		}else {
+			throw new UserNotFoundException();
 		}
-		throw new UpdateException();
+      return u;
 	}
 
+	
 	@Override
 	public List<Updates> getUpdatesOfUserById(Long userId) {
 		List<Updates> updates = null;
-		userService.getUserById(userId);
-		updates = updatesRopository.findAllByAssigned_Users_Id(userId);
-		return updates;
+		if(userId != null ) {
+			userService.getUserById(userId);
+			updates = updatesRopository.findAllByAssigned_Users_Id(userId);
+		}else {
+			throw new UserNotFoundException();
+		}
+		return updates;	
 	}
 
 	@Override
@@ -67,7 +101,7 @@ public class UpdateServiceImpl implements UpdateService {
 		if(assignedRepository.findAllByUsers_IdAndTasks_Id(userId, taskId) != null) {	
 			updates =  updatesRopository.findAllByAssigned_Tasks_IdAndAssigned_Users_Id(taskId, userId);
 		} else {
-           throw new UpdateException(); 
+			throw new UpdateException(); 
 		}
 		return updates;
 	}

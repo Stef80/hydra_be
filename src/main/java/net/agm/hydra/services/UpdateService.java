@@ -1,20 +1,21 @@
 package net.agm.hydra.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.Query;
 
 import net.agm.hydra.exception.TaskException;
+import net.agm.hydra.exception.UpdateException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Updates;
-import net.agm.hydra.services.impl.UpdateException;
 
 public interface UpdateService  {
 	
 	
 	List<Updates> getAll();
 	
-	Updates addUpdates(Updates u);
+	Updates addUpdates(Map<String, Object> body);
     
 	List<Updates> getUpdatesOfUserById(Long userId) throws UserNotFoundException ;
 	

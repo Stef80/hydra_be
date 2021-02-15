@@ -1,7 +1,7 @@
 package net.agm.hydra.model;
-// Generated 12-feb-2021 17.03.58 by Hibernate Tools 5.2.12.Final
+// Generated 15-feb-2021 17.25.24 by Hibernate Tools 5.2.12.Final
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import net.agm.hydra.datamodel.Status;
 
 /**
@@ -26,22 +28,22 @@ public class Tasks implements java.io.Serializable {
 	private Long id;
 	private Projects projects;
 	private String taskName;
-	private LocalDate dateOfRegistation;
+	private Date dateOfRegistation;
 	private Status status;
-	private Double totalWorked;
+	private Float totalWorked;
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 
 	public Tasks() {
 	}
 
-	public Tasks(Projects projects, String taskName, LocalDate dateOfRegistation, Status status) {
+	public Tasks(Projects projects, String taskName, Date dateOfRegistation, Status status) {
 		this.projects = projects;
 		this.taskName = taskName;
 		this.dateOfRegistation = dateOfRegistation;
 		this.status = status;
 	}
 
-	public Tasks(Projects projects, String taskName, LocalDate dateOfRegistation, Status status, Double totalWorked,
+	public Tasks(Projects projects, String taskName, Date dateOfRegistation, Status status, Float totalWorked,
 			Set<Assigned> assigneds) {
 		this.projects = projects;
 		this.taskName = taskName;
@@ -82,12 +84,13 @@ public class Tasks implements java.io.Serializable {
 		this.taskName = taskName;
 	}
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_registation", nullable = false, length = 13)
-	public LocalDate getDateOfRegistation() {
+	public Date getDateOfRegistation() {
 		return this.dateOfRegistation;
 	}
 
-	public void setDateOfRegistation(LocalDate dateOfRegistation) {
+	public void setDateOfRegistation(Date dateOfRegistation) {
 		this.dateOfRegistation = dateOfRegistation;
 	}
 
@@ -100,12 +103,12 @@ public class Tasks implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@Column(name = "total_worked", precision = 2)
-	public Double getTotalWorked() {
+	@Column(name = "total_worked", precision = 8, scale = 8)
+	public Float getTotalWorked() {
 		return this.totalWorked;
 	}
 
-	public void setTotalWorked(Double totalWorked) {
+	public void setTotalWorked(Float totalWorked) {
 		this.totalWorked = totalWorked;
 	}
 
@@ -117,5 +120,14 @@ public class Tasks implements java.io.Serializable {
 	public void setAssigneds(Set<Assigned> assigneds) {
 		this.assigneds = assigneds;
 	}
+
+	@Override
+	public String toString() {
+		return "Tasks [id=" + id + ", projects=" + projects + ", taskName=" + taskName + ", dateOfRegistation="
+				+ dateOfRegistation + ", status=" + status + ", totalWorked=" + totalWorked + ", assigneds=" + assigneds
+				+ "]";
+	}
+	
+	
 
 }

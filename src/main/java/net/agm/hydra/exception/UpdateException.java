@@ -1,4 +1,4 @@
-package net.agm.hydra.services.impl;
+package net.agm.hydra.exception;
 
 public class UpdateException extends RuntimeException {
 

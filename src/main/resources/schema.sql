@@ -32,7 +32,7 @@ CREATE TABLE Tasks(
     project_id BIGINT NOT NULL,
     date_of_registation DATE NOT NULL,
     status VARCHAR(20) NOT NULL,
-    total_worked DECIMAL(2,2),
+    total_worked REAL(2),
     FOREIGN KEY(project_id) REFERENCES Projects  ON DELETE CASCADE
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE Updates(
      id  BIGSERIAL PRIMARY KEY ,
      assigned_id BIGINT NOT NULL,
      date_of_publish TIMESTAMP NOT NULL,
-     hours_of_working DECIMAL(2,2) NOT NULL,
+     hours_of_working REAL(2) NOT NULL,
      FOREIGN KEY(assigned_id)REFERENCES Assigned ON DELETE CASCADE
 );
 

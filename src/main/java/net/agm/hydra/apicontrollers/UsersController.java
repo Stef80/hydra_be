@@ -2,6 +2,7 @@ package net.agm.hydra.apicontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
 import org.slf4j.*;
@@ -90,14 +91,14 @@ public class UsersController {
 
 
 	@PostMapping("/email/{email}/addrole/{role}")
-	public  Roles addRoleToUser(@PathVariable("email") String email, @PathVariable("role") String role) {
+	public  RolesDto addRoleToUser(@PathVariable("email") String email, @PathVariable("role") String role) {
 		logger.info("Log: addRoleToUser()" );
-		Roles newRole = null;
+		RolesDto newRole = null;
+		
 		if( email != null && !role.equals("") && role != null) {
 			try {
 			    newRole = roleService.addRoletoUser(email, role);
 				logger.info("role added");
-			
 			}catch (RoleException e) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 			}catch (UserNotFoundException e) {
@@ -113,16 +114,13 @@ public class UsersController {
 
 	@GetMapping("/roles/{userId}")
 	public RolesDto getRolesOfUser(@PathVariable("userId") Long userId) {
-		RolesDto roleDto = new RolesDto();
+		RolesDto roleDto = null;
 		List<Role> roleList = new ArrayList<>();
 		if(userId != null && userId > 0) {
 			try {
 				List<Roles> roleses = roleService.getRolesFromUser(userId);
-				for (Roles roles : roleses ) {
-					roleList.add(roles.getRole());
-				}
-				roleDto.setUserEmail(roleses.get(0).getUsers().getEmail());
-				roleDto.setRole(roleList);
+				roleDto = roleService.toDto(roleses);
+			
 			} catch (RoleException|UserNotFoundException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
@@ -178,8 +176,8 @@ public class UsersController {
 		}
 	}
 
-	@PutMapping("/delete")
-	public Users deleteUserFromId(Long id) {
+	@PutMapping("/delete/{id}")
+	public Users deleteUserFromId(@PathVariable Long id) {
 		logger.info("Log: deleteUsersFromId()" );
 		Users user = null;
 		try {

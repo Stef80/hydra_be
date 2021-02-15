@@ -3,6 +3,8 @@ package net.agm.hydra.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,9 @@ public class TasksServiceImpl  implements TasksService {
 	@Autowired
 	AssignedRepository assignedRepository;
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	
 	@Override
 	public List<Tasks> getAll() {
 		return tasksRepositroy.findAll();
@@ -61,7 +65,8 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public Tasks newTask(Tasks t) {
-		if(t != null && t.getId() > 0) {
+		logger.info("task-newTask():" + t);
+		if(t != null && t.getId()!= null) {
 			return tasksRepositroy.save(t);
 		}
 		throw new TaskException();
@@ -78,7 +83,9 @@ public class TasksServiceImpl  implements TasksService {
 	@Override
 	public List<Tasks> getTasksByUserId(Long userId) {
 		if(userId > 0 && usersRepository.findById(userId) != null) {
+			logger.info("service-getTaskByUser-prima di assigned");
 			List<Assigned> assignedTasks = assignedRepository.findAllByUsers_Id(userId);
+			logger.info("service-getTaskByUser- assigned: "+ assignedTasks);
 			List<Tasks> tasks = new ArrayList<>();
 			for (Assigned assigned : assignedTasks) {
 				tasks.add(assigned.getTasks());
