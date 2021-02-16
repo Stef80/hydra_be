@@ -46,6 +46,7 @@ public class ProjectController {
 			try {
 				return projectService.newProject(p);
 			}catch (ProjectException e) {
+				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 			}
 		}else {
@@ -61,7 +62,8 @@ public class ProjectController {
 			try {
 				tmp = projectService.getProjectById(id);
 			}catch (ProjectException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+				e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -75,6 +77,7 @@ public class ProjectController {
 	try {
 		tmp = projectService.updateProject(p);
 	} catch (ProjectException e) {
+		 e.printStackTrace();
 		 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 	}
 	 return tmp;

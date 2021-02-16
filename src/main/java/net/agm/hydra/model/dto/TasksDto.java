@@ -1,11 +1,13 @@
 package net.agm.hydra.model.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.agm.hydra.datamodel.Status;
 
 @Data
 @NoArgsConstructor
@@ -13,8 +15,53 @@ import lombok.ToString;
 @ToString
 public class TasksDto {
 	
-	String name;
-	String projectName;
-	List<String> usersName;
+	
+	private Long projectId;
+	private String taskName;
+	private Date dateOfRegistation;
+	private Status status;
+	private Float totalWorked;
+	
+	
+	
+	public Long getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+	}
+	
+	public String getTaskName() {
+		return taskName;
+	}
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+	public Date getDateOfRegistation() {
+		return dateOfRegistation;
+	}
+	public void setDateOfRegistation(Date dateOfRegistation) {
+		this.dateOfRegistation = dateOfRegistation;
+	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	public Float getTotalWorked() {
+		return totalWorked;
+	}
+	public void setTotalWorked(Float totalWorked) {
+		this.totalWorked = totalWorked;
+	}
+	@Override
+	public String toString() {
+		return "TasksDto [projectId=" + projectId + ", taskName=" + taskName + ", dateOfRegistation="
+				+ dateOfRegistation + ", status=" + status + ", totalWorked=" + totalWorked + "]";
+	}
+	
+	
+	
 
 }

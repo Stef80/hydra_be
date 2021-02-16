@@ -1,5 +1,6 @@
 package net.agm.hydra.apicontrollers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,12 @@ import net.agm.hydra.exception.UpdateException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Tasks;
 import net.agm.hydra.model.Updates;
+import net.agm.hydra.model.dto.UpdatesDto;
 import net.agm.hydra.services.TasksService;
 import net.agm.hydra.services.UpdateService;
 
 @RestController
-@RequestMapping("/api/updates")
+@RequestMapping("/api/update")
 public class UpdatesController {
 
 	@Autowired
@@ -42,8 +44,9 @@ public class UpdatesController {
 	}
 
 	@PostMapping("/add")
-	public Updates addUpdates(@RequestBody Map<String, Object> body) {
+	public UpdatesDto addUpdates(@RequestBody Map<String, Object> body) {
 		Updates updates = null;
+		UpdatesDto dto = null;
 		try {
 			updates = updateService.addUpdates(body);
 			float hours = updates.getHoursOfWorking();
@@ -53,50 +56,71 @@ public class UpdatesController {
 				task.setTotalWorked(task.getTotalWorked() + hours);
 			else
 				task.setTotalWorked(hours);	
+			
 			taskService.updateTask(task);
-
+			dto = updateService.toDto(updates);
+			
 		} catch (UpdateException|TaskException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
-		return updates;
+		return dto;
 	}
 
 	@GetMapping("/user/{id}")
-	public List<Updates> getAllByUserId(@PathVariable("id") Long id) {
+	public List<UpdatesDto> getAllByUserId(@PathVariable("id") Long id) {
 		List<Updates> updatesList = null;
+		List<UpdatesDto> dtoList = new ArrayList<>();
 		try {
 			updatesList = updateService.getUpdatesOfUserById(id);
+			for (Updates updates : updatesList) {
+				UpdatesDto dto = updateService.toDto(updates);
+				dtoList.add(dto);
+			}
 		}catch (UserNotFoundException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 
-		return updatesList;
+		return dtoList;
 	}
 
 
 	@GetMapping("/tasks/{id}")
-	public List<Updates> getAllByTaskId(@PathVariable("id") Long id) {
+	public List<UpdatesDto> getAllByTaskId(@PathVariable("id") Long id) {
 		List<Updates> updatesList = null;
+		List<UpdatesDto> dtoList = new ArrayList<>();
 		try {
 			updatesList = updateService.getUpdatesOfTasksById(id);
+			for (Updates updates : updatesList) {
+				UpdatesDto dto = updateService.toDto(updates);
+				dtoList.add(dto);
+			}
 		}catch (TaskException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 
-		return updatesList;
+		return dtoList;
 	}
 
 
 	@GetMapping("/user/{user_id}/task/{task_id}")
-	public List<Updates> getAllUserAndTaskId(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId){
+	public List<UpdatesDto> getAllUserAndTaskId(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId){
 		List<Updates> updatesList = null;
+		List<UpdatesDto> dtoList = new ArrayList<>();
+
 		try {
 			updatesList = updateService.getUpdatesTaskByUserId(taskId, userId);
+			for (Updates updates : updatesList) {
+				UpdatesDto dto = updateService.toDto(updates);
+				dtoList.add(dto);
+			}
 		}catch (TaskException|UserNotFoundException|UpdateException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 
-		return updatesList;
+		return dtoList;
 	}
 
 

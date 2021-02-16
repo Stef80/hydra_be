@@ -9,6 +9,7 @@ import net.agm.hydra.exception.TaskException;
 import net.agm.hydra.exception.UpdateException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Updates;
+import net.agm.hydra.model.dto.UpdatesDto;
 
 public interface UpdateService  {
 	
@@ -22,4 +23,7 @@ public interface UpdateService  {
 	List<Updates> getUpdatesOfTasksById(Long taskId) throws TaskException;
 	
 	List<Updates> getUpdatesTaskByUserId(Long taskId, Long userId)throws UserNotFoundException, TaskException, UpdateException;
+	
+	
+	UpdatesDto toDto(Updates u);
 }

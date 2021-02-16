@@ -82,6 +82,7 @@ public class UsersController {
 		try {
 			newUser = userService.newUser(user);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());		
 		}
        
@@ -100,8 +101,10 @@ public class UsersController {
 			    newRole = roleService.addRoletoUser(email, role);
 				logger.info("role added");
 			}catch (RoleException e) {
+				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 			}catch (UserNotFoundException e) {
+				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
 		}else {
@@ -122,6 +125,7 @@ public class UsersController {
 				roleDto = roleService.toDto(roleses);
 			
 			} catch (RoleException|UserNotFoundException e) {
+				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 			}
 		}else {
@@ -139,6 +143,7 @@ public class UsersController {
 		try { 
 			user = userService.getUserById(id);
 		}catch (UserNotFoundException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 		}
 		return user;
@@ -152,6 +157,7 @@ public class UsersController {
 		try {
 			user = userService.getUserByMail(email);
 		}catch (UserNotFoundException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 		}
 		return user;
@@ -183,6 +189,7 @@ public class UsersController {
 		try {
 			user = userService.deleteUserById(id);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 		return user;	

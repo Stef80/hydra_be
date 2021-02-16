@@ -8,16 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.datamodel.Status;
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.exception.TaskException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
+import net.agm.hydra.model.Projects;
 import net.agm.hydra.model.Tasks;
 import net.agm.hydra.model.Users;
+import net.agm.hydra.model.dto.TasksDto;
 import net.agm.hydra.repository.AssignedRepository;
 import net.agm.hydra.repository.ProjectsRepository;
 import net.agm.hydra.repository.TasksRepository;
 import net.agm.hydra.repository.UsersRepository;
+import net.agm.hydra.services.ProjectsService;
 import net.agm.hydra.services.TasksService;
 @Service
 public class TasksServiceImpl  implements TasksService {
@@ -66,7 +70,7 @@ public class TasksServiceImpl  implements TasksService {
 	@Override
 	public Tasks newTask(Tasks t) {
 		logger.info("task-newTask():" + t);
-		if(t != null && t.getId()!= null) {
+		if(t != null && t.getId() == null) {
 			return tasksRepositroy.save(t);
 		}
 		throw new TaskException();
@@ -74,7 +78,7 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public List<Tasks> getTasksByProjectId(Long projectId) {
-		if(projectId > 0 && projectsRepository.findById(projectId) != null) {
+		if(projectId != null && projectsRepository.findById(projectId).orElse(null) != null) {
 			return tasksRepositroy.findByProjects_Id(projectId);
 		}
 		throw new ProjectException();
@@ -82,7 +86,7 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public List<Tasks> getTasksByUserId(Long userId) {
-		if(userId > 0 && usersRepository.findById(userId) != null) {
+		if(userId != null && usersRepository.findById(userId).orElse(null) != null) {
 			logger.info("service-getTaskByUser-prima di assigned");
 			List<Assigned> assignedTasks = assignedRepository.findAllByUsers_Id(userId);
 			logger.info("service-getTaskByUser- assigned: "+ assignedTasks);
@@ -98,8 +102,8 @@ public class TasksServiceImpl  implements TasksService {
 	@Override
 	public List<Tasks> getTasksByUserAndProjectId(Long userId, Long projectId) {
 		List<Tasks> tasksList = null;
-		if(userId > 0 && usersRepository.findById(userId) != null) {
-			if(projectId > 0 && projectsRepository.findById(projectId)!= null) {
+		if(userId != null && usersRepository.findById(userId).orElse(null) != null) {
+			if(projectId != null && projectsRepository.findById(projectId).orElse(null)!= null) {
 				tasksList = tasksRepositroy.findAllByProjects_IdAndAssigneds_Users_Id(projectId, userId);
 			}else {
 				throw new UserNotFoundException();
@@ -129,6 +133,37 @@ public class TasksServiceImpl  implements TasksService {
 			}
 		}
 	   return as;
+	}
+
+	@Override
+	public TasksDto toDto(Tasks t) {
+         TasksDto dto = new TasksDto();
+         dto.setProjectId((t.getProjects().getId()));
+         dto.setTaskName(t.getTaskName());
+         dto.setDateOfRegistation(t.getDateOfRegistation());
+         dto.setStatus(t.getStatus());
+         dto.setTotalWorked(t.getTotalWorked());
+
+		return dto;
+	}
+	
+	@Override
+	public Tasks fromDto(TasksDto d) {
+		Tasks t  = new Tasks();
+		logger.info("service-fromdto taskDto: " + d);
+		Projects project = projectsRepository.findById(d.getProjectId()).orElse(null);
+		if(project != null) {
+			t.setProjects(project);
+			t.setTaskName(d.getTaskName());
+			t.setDateOfRegistation(d.getDateOfRegistation());
+			
+			logger.info("status " +  d.getStatus());
+			t.setStatus(d.getStatus());	
+		}else {
+			throw new ProjectException();
+		}
+		
+		return t;
 	}
 
 }

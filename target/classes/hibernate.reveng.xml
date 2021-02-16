@@ -15,9 +15,7 @@
 		<sql-type jdbc-type="BIGINT" hibernate-type="java.lang.Long"
 			not-null="true">
 		</sql-type>
-		<sql-type jdbc-type="NUMERIC" hibernate-type="Double">
-		</sql-type>
-		
+	
 	</type-mapping>
 	<table-filter match-name="assigned" match-schema="public"></table-filter>
 	<table-filter match-name="projects" match-schema="public"></table-filter>

@@ -13,6 +13,7 @@ import net.agm.hydra.exception.UpdateException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Updates;
+import net.agm.hydra.model.dto.UpdatesDto;
 import net.agm.hydra.repository.AssignedRepository;
 import net.agm.hydra.repository.TasksRepository;
 import net.agm.hydra.repository.UpdatesRopository;
@@ -47,9 +48,11 @@ public class UpdateServiceImpl implements UpdateService {
 	@Override
 	public Updates addUpdates(Map<String, Object> body) {
 		Updates u = new Updates();
+		
 		if(body != null) {
-			Long assignedId =((Integer) body.get("assigned")).longValue();
-			Assigned assigned = assignedRepository.findById(assignedId).orElse(null);
+			Long userId =((Integer) body.get("userId")).longValue();
+			Long taskId =((Integer) body.get("taskId")).longValue();
+			Assigned assigned = assignedRepository.findAllByUsers_IdAndTasks_Id(userId, taskId);
 			logger.info("service-addUppdate body: " , body);
 
 			Float hours =((Double) body.get("hours")).floatValue();
@@ -62,6 +65,7 @@ public class UpdateServiceImpl implements UpdateService {
 				logger.info("service-addUppdate update:" , u);
 
 				u = updatesRopository.save(u);
+				
 			} else {
 				throw new UpdateException();
 			}
@@ -104,6 +108,17 @@ public class UpdateServiceImpl implements UpdateService {
 			throw new UpdateException(); 
 		}
 		return updates;
+	}
+	
+	
+	@Override
+	public UpdatesDto toDto(Updates u) {
+		UpdatesDto dto = new UpdatesDto();
+		 dto.setUserEmail(u.getAssigned().getUsers().getEmail());
+		 dto.setTaskName(u.getAssigned().getTasks().getTaskName());
+		 dto.setDateOfPublish(u.getDateOfPublish());
+	     dto.setHoursOfWorking(u.getHoursOfWorking());
+		return dto;
 	}
 
 }

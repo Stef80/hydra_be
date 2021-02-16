@@ -1,16 +1,20 @@
 package net.agm.hydra.datamodel;
 
-public enum Status {
-	
-	
-	OPEN("open"),
-	IN_PROGRESS("in progress"),
-	CLOSED("closed");
-    
-	
-	 public final String label;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    private Status(String label) {
-        this.label = label;
-    }
+public enum Status {
+
+	@JsonProperty("open")
+	OPEN("open"),
+	@JsonProperty("in progres")
+	IN_PROGRESS("in progress"),
+	@JsonProperty("closed")
+	CLOSED("closed");
+
+
+	public final String label;
+
+	private Status(String label) {
+		this.label = label;
+	}
 }

@@ -38,12 +38,14 @@ public class TasksController {
 		return taskService.getAll();
 	}
 	
-	@PostMapping
-	public Tasks newTask(@RequestBody Tasks t) {
-		Tasks newTask= null;
+	@PostMapping("/addtask")
+	public Tasks newTask(@RequestBody TasksDto t) {
+	logger.info("taskcontroller-newTask taskDto:" + t);
+		Tasks newTask= taskService.fromDto(t);
 		try {
-			newTask = taskService.newTask(t);
+			newTask = taskService.newTask(newTask);
 		} catch (TaskException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 		return newTask;
@@ -56,25 +58,28 @@ public class TasksController {
 		try {
 			task = taskService.getTaskById(id);
 		} catch (TaskException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		return task;
 	}
 	
 	@GetMapping("/user/{id}")
-	public List<Tasks> getTaskByUserId(@PathVariable("id") Long id) {
-	//	List<TasksDto> dtoList = new  ArrayList<>(); 
-		//TODO : verificare quali valori sono necessari ritornare 
+	public List<TasksDto> getTaskByUserId(@PathVariable("id") Long id) {
+	    List<TasksDto> dtoList = new  ArrayList<>();  
 		List<Tasks> taskList = null;
 		try {
 			taskList = taskService.getTasksByUserId(id);
+			for (Tasks tasks : taskList) {
+				dtoList.add(taskService.toDto(tasks));
+			}
 			logger.info("task-getTasksByUserId():" + taskList);
 		} catch (TaskException|UserNotFoundException e) {
-			
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 		
-		return taskList;
+		return dtoList;
 	}
 	
 	
@@ -85,6 +90,7 @@ public class TasksController {
 		try {
 			tasksList = taskService.getTasksByProjectId(id);
 		} catch (ProjectException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 		
@@ -97,7 +103,8 @@ public class TasksController {
 		List<Tasks> tasksList = null;
 		try {
 			tasksList = taskService.getTasksByUserAndProjectId(userId, projectId);
-		} catch (ProjectException e) {
+		} catch (ProjectException|UserNotFoundException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 		
@@ -111,6 +118,7 @@ public class TasksController {
 		try {
 			newAssign = taskService.assignUserToTask(userId, taskId);
 		} catch (UserNotFoundException|TaskException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		} 
 		return newAssign;

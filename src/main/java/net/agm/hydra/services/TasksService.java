@@ -7,6 +7,7 @@ import net.agm.hydra.exception.TaskException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Tasks;
+import net.agm.hydra.model.dto.TasksDto;
 
 public interface TasksService {
 	
@@ -26,5 +27,7 @@ public interface TasksService {
 	
 	Assigned assignUserToTask(Long userId, Long tasksId ) throws UserNotFoundException,TaskException;
 	
-
+    TasksDto toDto(Tasks t);
+    
+    Tasks fromDto(TasksDto d);
 }
