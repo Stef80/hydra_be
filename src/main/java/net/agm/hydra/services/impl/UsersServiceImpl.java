@@ -3,6 +3,7 @@ package net.agm.hydra.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import net.agm.hydra.exception.UserException;
@@ -49,8 +50,8 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users newUser(Users u) {
-		//		String email = u.getEmail();
-		//		Users tmp = getUserByMail(email);
+		String password = u.getPassword();
+		u.setPassword(new BCryptPasswordEncoder().encode(password));
 		if(u != null) {
 			return usersRepository.save(u);
 		}else {

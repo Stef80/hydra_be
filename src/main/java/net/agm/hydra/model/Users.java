@@ -134,7 +134,7 @@ public class Users implements java.io.Serializable {
 	public void setActived(boolean actived) {
 		this.actived = actived;
 	}
-    @JsonIdentityReference(alwaysAsId = true)
+  
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
 	public Set<Assigned> getAssigneds() {
 		return this.assigneds;
@@ -143,7 +143,7 @@ public class Users implements java.io.Serializable {
 	public void setAssigneds(Set<Assigned> assigneds) {
 		this.assigneds = assigneds;
 	}
-    @JsonIdentityReference(alwaysAsId = true)
+  
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
 	public Set<Roles> getRoleses() {
 		return this.roleses;

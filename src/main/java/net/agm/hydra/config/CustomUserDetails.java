@@ -5,17 +5,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Roles;
 import net.agm.hydra.model.Users;
 
+
 public class CustomUserDetails extends Users implements UserDetails {
 	
-	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
 	public CustomUserDetails(Users u) {
@@ -27,7 +31,8 @@ public class CustomUserDetails extends Users implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authority = new ArrayList<>();
-		getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority(r.getRole().label)));
+		logger.info("userdetails-getAuthorities roles" + getRoleses());
+		super.getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority(r.getRole().label)));
 		return authority;
 	}
 

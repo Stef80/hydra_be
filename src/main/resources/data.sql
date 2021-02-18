@@ -1,5 +1,5 @@
 INSERT INTO users (email, name, surname, password, workplace, expertise_area, actived) values
-('stefano.longobucco@agmsolutions.net', 'Stefano', 'Longobucco', '12345', 'Milano', 'jave be','true');
+('stefano.longobucco@agmsolutions.net', 'Stefano', 'Longobucco', '$2y$12$a7IeahjiRt6WKtpVWG46eehCIFtIxc5WCbn6xc7S4TtE9UtBn8dnq', 'Milano', 'jave be','true');
 
 
 
