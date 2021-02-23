@@ -32,7 +32,7 @@ public class CustomUserDetails extends Users implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authority = new ArrayList<>();
 		logger.info("userdetails-getAuthorities roles" + getRoleses());
-		super.getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority(r.getRole().label)));
+		super.getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority("ROLE_"+ r.getRole())));
 		return authority;
 	}
 

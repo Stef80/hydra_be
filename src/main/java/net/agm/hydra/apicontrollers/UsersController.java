@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ public class UsersController {
 	}
 	
 	@GetMapping("/active")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<Users> gellAllActive() {
 		List<Users> active = new ArrayList<>();
 		List<Users> tmp = userService.getUsers();
@@ -64,6 +66,7 @@ public class UsersController {
 
 	
 	@GetMapping("/cancelled")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<Users> gellAllCancelled() {
 		List<Users> active = new ArrayList<>();
 		List<Users> tmp = userService.getUsers();
@@ -92,6 +95,7 @@ public class UsersController {
 
 
 	@PostMapping("/email/{email}/addrole/{role}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public  RolesDto addRoleToUser(@PathVariable("email") String email, @PathVariable("role") String role) {
 		logger.info("Log: addRoleToUser()" );
 		RolesDto newRole = null;
@@ -116,6 +120,7 @@ public class UsersController {
 
 
 	@GetMapping("/roles/{userId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @userSecurity.hasUserId(authentication,#userId)")
 	public RolesDto getRolesOfUser(@PathVariable("userId") Long userId) {
 		RolesDto roleDto = null;
 		List<Role> roleList = new ArrayList<>();
@@ -167,6 +172,7 @@ public class UsersController {
 
 
 	@PutMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Users updateUser(@RequestBody Users user) {
 		logger.info("Log: updateUser()" );
 		Users tmp = null;
@@ -183,6 +189,7 @@ public class UsersController {
 	}
 
 	@PutMapping("/delete/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Users deleteUserFromId(@PathVariable Long id) {
 		logger.info("Log: deleteUsersFromId()" );
 		Users user = null;
