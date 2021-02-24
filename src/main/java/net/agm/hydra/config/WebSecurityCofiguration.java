@@ -10,6 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +22,7 @@ import net.agm.hydra.services.impl.UserDetailsServiceImpl;
 
 
 @Configuration
-@EnableResourceServer
+@EnableWebSecurity
 public class WebSecurityCofiguration extends WebSecurityConfigurerAdapter {
 
 
@@ -43,7 +44,8 @@ public class WebSecurityCofiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring();
+		web.ignoring()
+		.antMatchers("/oauth/authorize**","/login","/authenticate");
 	}
 
 	   @Override
@@ -62,6 +64,28 @@ public class WebSecurityCofiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
+
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors()
+		.and()
+		.csrf().disable()
+//		.authorizeRequests()
+//		.antMatchers("/oauth/authorize**","/login","/authenticate").permitAll()
+//		.anyRequest()
+//		.authenticated()
+//		.and()
+//		.formLogin()
+//		.permitAll()
+//		.and()
+//		.logout().permitAll()
+//		.and()
+//		.oauth2ResourceServer(oauth -> oauth.jwt())
+		;
+	}
+
+
 	//
 	//	@Bean
 	//    public CorsConfigurationSource corsConfigurationSource()
@@ -76,4 +100,7 @@ public class WebSecurityCofiguration extends WebSecurityConfigurerAdapter {
 	//        source.registerCorsConfiguration("/**", configuration);
 	//        return source;
 	//    }
+	
+	
 }
+
