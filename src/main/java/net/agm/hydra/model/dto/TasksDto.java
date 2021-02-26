@@ -21,9 +21,23 @@ public class TasksDto {
 	private Date dateOfRegistation;
 	private Status status;
 	private Float totalWorked;
+	private Date dateOfPublish;
+	private float hoursOfWorking;
 	
 	
 	
+	public Date getDateOfPublish() {
+		return dateOfPublish;
+	}
+	public void setDateOfPublish(Date dateOfPublish) {
+		this.dateOfPublish = dateOfPublish;
+	}
+	public float getHoursOfWorking() {
+		return hoursOfWorking;
+	}
+	public void setHoursOfWorking(float hoursOfWorking) {
+		this.hoursOfWorking = hoursOfWorking;
+	}
 	public Long getProjectId() {
 		return projectId;
 	}
@@ -40,7 +54,7 @@ public class TasksDto {
 	public Date getDateOfRegistation() {
 		return dateOfRegistation;
 	}
-	public void setDateOfRegistation(Date dateOfRegistation) {
+	public void setDateOfRegistration(Date dateOfRegistation) {
 		this.dateOfRegistation = dateOfRegistation;
 	}
 	public Status getStatus() {

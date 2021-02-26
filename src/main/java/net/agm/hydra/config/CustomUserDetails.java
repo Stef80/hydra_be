@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,16 +24,16 @@ public class CustomUserDetails extends Users implements UserDetails {
 
 
 	public CustomUserDetails(Users u) {
-		super(u.getEmail(), u.getName(),u.getSurname(),u.getPassword(),u.getWorkplace(), u.getExpertiseArea(),u.isActived(),u.getAssigneds(), u.getRoleses());
-		// TODO Auto-generated constructor stub
+		super(u.getEmail(), u.getName(),u.getSurname(),u.getPassword(),u.getWorkplace(), u.getExpertiseArea(),u.isActived(),u.getRoleses(),u.getAssigneds());
+		logger.info("userdetails " + u);
 	}
 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authority = new ArrayList<>();
-		logger.info("userdetails-getAuthorities roles" + getRoleses());
-		super.getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority("ROLE_"+ r.getRole())));
+		getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority("ROLE_"+ r.getRole())));
+		logger.info("userdetails-getAuthorities authorities" + authority);
 		return authority;
 	}
 

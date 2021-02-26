@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 15-feb-2021 17.25.24 by Hibernate Tools 5.2.12.Final
+// Generated 26-feb-2021 14.59.23 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -28,28 +28,35 @@ public class Tasks implements java.io.Serializable {
 	private Long id;
 	private Projects projects;
 	private String taskName;
-	private Date dateOfRegistation;
+	private Date dateOfRegistration;
 	private Status status;
 	private Float totalWorked;
+	private Date dateOfPublish;
+	private Float hoursOfWorking;
+	private int revision;
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 
 	public Tasks() {
 	}
 
-	public Tasks(Projects projects, String taskName, Date dateOfRegistation, Status status) {
+	public Tasks(Projects projects, String taskName, Date dateOfRegistration, Status status, int revision) {
 		this.projects = projects;
 		this.taskName = taskName;
-		this.dateOfRegistation = dateOfRegistation;
+		this.dateOfRegistration = dateOfRegistration;
 		this.status = status;
+		this.revision = revision;
 	}
 
-	public Tasks(Projects projects, String taskName, Date dateOfRegistation, Status status, Float totalWorked,
-			Set<Assigned> assigneds) {
+	public Tasks(Projects projects, String taskName, Date dateOfRegistration, Status status, Float totalWorked,
+			Date dateOfPublish, Float hoursOfWorking, int revision, Set<Assigned> assigneds) {
 		this.projects = projects;
 		this.taskName = taskName;
-		this.dateOfRegistation = dateOfRegistation;
+		this.dateOfRegistration = dateOfRegistration;
 		this.status = status;
 		this.totalWorked = totalWorked;
+		this.dateOfPublish = dateOfPublish;
+		this.hoursOfWorking = hoursOfWorking;
+		this.revision = revision;
 		this.assigneds = assigneds;
 	}
 
@@ -66,7 +73,7 @@ public class Tasks implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "project_id", nullable = false)
+	@JoinColumn(name = "project_fk", nullable = false)
 	public Projects getProjects() {
 		return this.projects;
 	}
@@ -85,13 +92,13 @@ public class Tasks implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "date_of_registation", nullable = false, length = 13)
-	public Date getDateOfRegistation() {
-		return this.dateOfRegistation;
+	@Column(name = "date_of_registration", nullable = false, length = 13)
+	public Date getDateOfRegistration() {
+		return this.dateOfRegistration;
 	}
 
-	public void setDateOfRegistation(Date dateOfRegistation) {
-		this.dateOfRegistation = dateOfRegistation;
+	public void setDateOfRegistration(Date dateOfRegistration) {
+		this.dateOfRegistration = dateOfRegistration;
 	}
 
 	@Column(name = "status", nullable = false, length = 20)
@@ -112,6 +119,34 @@ public class Tasks implements java.io.Serializable {
 		this.totalWorked = totalWorked;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_of_publish", length = 29)
+	public Date getDateOfPublish() {
+		return this.dateOfPublish;
+	}
+
+	public void setDateOfPublish(Date dateOfPublish) {
+		this.dateOfPublish = dateOfPublish;
+	}
+
+	@Column(name = "hours_of_working", precision = 8, scale = 8)
+	public Float getHoursOfWorking() {
+		return this.hoursOfWorking;
+	}
+
+	public void setHoursOfWorking(Float hoursOfWorking) {
+		this.hoursOfWorking = hoursOfWorking;
+	}
+
+	@Column(name = "revision", nullable = false)
+	public int getRevision() {
+		return this.revision;
+	}
+
+	public void setRevision(int revision) {
+		this.revision = revision;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
 	public Set<Assigned> getAssigneds() {
 		return this.assigneds;
@@ -120,14 +155,5 @@ public class Tasks implements java.io.Serializable {
 	public void setAssigneds(Set<Assigned> assigneds) {
 		this.assigneds = assigneds;
 	}
-
-	@Override
-	public String toString() {
-		return "Tasks [id=" + id + ", projects=" + projects + ", taskName=" + taskName + ", dateOfRegistation="
-				+ dateOfRegistation + ", status=" + status + ", totalWorked=" + totalWorked + ", assigneds=" + assigneds
-				+ "]";
-	}
-	
-	
 
 }

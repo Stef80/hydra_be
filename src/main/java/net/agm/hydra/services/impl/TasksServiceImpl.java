@@ -1,6 +1,7 @@
 package net.agm.hydra.services.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import net.agm.hydra.datamodel.Status;
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.exception.TaskException;
+import net.agm.hydra.exception.UserException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Projects;
@@ -55,9 +57,10 @@ public class TasksServiceImpl  implements TasksService {
 	}
 
 	@Override
-	public Tasks updateTask(Tasks t) {
+	public Tasks updateTask(Tasks t , Long tId) {
 		if(t != null ) {
-			if(tasksRepositroy.findById(t.getId()).isPresent()) {
+			if(tasksRepositroy.findById(tId).isPresent()) {
+				t.setId(tId);
 				return tasksRepositroy.save(t);
 			} else {
 				throw new TaskException();
@@ -134,16 +137,45 @@ public class TasksServiceImpl  implements TasksService {
 		}
 	   return as;
 	}
+	
+	
+
+	@Override
+	public Tasks addTasksRevisioning(Long projectId, String taskName,Float hours, Long userId) {
+		Tasks t = null;
+		Tasks newTasks = null;
+		if(projectId != null && taskName != null && userId != null) {
+		  	t = tasksRepositroy.findByProjects_idAndTaskNameAnd(projectId, taskName).orElseThrow(TaskException::new);
+		    newTasks = new Tasks(t.getProjects(),t.getTaskName(),t.getDateOfRegistration(),t.getStatus(),t.getRevision());
+			newTasks.setDateOfPublish((new Date()));
+			newTasks.setHoursOfWorking(hours);
+			if(t.getTotalWorked() == null) {
+				newTasks.setTotalWorked(hours);
+			}else {
+				newTasks.setTotalWorked(t.getTotalWorked() + hours);
+			}
+			newTasks.setRevision(t.getRevision() + 1);
+			newTasks = tasksRepositroy.save(newTasks);
+			if(newTasks != null) {
+				Users user = usersRepository.findById(userId).orElseThrow(UserException::new);
+				Assigned ass = new Assigned( newTasks, user);
+				assignedRepository.save(ass);
+			}
+		}
+		return  newTasks;
+	}
 
 	@Override
 	public TasksDto toDto(Tasks t) {
          TasksDto dto = new TasksDto();
          dto.setProjectId((t.getProjects().getId()));
          dto.setTaskName(t.getTaskName());
-         dto.setDateOfRegistation(t.getDateOfRegistation());
+         dto.setDateOfRegistration(t.getDateOfRegistration());
          dto.setStatus(t.getStatus());
          dto.setTotalWorked(t.getTotalWorked());
-
+         dto.setDateOfPublish(t.getDateOfPublish());
+         dto.setHoursOfWorking(t.getHoursOfWorking());
+        
 		return dto;
 	}
 	
@@ -155,8 +187,9 @@ public class TasksServiceImpl  implements TasksService {
 		if(project != null) {
 			t.setProjects(project);
 			t.setTaskName(d.getTaskName());
-			t.setDateOfRegistation(d.getDateOfRegistation());
-			
+			t.setDateOfRegistration(d.getDateOfRegistation());
+			t.setDateOfPublish(d.getDateOfPublish());
+			t.setHoursOfWorking(d.getHoursOfWorking());
 			logger.info("status " +  d.getStatus());
 			t.setStatus(d.getStatus());	
 		}else {

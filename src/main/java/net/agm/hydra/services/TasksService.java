@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.exception.TaskException;
+import net.agm.hydra.exception.UserException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Tasks;
@@ -15,7 +16,7 @@ public interface TasksService {
 	
 	Tasks getTaskById(Long id) throws TaskException;
 	
-	Tasks updateTask(Tasks t) throws TaskException;
+	Tasks updateTask(Tasks t, Long tId) throws TaskException;
 	
 	Tasks newTask(Tasks t);
 	
@@ -27,7 +28,11 @@ public interface TasksService {
 	
 	Assigned assignUserToTask(Long userId, Long tasksId ) throws UserNotFoundException,TaskException;
 	
+	Tasks addTasksRevisioning(Long projectId, String taskName,Float hours, Long userId) throws TaskException, UserException ;
+	
     TasksDto toDto(Tasks t);
     
     Tasks fromDto(TasksDto d);
+    
+    
 }

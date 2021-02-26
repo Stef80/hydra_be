@@ -45,20 +45,10 @@ public class WebSecurityCofiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
-		.antMatchers("/oauth/authorize**","/login","/authenticate");
+		.antMatchers("/oauth/authorize**","/login","/api/user/adduser");
 	}
 
-	   @Override
-	    protected void configure(HttpSecurity http) throws Exception {
-	        http
-	                .cors()
-	                .and()
-	                .csrf().disable()
-	                .authorizeRequests()
-	                .antMatchers("/api/user")
-	                .permitAll();
-	                
-	   }
+	
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

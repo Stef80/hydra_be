@@ -21,9 +21,8 @@
 	<table-filter match-name="projects" match-schema="public"></table-filter>
 	<table-filter match-name="roles" match-schema="public"></table-filter>
 	<table-filter match-name="tasks" match-schema="public"></table-filter>
-	<table-filter match-name="updates" match-schema="public"></table-filter>
 	<table-filter match-name="users" match-schema="public"></table-filter>
-	<table name="assigned">
+		<table name="assigned">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
 			<generator class="identity">
@@ -55,14 +54,6 @@
 			<key-column name="ID" />
 		</primary-key>
 	</table>
-	<table name="updates">
-		<primary-key>
-			<!-- setting up a specific id generator for a table -->
-			<generator class="identity">
-			</generator>
-			<key-column name="ID" />
-		</primary-key>
-	</table>
 	<table name="users">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
@@ -71,4 +62,6 @@
 			<key-column name="ID" />
 		</primary-key>
 	</table>
+	
+	
 </hibernate-reverse-engineering>

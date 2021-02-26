@@ -33,8 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		Users user = userRepository.findUsersByEmail(username);
 		Hibernate.initialize(user.getRoleses());
-		if (user == null)
+		if (user == null) {
 			throw new UsernameNotFoundException("Username "+ username + " not found" );
+		}
 		log.debug("loggato utente: "+ user);
 	
 		return new CustomUserDetails(user);

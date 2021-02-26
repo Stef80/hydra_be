@@ -54,7 +54,8 @@ public class UsersController {
 	@GetMapping("/active")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<Users> gellAllActive() {
-		List<Users> active = new ArrayList<>();
+		logger.info("Log: getAllActive()");
+     	List<Users> active = new ArrayList<>();
 		List<Users> tmp = userService.getUsers();
 		for (Users users : tmp) {
 			if(users.isActived()) {
@@ -67,7 +68,8 @@ public class UsersController {
 	
 	@GetMapping("/cancelled")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public List<Users> gellAllCancelled() {
+	public List<Users> getAllCancelled() {
+		logger.info("Log: getAllCancelled()");
 		List<Users> active = new ArrayList<>();
 		List<Users> tmp = userService.getUsers();
 		for (Users users : tmp) {
@@ -122,6 +124,7 @@ public class UsersController {
 	@GetMapping("/roles/{userId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or @userSecurity.hasUserId(authentication,#userId)")
 	public RolesDto getRolesOfUser(@PathVariable("userId") Long userId) {
+		logger.info("Log: getRolesOfUser()");
 		RolesDto roleDto = null;
 		List<Role> roleList = new ArrayList<>();
 		if(userId != null && userId > 0) {

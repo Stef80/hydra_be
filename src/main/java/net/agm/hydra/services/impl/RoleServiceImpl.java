@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import net.agm.hydra.datamodel.Role;
@@ -28,7 +30,10 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	UsersService userService;
-
+	
+	@Autowired
+	UserDetailsServiceImpl userDatailservice;
+	
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -50,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
 			}
 			
 		    newRole = roleRepository.save(new Roles(tmpUser,trueRole));
-		    tmpUser.getRoleses().add(newRole);
+		    tmpUser.getRoleses().add(newRole);    
 		    List<Roles> rList = tmpUser.getRoleses().parallelStream().collect(Collectors.toList());
 		    
 			dto = toDto(rList);

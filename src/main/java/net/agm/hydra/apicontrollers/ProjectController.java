@@ -58,6 +58,7 @@ public class ProjectController {
 	
 	
 	@GetMapping("{id}")
+   @PreAuthorize("hasRole('ROLE_WORKER')")
 	public Projects getProjectById(@PathVariable Long id) {
 		Projects tmp = null;
 		if(id > 0 && id != null) {
@@ -74,6 +75,7 @@ public class ProjectController {
 	}
 	
 	@PutMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Projects updateProject(@RequestBody Projects p) {
 		Projects tmp = null;
 	try {

@@ -1,19 +1,20 @@
 CREATE TABLE Users(
-id BIGSERIAL PRIMARY KEY,
-email    VARCHAR(255) NOT NULL UNIQUE,
-name      VARCHAR(255) NOT NULL,
-surname   VARCHAR(255) NOT NULL,
-password  VARCHAR(255) NOT NULL,
-workplace VARCHAR(255) NOT NULL,
-expertise_area VARCHAR(255) NOT NULL,
-actived BOOLEAN NOT NULL);
+  id BIGSERIAL PRIMARY KEY,
+  email    VARCHAR(255) NOT NULL UNIQUE,
+  name      VARCHAR(255) NOT NULL,
+  surname   VARCHAR(255) NOT NULL,
+  password  VARCHAR(255) NOT NULL,
+  workplace VARCHAR(255) NOT NULL,
+  expertise_area VARCHAR(255) NOT NULL,
+  actived BOOLEAN NOT NULL 
+);
 
 CREATE TABLE Roles(
   id BIGSERIAL PRIMARY KEY,
- user_id BIGINT NOT NULL,
-role VARCHAR(18) NOT NULL,
-FOREIGN KEY(user_id) REFERENCES Users ON DELETE CASCADE,
-UNIQUE(role,user_id)
+  user_fk BIGINT NOT NULL,
+  role VARCHAR(18) NOT NULL,
+  FOREIGN KEY(user_fk) REFERENCES Users ON DELETE NO ACTION,
+  UNIQUE(role,user_fk)
 );
 
 
@@ -29,27 +30,23 @@ CREATE TABLE Projects(
 CREATE TABLE Tasks(
     id BIGSERIAL PRIMARY KEY,
     task_name VARCHAR NOT NULL,
-    project_id BIGINT NOT NULL,
-    date_of_registation DATE NOT NULL,
+    project_fk BIGINT NOT NULL,
+    date_of_registration DATE NOT NULL,
     status VARCHAR(20) NOT NULL,
     total_worked REAL,
-    FOREIGN KEY(project_id) REFERENCES Projects  ON DELETE CASCADE
+    date_of_publish TIMESTAMP ,
+    hours_of_working REAL,
+    revision SERIAL, 
+    FOREIGN KEY(project_fk) REFERENCES Projects  ON DELETE NO ACTION
 );
 
 CREATE TABLE Assigned(
-id BIGSERIAL PRIMARY KEY,
-user_id BIGINT NOT NULL,
-task_id BIGINT NOT NULL,
-FOREIGN KEY(user_id) REFERENCES Users ON DELETE CASCADE,
-FOREIGN KEY(task_id) REFERENCES Tasks  ON DELETE CASCADE,
-UNIQUE(user_id,task_id)
+    id BIGSERIAL PRIMARY KEY,
+    user_fk BIGINT NOT NULL,
+    task_fk BIGINT NOT NULL,
+    FOREIGN KEY(user_fk) REFERENCES Users ON DELETE NO ACTION,
+    FOREIGN KEY(task_fk) REFERENCES Tasks  ON DELETE NO ACTION,
+    UNIQUE(user_fk,task_fk)
 );
 
-CREATE TABLE Updates(
-     id  BIGSERIAL PRIMARY KEY ,
-     assigned_id BIGINT NOT NULL,
-     date_of_publish TIMESTAMP NOT NULL,
-     hours_of_working REAL NOT NULL,
-     FOREIGN KEY(assigned_id)REFERENCES Assigned ON DELETE CASCADE
-);
 
