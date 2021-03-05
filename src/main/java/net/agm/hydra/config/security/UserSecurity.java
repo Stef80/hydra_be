@@ -2,6 +2,7 @@ package net.agm.hydra.config.security;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,11 +33,19 @@ public class UserSecurity {
 		return user.getId().equals(userId);
 	}
 
-	public boolean hasUserIn(Authentication auteAuthentication, Long projectId) {
+	public boolean hasUserIn(Authentication authentication, Long projectId) {
+		String email = authentication.getName();
 		List<Tasks> p = taskService.getTasksByProjectId(projectId);
-		
+		for (Tasks tasks : p) {
+			Set<Assigned> as =tasks.getAssigneds();
+			for(Assigned assigned : as) {
+				Users u = assigned.getUsers();
+				if(u.getEmail().equals(email)){
+					return true;
+				}
+			}
+		}
 
-		
 		return false;
 	}
 

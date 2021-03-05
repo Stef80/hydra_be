@@ -111,6 +111,7 @@ public class TasksController {
 	
 	
 	@GetMapping("project/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @userSecurity.hasUserIn(authentication, #id)")
 	public List<Tasks> getTasksByProjectId(@PathVariable("id") Long id) {
 		List<Tasks> tasksList = null;
 		try {
