@@ -144,7 +144,7 @@ public class UsersController {
 	}
 
 
-	@GetMapping("/{id}")
+	@GetMapping("/getbyid/{id}")
 	public Users getUserById(@PathVariable("id") Long id) {
 		Users user = null;
 		logger.info("Log: getUserById()" );
@@ -158,7 +158,7 @@ public class UsersController {
 	}
 
 
-	@GetMapping("/{email}")
+	@GetMapping("/getbymail/{email}")
 	public Users getUserById(@PathVariable("email") String email) {
 		logger.info("Log: getUserByEmail()" );
 		Users user = null;

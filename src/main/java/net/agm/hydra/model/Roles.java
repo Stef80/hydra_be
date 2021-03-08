@@ -3,6 +3,8 @@ package net.agm.hydra.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -55,6 +57,7 @@ public class Roles implements java.io.Serializable {
 	}
 
 	@Column(name = "role", nullable = false, length = 18)
+	@Enumerated(EnumType.STRING)
 	public Role getRole() {
 		return this.role;
 	}

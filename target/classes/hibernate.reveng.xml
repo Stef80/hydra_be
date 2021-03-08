@@ -11,18 +11,18 @@
 			hibernate-type="net.agm.hydra.datamodel.Status" length="20"
 			not-null="true">
 		</sql-type>
-		
+
 		<sql-type jdbc-type="BIGINT" hibernate-type="java.lang.Long"
 			not-null="true">
 		</sql-type>
-	
+
 	</type-mapping>
 	<table-filter match-name="assigned" match-schema="public"></table-filter>
 	<table-filter match-name="projects" match-schema="public"></table-filter>
 	<table-filter match-name="roles" match-schema="public"></table-filter>
 	<table-filter match-name="tasks" match-schema="public"></table-filter>
 	<table-filter match-name="users" match-schema="public"></table-filter>
-		<table name="assigned">
+	<table name="assigned">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
 			<generator class="identity">
@@ -45,6 +45,7 @@
 			</generator>
 			<key-column name="ID" />
 		</primary-key>
+		<column name="role" type="hibernate_type" property="role" />
 	</table>
 	<table name="tasks">
 		<primary-key>
@@ -53,6 +54,7 @@
 			</generator>
 			<key-column name="ID" />
 		</primary-key>
+		<column name="status" type="hibernate_type" property="status" />
 	</table>
 	<table name="users">
 		<primary-key>
@@ -62,6 +64,6 @@
 			<key-column name="ID" />
 		</primary-key>
 	</table>
-	
+
 	
 </hibernate-reverse-engineering>

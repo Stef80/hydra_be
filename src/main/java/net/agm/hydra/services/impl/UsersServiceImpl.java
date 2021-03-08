@@ -3,14 +3,18 @@ package net.agm.hydra.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.datamodel.Role;
 import net.agm.hydra.exception.UserException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Users;
 import net.agm.hydra.repository.UsersRepository;
+import net.agm.hydra.services.EmailService;
 import net.agm.hydra.services.UsersService;
+import net.agm.hydra.utils.EmailSender;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -18,7 +22,10 @@ public class UsersServiceImpl implements UsersService {
 
 	@Autowired
 	UsersRepository usersRepository;
-
+	
+	@Autowired
+	EmailService sender;
+	
 	@Override
 	public Users getUserById(Long id) {
 		if(id > 0 && id != null)
@@ -50,13 +57,24 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users newUser(Users u) {
+		Users user = null;
+		List<Users> userList = null;
 		String password = u.getPassword();
 		u.setPassword(new BCryptPasswordEncoder().encode(password));
 		if(u != null) {
-			return usersRepository.save(u);
+			//user = usersRepository.save(u);
+		//	if(user != null) {
+			
+			userList =	usersRepository.findAllByRoleses_role(Role.ADMIN);
+			final String body = "New user "+ u.getEmail()+" registered\nplease add role to confirm his registration! ";
+			for (Users users : userList) {
+				sender.sendMessage(users.getEmail(),"new subscription", body);
+			//}
+			}
 		}else {
 			throw new UserException();
 		}
+		return user;
 	}
 
 	@Override
