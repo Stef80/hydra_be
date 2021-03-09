@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 26-feb-2021 14.59.23 by Hibernate Tools 5.2.12.Final
+// Generated 9-mar-2021 10.45.54 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Users implements java.io.Serializable {
+public class Users extends BaseEntity implements java.io.Serializable {
 
 	private Long id;
 	private String email;
@@ -28,6 +28,7 @@ public class Users implements java.io.Serializable {
 	private String workplace;
 	private String expertiseArea;
 	private boolean actived;
+	private String tenantId;
 	private Set<Roles> roleses = new HashSet<Roles>(0);
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 
@@ -46,7 +47,7 @@ public class Users implements java.io.Serializable {
 	}
 
 	public Users(String email, String name, String surname, String password, String workplace, String expertiseArea,
-			boolean actived, Set<Roles> roleses, Set<Assigned> assigneds) {
+			boolean actived, String tenantId, Set<Roles> roleses, Set<Assigned> assigneds) {
 		this.email = email;
 		this.name = name;
 		this.surname = surname;
@@ -54,6 +55,7 @@ public class Users implements java.io.Serializable {
 		this.workplace = workplace;
 		this.expertiseArea = expertiseArea;
 		this.actived = actived;
+		this.tenantId = tenantId;
 		this.roleses = roleses;
 		this.assigneds = assigneds;
 	}
@@ -131,6 +133,15 @@ public class Users implements java.io.Serializable {
 
 	public void setActived(boolean actived) {
 		this.actived = actived;
+	}
+
+	@Column(name = "tenant_id")
+	public String getTenantId() {
+		return this.tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")

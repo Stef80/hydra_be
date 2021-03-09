@@ -33,7 +33,23 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>5.4.27.Final</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.8.8</version>
+</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-instrument -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-instrument</artifactId>
+    <version>4.2.5.RELEASE</version>
+</dependency>
+		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -74,7 +90,7 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -97,6 +113,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				 <configuration>
+                    <agents>
+                        <agent>${project.build.directory}/spring-instrument-${spring-framework.version}.jar</agent>
+                        <agent>${project.build.directory}/aspectjweaver-${aspectj.version}.jar</agent>
+                    </agents>
+                </configuration>
 			</plugin>
 		</plugins>
 	</build>

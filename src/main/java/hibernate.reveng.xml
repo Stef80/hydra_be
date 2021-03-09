@@ -45,7 +45,7 @@
 			</generator>
 			<key-column name="ID" />
 		</primary-key>
-		<column name="role" type="hibernate_type" property="role" />
+		<column name="role" type="net.agm.hydra.datamodel.Role" property="role" />
 	</table>
 	<table name="tasks">
 		<primary-key>
@@ -54,7 +54,7 @@
 			</generator>
 			<key-column name="ID" />
 		</primary-key>
-		<column name="status" type="hibernate_type" property="status" />
+		<column name="status" type="net.agm.hydra.datamodel.Status" property="status" />
 	</table>
 	<table name="users">
 		<primary-key>

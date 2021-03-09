@@ -1,11 +1,13 @@
 package net.agm.hydra.model;
-// Generated 26-feb-2021 14.59.23 by Hibernate Tools 5.2.12.Final
+// Generated 9-mar-2021 10.45.54 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -23,7 +25,7 @@ import net.agm.hydra.datamodel.Status;
  */
 @Entity
 @Table(name = "tasks")
-public class Tasks implements java.io.Serializable {
+public class Tasks extends BaseEntity implements java.io.Serializable {
 
 	private Long id;
 	private Projects projects;
@@ -34,6 +36,7 @@ public class Tasks implements java.io.Serializable {
 	private Date dateOfPublish;
 	private Float hoursOfWorking;
 	private int revision;
+	private String tenantId;
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
 
 	public Tasks() {
@@ -48,7 +51,7 @@ public class Tasks implements java.io.Serializable {
 	}
 
 	public Tasks(Projects projects, String taskName, Date dateOfRegistration, Status status, Float totalWorked,
-			Date dateOfPublish, Float hoursOfWorking, int revision, Set<Assigned> assigneds) {
+			Date dateOfPublish, Float hoursOfWorking, int revision, String tenantId, Set<Assigned> assigneds) {
 		this.projects = projects;
 		this.taskName = taskName;
 		this.dateOfRegistration = dateOfRegistration;
@@ -57,6 +60,7 @@ public class Tasks implements java.io.Serializable {
 		this.dateOfPublish = dateOfPublish;
 		this.hoursOfWorking = hoursOfWorking;
 		this.revision = revision;
+		this.tenantId = tenantId;
 		this.assigneds = assigneds;
 	}
 
@@ -102,6 +106,7 @@ public class Tasks implements java.io.Serializable {
 	}
 
 	@Column(name = "status", nullable = false, length = 20)
+	@Enumerated(EnumType.STRING)
 	public Status getStatus() {
 		return this.status;
 	}
@@ -145,6 +150,15 @@ public class Tasks implements java.io.Serializable {
 
 	public void setRevision(int revision) {
 		this.revision = revision;
+	}
+
+	@Column(name = "tenant_id")
+	public String getTenantId() {
+		return this.tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tasks")

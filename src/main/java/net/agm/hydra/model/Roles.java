@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 26-feb-2021 14.59.23 by Hibernate Tools 5.2.12.Final
+// Generated 9-mar-2021 10.45.54 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,11 +20,12 @@ import net.agm.hydra.datamodel.Role;
  */
 @Entity
 @Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames = { "role", "user_fk" }))
-public class Roles implements java.io.Serializable {
+public class Roles extends BaseEntity implements java.io.Serializable {
 
 	private Long id;
 	private Users users;
 	private Role role;
+	private String tenantId;
 
 	public Roles() {
 	}
@@ -32,6 +33,12 @@ public class Roles implements java.io.Serializable {
 	public Roles(Users users, Role role) {
 		this.users = users;
 		this.role = role;
+	}
+
+	public Roles(Users users, Role role, String tenantId) {
+		this.users = users;
+		this.role = role;
+		this.tenantId = tenantId;
 	}
 
 	@Id
@@ -64,6 +71,15 @@ public class Roles implements java.io.Serializable {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	@Column(name = "tenant_id")
+	public String getTenantId() {
+		return this.tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }

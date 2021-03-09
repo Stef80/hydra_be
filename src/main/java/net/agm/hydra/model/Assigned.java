@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 26-feb-2021 14.59.23 by Hibernate Tools 5.2.12.Final
+// Generated 9-mar-2021 10.45.54 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,18 +17,28 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "assigned", uniqueConstraints = @UniqueConstraint(columnNames = { "user_fk", "task_fk" }))
-public class Assigned implements java.io.Serializable {
+public class Assigned extends BaseEntity implements java.io.Serializable {
 
 	private Long id;
 	private Tasks tasks;
 	private Users users;
+	private String tenantId;
 
 	public Assigned() {
+		
 	}
 
 	public Assigned(Tasks tasks, Users users) {
 		this.tasks = tasks;
 		this.users = users;
+	}
+
+	public Assigned(Tasks tasks, Users users, String tenantId) {
+		super(tenantId);
+		this.tasks = tasks;
+		this.users = users;
+		this.tenantId = tenantId;
+		
 	}
 
 	@Id
@@ -61,6 +71,15 @@ public class Assigned implements java.io.Serializable {
 
 	public void setUsers(Users users) {
 		this.users = users;
+	}
+
+	@Column(name = "tenant_id")
+	public String getTenantId() {
+		return this.tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }

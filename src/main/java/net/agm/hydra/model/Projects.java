@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 26-feb-2021 14.59.23 by Hibernate Tools 5.2.12.Final
+// Generated 9-mar-2021 10.45.54 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "projects")
-public class Projects implements java.io.Serializable {
+public class Projects extends BaseEntity implements java.io.Serializable {
 
 	private Long id;
 	private String name;
@@ -28,6 +28,7 @@ public class Projects implements java.io.Serializable {
 	private Date startDate;
 	private Date endDate;
 	private int totalDays;
+	private String tenantId;
 	private Set<Tasks> taskses = new HashSet<Tasks>(0);
 
 	public Projects() {
@@ -40,12 +41,14 @@ public class Projects implements java.io.Serializable {
 		this.totalDays = totalDays;
 	}
 
-	public Projects(String name, String description, Date startDate, Date endDate, int totalDays, Set<Tasks> taskses) {
+	public Projects(String name, String description, Date startDate, Date endDate, int totalDays, String tenantId,
+			Set<Tasks> taskses) {
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.totalDays = totalDays;
+		this.tenantId = tenantId;
 		this.taskses = taskses;
 	}
 
@@ -106,6 +109,15 @@ public class Projects implements java.io.Serializable {
 
 	public void setTotalDays(int totalDays) {
 		this.totalDays = totalDays;
+	}
+
+	@Column(name = "tenant_id")
+	public String getTenantId() {
+		return this.tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "projects")

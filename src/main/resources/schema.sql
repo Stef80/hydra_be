@@ -6,13 +6,15 @@ CREATE TABLE Users(
   password  VARCHAR(255) NOT NULL,
   workplace VARCHAR(255) NOT NULL,
   expertise_area VARCHAR(255) NOT NULL,
-  actived BOOLEAN NOT NULL 
+  actived BOOLEAN NOT NULL,
+  tenant_id VARCHAR(255)
 );
 
 CREATE TABLE Roles(
   id BIGSERIAL PRIMARY KEY,
   user_fk BIGINT NOT NULL,
   role VARCHAR(18) NOT NULL,
+  tenant_id VARCHAR(255),
   FOREIGN KEY(user_fk) REFERENCES Users ON DELETE NO ACTION,
   UNIQUE(role,user_fk)
 );
@@ -24,7 +26,8 @@ CREATE TABLE Projects(
     description VARCHAR(255),
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    total_days INT NOT NULL
+    total_days INT NOT NULL,
+	tenant_id VARCHAR(255)
 );
 
 CREATE TABLE Tasks(
@@ -37,6 +40,7 @@ CREATE TABLE Tasks(
     date_of_publish TIMESTAMP ,
     hours_of_working REAL,
     revision SERIAL, 
+	tenant_id VARCHAR(255),
     FOREIGN KEY(project_fk) REFERENCES Projects  ON DELETE NO ACTION
 );
 
@@ -44,6 +48,7 @@ CREATE TABLE Assigned(
     id BIGSERIAL PRIMARY KEY,
     user_fk BIGINT NOT NULL,
     task_fk BIGINT NOT NULL,
+	tenant_id VARCHAR(255),
     FOREIGN KEY(user_fk) REFERENCES Users ON DELETE NO ACTION,
     FOREIGN KEY(task_fk) REFERENCES Tasks  ON DELETE NO ACTION,
     UNIQUE(user_fk,task_fk)

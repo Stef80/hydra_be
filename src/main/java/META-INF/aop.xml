@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aspectj>
+
+    <weaver options="-Xreweavable -verbose -showWeaveInfo">
+        <include within="net.agm.hydra.config.multitenant.TenantFilterAspect"/>
+        <include within="org.hibernate.internal.SessionFactoryImpl.SessionBuilderImpl"/>
+    </weaver>
+
+    <aspects>
+        <aspect name="net.agm.hydra.config.multitenant.TenantFilterAspect"/>
+    </aspects>
+
+</aspectj>

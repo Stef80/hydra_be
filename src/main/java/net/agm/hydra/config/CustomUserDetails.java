@@ -24,7 +24,7 @@ public class CustomUserDetails extends Users implements UserDetails {
 
 
 	public CustomUserDetails(Users u) {
-		super(u.getEmail(), u.getName(),u.getSurname(),u.getPassword(),u.getWorkplace(), u.getExpertiseArea(),u.isActived(),u.getRoleses(),u.getAssigneds());
+		super(u.getEmail(), u.getName(),u.getSurname(),u.getPassword(),u.getWorkplace(), u.getExpertiseArea(),u.isActived(),u.getTenantId(), u.getRoleses(),u.getAssigneds());
 		logger.info("userdetails " + u);
 	}
 

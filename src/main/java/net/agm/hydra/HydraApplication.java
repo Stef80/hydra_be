@@ -3,6 +3,8 @@ package net.agm.hydra;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 
@@ -13,7 +15,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication//(exclude = { SecurityAutoConfiguration.class })
 @EnableAuthorizationServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class HydraApplication {
+@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+public class HydraApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
 		SpringApplication.run(HydraApplication.class, args);

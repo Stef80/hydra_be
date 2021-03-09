@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import net.agm.hydra.model.Projects;
 import net.agm.hydra.model.Tasks;
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Long> {
@@ -20,5 +21,7 @@ public interface TasksRepository extends JpaRepository<Tasks, Long> {
 	
 	@Query("SELECT t FROM Tasks t where project_fk = :projectId and task_name = :taskName and revision = (Select MAX(t.revision) from t where project_fk = :projectId and task_name = :taskName)")
 	Optional<Tasks> findByProjects_idAndTaskNameAnd(@Param("projectId") Long projectId,@Param("taskName") String taskName);
-
+     
+	 @Query("SELECT p from Tasks p WHERE p.id = :id")
+	    Optional<Tasks> findById(Long id);
 }
