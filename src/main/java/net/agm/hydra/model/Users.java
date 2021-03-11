@@ -144,7 +144,7 @@ public class Users extends BaseEntity implements java.io.Serializable {
 		this.tenantId = tenantId;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "users")
 	public Set<Roles> getRoleses() {
 		return this.roleses;
 	}

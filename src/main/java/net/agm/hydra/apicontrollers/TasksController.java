@@ -50,7 +50,7 @@ public class TasksController {
 	@PostMapping("/addtask")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Tasks newTask(@RequestBody TasksDto t) {
-	logger.info("Log newTask taskDto:" + t);
+	logger.info("task-newTask:" + t);
 		Tasks newTask= taskService.fromDto(t);
 		try {
 			newTask = taskService.newTask(newTask);
@@ -65,6 +65,7 @@ public class TasksController {
 	@PostMapping("/update/{projectid}")
 	@PreAuthorize("hasRole('ROLE_WORKER') ")
 	public Tasks updateTask(@RequestBody Tasks t, @PathVariable("projectid") Long projectId, Authentication auth) {
+		logger.info("task-updateTask:" + t);
 		Tasks newTask = null;
 		try {
 		Long userId = userService.getUserByMail(auth.getName()).getId();
@@ -79,6 +80,7 @@ public class TasksController {
 	
 	@GetMapping("/{id}")
 	public Tasks getTaskById(@PathVariable("id") Long id) {
+		logger.info("task-getTaskById");
 		Tasks task = null;
 		try {
 			task = taskService.getTaskById(id);
@@ -92,6 +94,7 @@ public class TasksController {
 	@GetMapping("/user/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or @userSecurity.hasUserId(authentication, #id)")
 	public List<TasksDto> getTaskByUserId(@PathVariable("id") Long id) {
+		logger.info("task-getTaskByUserId");
 	    List<TasksDto> dtoList = new  ArrayList<>();  
 		List<Tasks> taskList = null;
 		try {
@@ -113,6 +116,7 @@ public class TasksController {
 	@GetMapping("project/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or @userSecurity.hasUserIn(authentication, #id)")
 	public List<Tasks> getTasksByProjectId(@PathVariable("id") Long id) {
+		logger.info("task-getTaskByProjectId");
 		List<Tasks> tasksList = null;
 		try {
 			tasksList = taskService.getTasksByProjectId(id);
@@ -127,6 +131,7 @@ public class TasksController {
 	
 	@GetMapping("user/{user_id}/project/{project_id}")
 	public List<Tasks> getTasksByUserAndProject(@PathVariable("user_id") Long userId, @PathVariable("project_id") Long projectId) {
+		logger.info("task-getTaskByUserAndProjectId");
 		List<Tasks> tasksList = null;
 		try {
 			tasksList = taskService.getTasksByUserAndProjectId(userId, projectId);
@@ -142,6 +147,7 @@ public class TasksController {
 	@PostMapping("/assign/{user_id}/{task_id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId) {
+		logger.info("task-addUserToTask");
 		Assigned newAssign = null;
 		try {
 			newAssign = taskService.assignUserToTask(userId, taskId);

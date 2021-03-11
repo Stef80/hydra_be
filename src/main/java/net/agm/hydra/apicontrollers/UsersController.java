@@ -108,7 +108,8 @@ public class UsersController {
 				logger.info("role added");
 			}catch (RoleException e) {
 				e.printStackTrace();
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+				throw new 
+				ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 			}catch (UserNotFoundException e) {
 				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());

@@ -47,17 +47,20 @@ public class TasksServiceImpl  implements TasksService {
 	
 	@Override
 	public List<Tasks> getAll() {
+		logger.info("TaskService-getAll");
 		return tasksRepositroy.findAll();
 	}
 
 	@Override
 	public Tasks getTaskById(Long id) {
+		logger.info("TaskService-getTaskById");
 		return tasksRepositroy.findById(id).orElseThrow(TaskException::new);
 
 	}
 
 	@Override
 	public Tasks updateTask(Tasks t , Long tId) {
+		logger.info("TaskService-updateTask");
 		if(t != null ) {
 			if(tasksRepositroy.findById(tId).isPresent()) {
 				t.setId(tId);
@@ -81,6 +84,7 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public List<Tasks> getTasksByProjectId(Long projectId) {
+		logger.info("TaskService-getTaskByProjectId");
 		if(projectId != null && projectsRepository.findById(projectId).orElse(null) != null) {
 			return tasksRepositroy.findByProjects_Id(projectId);
 		}
@@ -104,6 +108,7 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public List<Tasks> getTasksByUserAndProjectId(Long userId, Long projectId) {
+		logger.info("TaskService-getTasksByUserAndProjectId");
 		List<Tasks> tasksList = null;
 		if(userId != null && usersRepository.findById(userId).orElse(null) != null) {
 			if(projectId != null && projectsRepository.findById(projectId).orElse(null)!= null) {
@@ -120,6 +125,7 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public Assigned assignUserToTask(Long userId, Long taskId) {
+		logger.info("TaskService-assignUserToTask");
 		Assigned as = null;
 		if(userId > 0  && taskId > 0 ) {
 			Users user = usersRepository.findById(userId).orElse(null);
@@ -142,6 +148,7 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Override
 	public Tasks addTasksRevisioning(Long projectId, String taskName,Float hours, Long userId) {
+		logger.info("TaskService-addTaskRevisioning");
 		Tasks t = null;
 		Tasks newTasks = null;
 		if(projectId != null && taskName != null && userId != null) {

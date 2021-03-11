@@ -67,6 +67,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public List<Roles> getRolesFromUser(Long userId) {
+		logger.info("RoleService-getRolesFromUser");
 		List<Roles> rolesList = null;
 		userService.getUserById(userId);
 		rolesList = roleRepository.findAllByUsers_Id(userId);
@@ -79,6 +80,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public boolean deleteRoleFromUser(Long userId) {  
+		logger.info("RoleService-deleteRoleFromUser");
 		if (userId != null && userId >=0){
 			try {
 				roleRepository.deleteRolesByUsers_Id(userId);
@@ -93,6 +95,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public RolesDto toDto(List<Roles> roleses) {	
+		logger.info("RoleService-toDto");
 		RolesDto roleDto = new RolesDto();
 		List<Role> roleList = new ArrayList<>();
 		for (Roles roles : roleses ) {

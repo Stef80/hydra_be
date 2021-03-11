@@ -2,6 +2,10 @@ package net.agm.hydra.services.impl;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,10 +28,14 @@ public class UsersServiceImpl implements UsersService {
 	UsersRepository usersRepository;
 	
 	@Autowired
-	EmailService sender;
+	EmailSender sender;
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	
 	@Override
 	public Users getUserById(Long id) {
+		logger.info("UserService-getUserById");
 		if(id > 0 && id != null)
 			return usersRepository.findById(id).orElseThrow(UserNotFoundException :: new);
 		return null;
@@ -42,6 +50,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users getUserByMail(String email) {
+		logger.info("UserService-getUserByMail");
 		Users tmp = null;
 		if(!email.equals("") && email != null) {
 			tmp = usersRepository.findUsersByEmail(email);
@@ -57,6 +66,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users newUser(Users u) {
+		logger.info("UserService-newUser");
 		Users user = null;
 		List<Users> userList = null;
 		String password = u.getPassword();
@@ -66,9 +76,16 @@ public class UsersServiceImpl implements UsersService {
 		//	if(user != null) {
 			
 			userList =	usersRepository.findAllByRoleses_role(Role.ADMIN);
+			logger.info("userService-newUser- userlist: " + userList);
 			final String body = "New user "+ u.getEmail()+" registered\nplease add role to confirm his registration! ";
 			for (Users users : userList) {
-				sender.sendMessage(users.getEmail(),"new subscription", body);
+				logger.info("userService-sendMail");
+				try {
+					sender.send(users.getEmail(),"new subscription", body);
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			//}
 			}
 		}else {
@@ -79,6 +96,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users updateUser(Users u) {
+		logger.info("UserService-updateUser");
 		Users user = null;
 		if(u != null ) {
 			user = getUserById(u.getId());
@@ -95,6 +113,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Users deleteUserById(Long id) {
+		logger.info("UserService-deleteUserById");
 		Users deletedUser = null;
 		if(id > 0 && id != null) {
 			deletedUser = getUserById(id);
