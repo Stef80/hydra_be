@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import net.agm.hydra.model.Assigned;
 
-
+@Repository
 public interface AssignedRepository extends JpaRepository<Assigned, Long> {
 
 	Assigned findAllByUsers_IdAndTasks_Id(Long userId,Long taskId);

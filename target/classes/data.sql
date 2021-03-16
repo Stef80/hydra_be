@@ -10,9 +10,9 @@
 
 
 INSERT INTO roles (user_fk,role) values
-  (1 , 'ADMIN'),
-  (2,'WORKER'),
-  (3,'ADMIN');
+  (1 ,'ADMIN'),
+  (2,'ADMIN'),
+  (3,'WORKER');
 
 INSERT INTO tasks(task_name, project_fk,date_of_registration, status, tenant_id) values
 ('analisi funzionale', 1, '18-01-2021','OPEN','agm'),

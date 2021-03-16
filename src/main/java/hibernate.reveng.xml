@@ -22,48 +22,62 @@
 	<table-filter match-name="roles" match-schema="public"></table-filter>
 	<table-filter match-name="tasks" match-schema="public"></table-filter>
 	<table-filter match-name="users" match-schema="public"></table-filter>
+	<table-filter match-name="bookables" match-schema="public"></table-filter>
+	<table-filter match-name="books" match-schema="public"></table-filter>
 	<table name="assigned">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
-			<generator class="identity">
-			</generator>
+			<generator class="identity"></generator>
 			<key-column name="ID" />
 		</primary-key>
 	</table>
 	<table name="projects">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
-			<generator class="identity">
-			</generator>
+			<generator class="identity"></generator>
 			<key-column name="ID" />
 		</primary-key>
 	</table>
 	<table name="roles">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
-			<generator class="identity">
-			</generator>
+			<generator class="identity"></generator>
 			<key-column name="ID" />
 		</primary-key>
-		<column name="role" type="net.agm.hydra.datamodel.Role" property="role" />
+		<column name="role" type="net.agm.hydra.datamodel.Role"
+			property="role" />
 	</table>
 	<table name="tasks">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
-			<generator class="identity">
-			</generator>
+			<generator class="identity"></generator>
 			<key-column name="ID" />
 		</primary-key>
-		<column name="status" type="net.agm.hydra.datamodel.Status" property="status" />
+		<column name="status" type="net.agm.hydra.datamodel.Status"
+			property="status" />
 	</table>
 	<table name="users">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
-			<generator class="identity">
-			</generator>
+			<generator class="identity"></generator>
+			<key-column name="ID" />
+		</primary-key>
+	</table>
+<table name="bookable">
+		<primary-key>
+			<!-- setting up a specific id generator for a table -->
+			<generator class="identity"></generator>
+			<key-column name="ID" />
+		</primary-key>
+	</table>
+	<table name="books">
+		<primary-key>
+			<!-- setting up a specific id generator for a table -->
+			<generator class="identity"></generator>
 			<key-column name="ID" />
 		</primary-key>
 	</table>
 
+	
 	
 </hibernate-reverse-engineering>

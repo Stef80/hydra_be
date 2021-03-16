@@ -72,24 +72,18 @@ public class UsersServiceImpl implements UsersService {
 		String password = u.getPassword();
 		u.setPassword(new BCryptPasswordEncoder().encode(password));
 		if(u != null) {
-			//user = usersRepository.save(u);
-		//	if(user != null) {
-			
+			user = usersRepository.save(u);
+		if(user != null) {
 			userList =	usersRepository.findAllByRoleses_role(Role.ADMIN);
 			logger.info("userService-newUser- userlist: " + userList);
 			final String body = "New user "+ u.getEmail()+" registered\nplease add role to confirm his registration! ";
 			for (Users users : userList) {
 				logger.info("userService-sendMail");
-				try {
-					sender.send(users.getEmail(),"new subscription", body);
-				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			//}
+				sender.sendMessage(users.getEmail(),"new subscription", body);
 			}
 		}else {
 			throw new UserException();
+		}
 		}
 		return user;
 	}

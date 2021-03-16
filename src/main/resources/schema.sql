@@ -55,3 +55,21 @@ CREATE TABLE Assigned(
 );
 
 
+CREATE TABLE Bookables(
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255)
+);
+
+CREATE TABLE Books(
+      id BIGSERIAL PRIMARY KEY,
+      user_fk BIGINT NOT NULL,
+      bookable_fk BIGINT NOT NULL,
+      start_date TIMESTAMP NOT NULL,
+      end_date TIMESTAMP NOT NULL,
+      FOREIGN KEY(user_fk) REFERENCES Users ON DELETE NO ACTION,
+      FOREIGN KEY(bookable_fk) REFERENCES Bookables ON DELETE NO ACTION,
+      UNIQUE(bookable_fk, start_date, end_date)
+);
+
+

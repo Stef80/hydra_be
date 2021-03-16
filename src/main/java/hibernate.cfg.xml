@@ -5,14 +5,16 @@
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.password">paco4ever</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hydra</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5434/hydra</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.default_schema">public</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.search.autoregister_listeners">true</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
         <mapping class="net.agm.hydra.model.Roles"/>
+        <mapping class="net.agm.hydra.model.Books"/>
         <mapping class="net.agm.hydra.model.Projects"/>
+        <mapping class="net.agm.hydra.model.Bookables"/>
         <mapping class="net.agm.hydra.model.Assigned"/>
         <mapping class="net.agm.hydra.model.Tasks"/>
         <mapping class="net.agm.hydra.model.Users"/>

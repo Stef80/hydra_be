@@ -1,4 +1,4 @@
-package net.agm.hydra.model;
+package net.agm.hydra.model.base;
 
 import java.io.Serializable;
 

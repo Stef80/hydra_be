@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 9-mar-2021 10.45.54 by Hibernate Tools 5.2.12.Final
+// Generated 16-mar-2021 17.41.48 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ import net.agm.hydra.datamodel.Role;
  */
 @Entity
 @Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames = { "role", "user_fk" }))
-public class Roles extends BaseEntity implements java.io.Serializable {
+public class Roles implements java.io.Serializable {
 
 	private Long id;
 	private Users users;
