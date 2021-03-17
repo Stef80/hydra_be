@@ -1,4 +1,4 @@
-package net.agm.hydra.apicontrollers;
+ package net.agm.hydra.apicontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.persistence.PreRemove;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +35,8 @@ import net.agm.hydra.services.UsersService;
 @RestController
 @RequestMapping("/api/task")
 public class TasksController {
+	
+	private final String TENANT_ID = "X-TENANT-ID";
 
 	@Autowired
 	TasksService taskService;
@@ -49,9 +53,12 @@ public class TasksController {
 	
 	@PostMapping("/addtask")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Tasks newTask(@RequestBody TasksDto t) {
+	public Tasks newTask(@RequestBody TasksDto t, @RequestHeader(value=TENANT_ID) String tenantId) {
 	logger.info("task-newTask:" + t);
 		Tasks newTask= taskService.fromDto(t);
+		logger.info("task-newTask tenantid: " + tenantId);
+		newTask.setTenantId(tenantId);
+		newTask.setRevision(0);
 		try {
 			newTask = taskService.newTask(newTask);
 		} catch (TaskException e) {
@@ -63,7 +70,7 @@ public class TasksController {
 	
 	
 	@PostMapping("/update/{projectid}")
-	@PreAuthorize("hasRole('ROLE_WORKER') ")
+	@PreAuthorize("hasRole('ROLE_WORKER')")
 	public Tasks updateTask(@RequestBody Tasks t, @PathVariable("projectid") Long projectId, Authentication auth) {
 		logger.info("task-updateTask:" + t);
 		Tasks newTask = null;
@@ -72,6 +79,7 @@ public class TasksController {
 	      newTask = taskService.addTasksRevisioning(projectId,t.getTaskName(), t.getHoursOfWorking(), userId);
 			
 		}catch (UserException|TaskException e) {
+			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		} 
 		return newTask;
@@ -146,11 +154,11 @@ public class TasksController {
 	
 	@PostMapping("/assign/{user_id}/{task_id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId) {
+	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId, @RequestHeader(value=TENANT_ID) String tenantId) {
 		logger.info("task-addUserToTask");
 		Assigned newAssign = null;
 		try {
-			newAssign = taskService.assignUserToTask(userId, taskId);
+			newAssign = taskService.assignUserToTask(userId, taskId, tenantId);
 		} catch (UserNotFoundException|TaskException e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

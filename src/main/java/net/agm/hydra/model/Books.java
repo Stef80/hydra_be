@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 16-mar-2021 17.41.48 by Hibernate Tools 5.2.12.Final
+// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -32,6 +32,13 @@ public class Books extends BaseEntity  {
 	private String tenantId;
 
 	public Books() {
+	}
+
+	public Books(Bookables bookables, Users users, Date startDate, Date endDate) {
+		this.bookables = bookables;
+		this.users = users;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public Books(Bookables bookables, Users users, Date startDate, Date endDate, String tenantId) {
@@ -94,7 +101,7 @@ public class Books extends BaseEntity  {
 		this.endDate = endDate;
 	}
 
-	@Column(name = "tenant_id", nullable = false)
+	@Column(name = "tenant_id")
 	public String getTenantId() {
 		return this.tenantId;
 	}

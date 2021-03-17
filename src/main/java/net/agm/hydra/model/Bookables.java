@@ -1,11 +1,13 @@
 package net.agm.hydra.model;
-// Generated 16-mar-2021 17.41.48 by Hibernate Tools 5.2.12.Final
+// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -28,14 +30,11 @@ public class Bookables extends BaseEntity  {
 	public Bookables() {
 	}
 
-	public Bookables(Long id, String name, String tenantId) {
-		this.id = id;
+	public Bookables(String name) {
 		this.name = name;
-		this.tenantId = tenantId;
 	}
 
-	public Bookables(Long id, String name, String description, String tenantId, Set<Books> bookses) {
-		this.id = id;
+	public Bookables(String name, String description, String tenantId, Set<Books> bookses) {
 		this.name = name;
 		this.description = description;
 		this.tenantId = tenantId;
@@ -43,6 +42,7 @@ public class Bookables extends BaseEntity  {
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
@@ -71,7 +71,7 @@ public class Bookables extends BaseEntity  {
 		this.description = description;
 	}
 
-	@Column(name = "tenant_id", nullable = false)
+	@Column(name = "tenant_id")
 	public String getTenantId() {
 		return this.tenantId;
 	}

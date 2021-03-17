@@ -124,7 +124,7 @@ public class TasksServiceImpl  implements TasksService {
 	}
 
 	@Override
-	public Assigned assignUserToTask(Long userId, Long taskId) {
+	public Assigned assignUserToTask(Long userId, Long taskId,String tenantId) {
 		logger.info("TaskService-assignUserToTask");
 		Assigned as = null;
 		if(userId > 0  && taskId > 0 ) {
@@ -132,7 +132,7 @@ public class TasksServiceImpl  implements TasksService {
 			if(  user != null ) {
 				Tasks task = tasksRepositroy.findById(taskId).orElse(null);  
 				if(task != null) {
-				Assigned asi = new Assigned(task, user);
+				Assigned asi = new Assigned(task, user, tenantId);
 				    as =  assignedRepository.save(asi);
 				}else {
 					throw new UserNotFoundException();
@@ -153,7 +153,12 @@ public class TasksServiceImpl  implements TasksService {
 		Tasks newTasks = null;
 		if(projectId != null && taskName != null && userId != null) {
 		  	t = tasksRepositroy.findByProjects_idAndTaskNameAnd(projectId, taskName).orElseThrow(TaskException::new);
-		    newTasks = new Tasks(t.getProjects(),t.getTaskName(),t.getDateOfRegistration(),t.getStatus(),t.getRevision());
+		    newTasks = new Tasks();
+		    newTasks.setProjects(t.getProjects());
+		    newTasks.setDateOfRegistration(t.getDateOfRegistration());
+		    newTasks.setStatus(t.getStatus());
+		    newTasks.setTaskName(t.getTaskName());
+		    newTasks.setTenantId(t.getTenantId());
 			newTasks.setDateOfPublish((new Date()));
 			newTasks.setHoursOfWorking(hours);
 			if(t.getTotalWorked() == null) {
@@ -181,7 +186,9 @@ public class TasksServiceImpl  implements TasksService {
          dto.setStatus(t.getStatus());
          dto.setTotalWorked(t.getTotalWorked());
          dto.setDateOfPublish(t.getDateOfPublish());
-         dto.setHoursOfWorking(t.getHoursOfWorking());
+         Float hours = t.getHoursOfWorking();
+         if(hours != null)
+         dto.setHoursOfWorking(hours);
         
 		return dto;
 	}

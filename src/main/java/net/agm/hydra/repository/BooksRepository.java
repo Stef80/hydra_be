@@ -19,7 +19,12 @@ public interface BooksRepository extends JpaRepository<Books, Long> {
 	 
 	 List<Books>  findAllByBookables_id(Long id);
 	 
-	 @Query("SELECT p from Books p WHERE start_date < :startDate  AND  bookables_fk = :bookableId")
+	 @Query("SELECT p from Books p WHERE start_date > :startDate  AND  bookables_fk = :bookableId")
 	 List<Books>  findAllByStartAndBookables(Date startDate, Long bookableId);
+	 
+	 List<Books> findAllByUsers_id(Long id);
+	 
+	 @Query("SELECT p from Books p WHERE bookables_fk = :bookableId AND end_date > :startDate  OR start_date < :endDate" )
+	 List<Books>  findIfFree(Date startDate, Date endDate, Long bookableId);
 
 }

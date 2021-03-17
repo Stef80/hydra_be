@@ -63,7 +63,7 @@
 			<key-column name="ID" />
 		</primary-key>
 	</table>
-<table name="bookable">
+<table name="bookables">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
 			<generator class="identity"></generator>

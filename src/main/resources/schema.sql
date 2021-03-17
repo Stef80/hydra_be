@@ -39,9 +39,10 @@ CREATE TABLE Tasks(
     total_worked REAL,
     date_of_publish TIMESTAMP ,
     hours_of_working REAL,
-    revision SERIAL, 
+    revision INTEGER, 
 	tenant_id VARCHAR(255),
     FOREIGN KEY(project_fk) REFERENCES Projects  ON DELETE NO ACTION
+
 );
 
 CREATE TABLE Assigned(
@@ -58,7 +59,8 @@ CREATE TABLE Assigned(
 CREATE TABLE Bookables(
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    tenant_id VARCHAR(255)
 );
 
 CREATE TABLE Books(
@@ -67,9 +69,11 @@ CREATE TABLE Books(
       bookable_fk BIGINT NOT NULL,
       start_date TIMESTAMP NOT NULL,
       end_date TIMESTAMP NOT NULL,
+      tenant_id VARCHAR(255),
       FOREIGN KEY(user_fk) REFERENCES Users ON DELETE NO ACTION,
       FOREIGN KEY(bookable_fk) REFERENCES Bookables ON DELETE NO ACTION,
-      UNIQUE(bookable_fk, start_date, end_date)
+      UNIQUE(bookable_fk, start_date, end_date),
+      CONSTRAINT CheckEndLaterThanStart CHECK (end_date >= start_date)
 );
 
 

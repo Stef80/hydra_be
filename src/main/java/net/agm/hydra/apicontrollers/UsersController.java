@@ -131,6 +131,7 @@ public class UsersController {
 		if(userId != null && userId > 0) {
 			try {
 				List<Roles> roleses = roleService.getRolesFromUser(userId);
+				logger.info("role list" + roleses);
 				roleDto = roleService.toDto(roleses);
 			
 			} catch (RoleException|UserNotFoundException e) {

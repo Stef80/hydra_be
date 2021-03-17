@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 16-mar-2021 17.41.48 by Hibernate Tools 5.2.12.Final
+// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
