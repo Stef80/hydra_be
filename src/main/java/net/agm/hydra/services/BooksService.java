@@ -14,11 +14,19 @@ public interface BooksService {
 	
 	List<Books> findAll();
 	
-	BooksDto newBooks(Bookables bookable,Users user, Date starDate, Date endDate)throws BooksException;
+	BooksDto newBooks(Bookables bookable,Users user, Date starDate, Date endDate, String tenantId)throws BooksException;
 	
 	Boolean isFree(Bookables bookable, Date startDate, Date endDate)throws BooksException;
 	
-	List<BooksDto> getBooksOfBookable(Bookables bookable);
+	List<BooksDto> getBooksOfBookable(Long bookableId)throws BooksException;
+	
+	List<BooksDto> getBookOfBookableByDay(Long bookableId, Integer day)throws BooksException;
+	
+	List<BooksDto> getBookOfBookableByMonth(Long bookableId, Integer month)throws BooksException;
+	
+	List<BooksDto> getBooksByDay( Integer day)throws BooksException;
+	
+	List<BooksDto> getBooksByMonth( Integer Month)throws BooksException;
 	
 	BooksDto toDto(Books book);
 	

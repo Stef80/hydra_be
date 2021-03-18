@@ -58,8 +58,8 @@ public class ProjectController {
 	
 	
 	@GetMapping("{id}")
-    @PreAuthorize("hasRole('ROLE_WORKER')")
-	public Projects getProjectById(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ROLE_WORKER','ROLE_ADMIN')")
+	public Projects getProjectById(@PathVariable("id") Long id) {
 		logger.info("project-getProjectById: ");
 		Projects tmp = null;
 		if(id > 0 && id != null) {
