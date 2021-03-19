@@ -17,4 +17,5 @@ public interface BookablesRepository extends JpaRepository<Bookables, Long> {
 	    Optional<Bookables> findById(Long id);
 	 
 	 
+	 Optional<Bookables> findByName(String name);
 }

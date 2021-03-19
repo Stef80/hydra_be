@@ -16,6 +16,10 @@ public interface BooksService {
 	
 	BooksDto newBooks(Bookables bookable,Users user, Date starDate, Date endDate, String tenantId)throws BooksException;
 	
+	BooksDto updateBook(BooksDto book , Long id)throws BooksException;
+	
+	BooksDto deleteBook(Long id)throws BooksException;
+	
 	Boolean isFree(Bookables bookable, Date startDate, Date endDate)throws BooksException;
 	
 	List<BooksDto> getBooksOfBookable(Long bookableId)throws BooksException;
@@ -29,6 +33,8 @@ public interface BooksService {
 	List<BooksDto> getBooksByMonth( Integer Month)throws BooksException;
 	
 	BooksDto toDto(Books book);
+	
+	Books fromDto(BooksDto book);
 	
 	
 

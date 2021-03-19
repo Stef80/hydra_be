@@ -8,6 +8,7 @@ public class BooksDto {
 	private String bookableName;
 	private Date startDate;
 	private Date endDate;
+	private String tenantId;
 	
 	public BooksDto() {
 		// TODO Auto-generated constructor stub
@@ -16,12 +17,13 @@ public class BooksDto {
 	
 	
 
-	public BooksDto(String userEmail, String bookableName, Date startDate, Date endDate) {
-		super();
+	public BooksDto(String userEmail, String bookableName, Date startDate, Date endDate,String tenantId) {
+		
 		this.userEmail = userEmail;
 		this.bookableName = bookableName;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.tenantId = tenantId;
 	}
 
 
@@ -57,6 +59,20 @@ public class BooksDto {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+
+
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+
+
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 	
 	

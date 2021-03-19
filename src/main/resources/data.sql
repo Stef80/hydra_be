@@ -11,7 +11,7 @@ INSERT INTO projects (name, description, start_date, end_date, total_days, tenan
 
 INSERT INTO roles (user_fk,role,tenant_id) values
   (1 ,'ADMIN','agm'),
-  (2,'ADMIN''nexte'),
+  (2,'ADMIN','nextre'),
   (3,'WORKER','agm');
 
 INSERT INTO tasks(task_name, project_fk,date_of_registration, status,revision, tenant_id) values

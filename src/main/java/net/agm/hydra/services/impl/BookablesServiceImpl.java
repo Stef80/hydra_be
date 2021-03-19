@@ -44,4 +44,35 @@ public class BookablesServiceImpl implements BookablesService{
 		return bookables ;
 	}
 
+	@Override
+	public Bookables update(Bookables bookable, Long id) {
+	   Bookables update = null;
+	   if(bookable != null && id != null && id > 0) {
+		   bookablesRepository.findById(id).orElseThrow(BooksException:: new);
+		   bookable.setId(id);
+		   update =  bookablesRepository.save(bookable);
+	   }
+		return update;
+	}
+
+	@Override
+	public Bookables deleteBookable(Long id) {
+		Bookables deleting = null;
+		if (id != null && id > 0) {
+		  deleting =  bookablesRepository.findById(id).orElseThrow(BooksException:: new);
+		  bookablesRepository.delete(deleting);
+		}
+		return deleting;
+	}
+
+	@Override
+	public Bookables getBookableByName(String name) throws BooksException {
+		Bookables bookable = null;
+		if(name != null && !name.isEmpty()) {
+			bookable = bookablesRepository.findByName(name).orElseThrow(BooksException::new);
+			
+		}
+		return bookable;
+	}
+
 }

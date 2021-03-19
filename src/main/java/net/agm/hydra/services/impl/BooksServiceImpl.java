@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.stereotype.Service;
 
 import net.agm.hydra.exception.BooksException;
@@ -15,7 +16,9 @@ import net.agm.hydra.model.Books;
 import net.agm.hydra.model.Users;
 import net.agm.hydra.model.dto.BooksDto;
 import net.agm.hydra.repository.BooksRepository;
+import net.agm.hydra.services.BookablesService;
 import net.agm.hydra.services.BooksService;
+import net.agm.hydra.services.UsersService;
 
 
 @Service
@@ -24,6 +27,12 @@ public class BooksServiceImpl implements BooksService {
 	
 	@Autowired
 	BooksRepository booksRepository;
+	
+	@Autowired
+	BookablesService bookableService;
+	
+	@Autowired
+	UsersService userService;
 	
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -78,18 +87,6 @@ public class BooksServiceImpl implements BooksService {
 		return listDto;
 	}
 
-	@Override
-	public BooksDto toDto(Books book) {
-		BooksDto dto = new BooksDto();
-		if(book != null) {
-			dto.setBookableName(book.getBookables().getName());
-			dto.setUserEmail(book.getUsers().getEmail());
-			dto.setStartDate(book.getStartDate());
-			dto.setEndDate(book.getEndDate());
-		}
-
-		return dto;
-	}
 
 	@Override
 	public List<BooksDto> getBookOfBookableByDay(Long bookableId, Integer day) {
@@ -156,5 +153,50 @@ public class BooksServiceImpl implements BooksService {
 		}
 		return dtoList;
 	}
+
+	@Override
+	public BooksDto updateBook(BooksDto book, Long id) throws BooksException {
+         
+
+		return null;
+	}
+
+	@Override
+	public BooksDto deleteBook(Long id) throws BooksException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	@Override
+	public BooksDto toDto(Books book) {
+		BooksDto dto = new BooksDto();
+		if(book != null) {
+			dto.setBookableName(book.getBookables().getName());
+			dto.setUserEmail(book.getUsers().getEmail());
+			dto.setStartDate(book.getStartDate());
+			dto.setEndDate(book.getEndDate());
+			dto.setTenantId(book.getTenantId());
+		}
+
+		return dto;
+	}
+
+	@Override
+	public Books fromDto(BooksDto book) {
+		Books from = new Books();
+		if(book != null) {
+			Bookables bookable = bookableService.getBookableByName(book.getBookableName());
+			Users user = userService.getUserByMail(book.getUserEmail());
+			from.setBookables(bookable);
+			from.setUsers(user);
+			from.setStartDate(book.getStartDate());
+			from.setEndDate(book.getEndDate());
+			from.setTenantId(book.getTenantId());
+		}
+		return null;
+	}
+	
+	
 
 }
