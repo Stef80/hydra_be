@@ -194,7 +194,7 @@ public class BooksServiceImpl implements BooksService {
 			from.setEndDate(book.getEndDate());
 			from.setTenantId(book.getTenantId());
 		}
-		return null;
+		return from;
 	}
 	
 	
