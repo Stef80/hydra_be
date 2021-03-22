@@ -18,6 +18,7 @@ import net.agm.hydra.model.dto.BooksDto;
 import net.agm.hydra.repository.BooksRepository;
 import net.agm.hydra.services.BookablesService;
 import net.agm.hydra.services.BooksService;
+import net.agm.hydra.services.LicenseService;
 import net.agm.hydra.services.UsersService;
 
 
@@ -34,6 +35,9 @@ public class BooksServiceImpl implements BooksService {
 	@Autowired
 	UsersService userService;
 	
+	@Autowired
+	LicenseService licenseService;
+	
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Override
@@ -42,7 +46,7 @@ public class BooksServiceImpl implements BooksService {
 	}
 
 	@Override
-	public BooksDto newBooks(Bookables bookable, Users user, Date startDate, Date endDate,String tenantId) {
+	public BooksDto newBooks(Bookables bookable, Users user, Date startDate, Date endDate,Long tenantId) {
 		Books newBook = new Books();
 		if(bookable != null && startDate != null && endDate != null) {
 			if(isFree(bookable,startDate,endDate)) {
@@ -50,7 +54,7 @@ public class BooksServiceImpl implements BooksService {
 				newBook.setUsers(user);
 				newBook.setStartDate(startDate);
 				newBook.setEndDate(endDate);
-				newBook.setTenantId(tenantId);
+				newBook.setLicense(licenseService.getLicenseById(tenantId));
 				booksRepository.save(newBook);
 			}else {
 				throw new BooksException("Booking's not possible for this bookable");
@@ -176,7 +180,7 @@ public class BooksServiceImpl implements BooksService {
 			dto.setUserEmail(book.getUsers().getEmail());
 			dto.setStartDate(book.getStartDate());
 			dto.setEndDate(book.getEndDate());
-			dto.setTenantId(book.getTenantId());
+			dto.setTenantId(book.getLicense().getId());
 		}
 
 		return dto;
@@ -192,7 +196,7 @@ public class BooksServiceImpl implements BooksService {
 			from.setUsers(user);
 			from.setStartDate(book.getStartDate());
 			from.setEndDate(book.getEndDate());
-			from.setTenantId(book.getTenantId());
+			from.setLicense(licenseService.getLicenseById(book.getTenantId()));
 		}
 		return from;
 	}

@@ -11,10 +11,12 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.datamodel.Activation;
 import net.agm.hydra.datamodel.Role;
 import net.agm.hydra.exception.UserException;
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Users;
+import net.agm.hydra.model.dto.UsersDto;
 import net.agm.hydra.repository.UsersRepository;
 import net.agm.hydra.services.EmailService;
 import net.agm.hydra.services.UsersService;
@@ -92,8 +94,9 @@ public class UsersServiceImpl implements UsersService {
 	public Users updateUser(Users u) {
 		logger.info("UserService-updateUser");
 		Users user = null;
+		UsersDto userDto = null;
 		if(u != null ) {
-			user = getUserById(u.getId());
+			user = usersRepository.findById(u.getId()).orElse(null);
 			if(user != null ){
 				user = usersRepository.save(u); 
 			} else {
@@ -106,16 +109,45 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Users deleteUserById(Long id) {
+	public Users deleteUserByIdLogically(Long id) {
 		logger.info("UserService-deleteUserById");
 		Users deletedUser = null;
 		if(id > 0 && id != null) {
 			deletedUser = getUserById(id);
-			deletedUser.setActived(false);;
+			deletedUser.setActived(Activation.INACTIVE);
 			usersRepository.save(deletedUser);
 			return deletedUser;
 		}
 		throw new UserException() ;
 	}
+
+	@Override
+	public Users deleteUserByIdFisically(Long id) {
+		logger.info("UserService-deleteUserById");
+		Users deletedUser = null;
+		if(id > 0 && id != null) {
+			deletedUser = getUserById(id);
+			usersRepository.delete(deletedUser);
+		}
+		return deletedUser;
+	}
+
+	@Override
+	public UsersDto toDto(Users user) {
+		UsersDto dto = new UsersDto();
+		if(user != null) {
+			dto.setLicenseName(user.getLicense().getBusinessName());
+			dto.setEmail(user.getEmail());
+			dto.setName(user.getName());
+			dto.setSurname(user.getSurname());
+			dto.setPassword(user.getPassword());
+			dto.setWorkplace(user.getWorkplace());
+			dto.setExpertiseArea(user.getExpertiseArea());
+			dto.setActived(user.getActived());
+		}
+		return dto;
+	}
+	
+	
 
 }

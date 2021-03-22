@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
+// Generated 19-mar-2021 16.54.53 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -22,14 +22,14 @@ import net.agm.hydra.model.base.BaseEntity;
  */
 @Entity
 @Table(name = "books", uniqueConstraints = @UniqueConstraint(columnNames = { "bookable_fk", "start_date", "end_date" }))
-public class Books extends BaseEntity  {
+public class Books extends BaseEntity{
 
 	private Long id;
 	private Bookables bookables;
+	private License license;
 	private Users users;
 	private Date startDate;
 	private Date endDate;
-	private String tenantId;
 
 	public Books() {
 	}
@@ -41,12 +41,12 @@ public class Books extends BaseEntity  {
 		this.endDate = endDate;
 	}
 
-	public Books(Bookables bookables, Users users, Date startDate, Date endDate, String tenantId) {
+	public Books(Bookables bookables, License license, Users users, Date startDate, Date endDate) {
 		this.bookables = bookables;
+		this.license = license;
 		this.users = users;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.tenantId = tenantId;
 	}
 
 	@Id
@@ -69,6 +69,16 @@ public class Books extends BaseEntity  {
 
 	public void setBookables(Bookables bookables) {
 		this.bookables = bookables;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id")
+	public License getLicense() {
+		return this.license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -99,15 +109,6 @@ public class Books extends BaseEntity  {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
-	}
-
-	@Column(name = "tenant_id")
-	public String getTenantId() {
-		return this.tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 }

@@ -17,8 +17,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
-@Configuration
-@AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
+//@Configuration
+//@AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
 public class FileUploadConfig implements WebMvcConfigurer {
 
 	@Autowired

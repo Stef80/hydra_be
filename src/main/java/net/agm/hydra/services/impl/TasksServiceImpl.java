@@ -23,6 +23,7 @@ import net.agm.hydra.repository.AssignedRepository;
 import net.agm.hydra.repository.ProjectsRepository;
 import net.agm.hydra.repository.TasksRepository;
 import net.agm.hydra.repository.UsersRepository;
+import net.agm.hydra.services.LicenseService;
 import net.agm.hydra.services.ProjectsService;
 import net.agm.hydra.services.TasksService;
 @Service
@@ -41,6 +42,9 @@ public class TasksServiceImpl  implements TasksService {
 
 	@Autowired
 	AssignedRepository assignedRepository;
+	
+	@Autowired
+	LicenseService licenseService;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -124,7 +128,7 @@ public class TasksServiceImpl  implements TasksService {
 	}
 
 	@Override
-	public Assigned assignUserToTask(Long userId, Long taskId,String tenantId) {
+	public Assigned assignUserToTask(Long userId, Long taskId) {
 		logger.info("TaskService-assignUserToTask");
 		Assigned as = null;
 		if(userId > 0  && taskId > 0 ) {
@@ -132,7 +136,7 @@ public class TasksServiceImpl  implements TasksService {
 			if(  user != null ) {
 				Tasks task = tasksRepositroy.findById(taskId).orElse(null);  
 				if(task != null) {
-				Assigned asi = new Assigned(task, user, tenantId);
+				Assigned asi = new Assigned(task.getLicense(),task, user);
 				    as =  assignedRepository.save(asi);
 				}else {
 					throw new UserNotFoundException();
@@ -158,7 +162,7 @@ public class TasksServiceImpl  implements TasksService {
 		    newTasks.setDateOfRegistration(t.getDateOfRegistration());
 		    newTasks.setStatus(t.getStatus());
 		    newTasks.setTaskName(t.getTaskName());
-		    newTasks.setTenantId(t.getTenantId());
+		    newTasks.setLicense(t.getLicense());
 			newTasks.setDateOfPublish((new Date()));
 			newTasks.setHoursOfWorking(hours);
 			if(t.getTotalWorked() == null) {
@@ -201,7 +205,7 @@ public class TasksServiceImpl  implements TasksService {
 		if(project != null) {
 			t.setProjects(project);
 			t.setTaskName(d.getTaskName());
-			t.setDateOfRegistration(d.getDateOfRegistation());
+			t.setDateOfRegistration(d.getDateOfRegistration());
 			t.setDateOfPublish(d.getDateOfPublish());
 			t.setHoursOfWorking(d.getHoursOfWorking());
 			logger.info("status " +  d.getStatus());

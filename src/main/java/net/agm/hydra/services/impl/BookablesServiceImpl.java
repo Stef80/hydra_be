@@ -10,12 +10,16 @@ import net.agm.hydra.exception.BooksException;
 import net.agm.hydra.model.Bookables;
 import net.agm.hydra.repository.BookablesRepository;
 import net.agm.hydra.services.BookablesService;
+import net.agm.hydra.services.LicenseService;
 
 @Service
 public class BookablesServiceImpl implements BookablesService{
 
 	@Autowired
 	BookablesRepository bookablesRepository;
+	
+	@Autowired
+	LicenseService licenseService;
 	
 	
 	@Override
@@ -24,12 +28,12 @@ public class BookablesServiceImpl implements BookablesService{
 	}
 
 	@Override
-	public Bookables newBookable(String name, String description, String tenantId) {
+	public Bookables newBookable(String name, String description, Long tenantId) {
 		Bookables newBookable = new Bookables();
 		if(name != null && !name.isEmpty()) {
 			newBookable.setName(name);
 			newBookable.setDescription(description);
-			newBookable.setTenantId(tenantId);
+			newBookable.setLicense(licenseService.getLicenseById(tenantId));
 			newBookable = bookablesRepository.save(newBookable);
 		}
 		return newBookable;

@@ -21,19 +21,4 @@ public class RolesDto {
 	List<Role> role;
 	
 	
-	
-	public String getUserEmail() {
-		return userEmail;
-	}
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-	public List<Role> getRole() {
-		return role;
-	}
-	public void setRole(List<Role> role) {
-		this.role = role;
-	}
-
-		
 }

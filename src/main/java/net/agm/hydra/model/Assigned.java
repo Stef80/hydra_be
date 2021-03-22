@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
+// Generated 19-mar-2021 16.54.53 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +19,12 @@ import net.agm.hydra.model.base.BaseEntity;
  */
 @Entity
 @Table(name = "assigned", uniqueConstraints = @UniqueConstraint(columnNames = { "user_fk", "task_fk" }))
-public class Assigned extends BaseEntity  {
+public class Assigned extends BaseEntity {
 
 	private Long id;
+	private License license;
 	private Tasks tasks;
 	private Users users;
-	private String tenantId;
 
 	public Assigned() {
 	}
@@ -34,10 +34,10 @@ public class Assigned extends BaseEntity  {
 		this.users = users;
 	}
 
-	public Assigned(Tasks tasks, Users users, String tenantId) {
+	public Assigned(License license, Tasks tasks, Users users) {
+		this.license = license;
 		this.tasks = tasks;
 		this.users = users;
-		this.tenantId = tenantId;
 	}
 
 	@Id
@@ -50,6 +50,16 @@ public class Assigned extends BaseEntity  {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id")
+	public License getLicense() {
+		return this.license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -72,13 +82,8 @@ public class Assigned extends BaseEntity  {
 		this.users = users;
 	}
 
-	@Column(name = "tenant_id")
-	public String getTenantId() {
-		return this.tenantId;
-	}
+	
 
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
-	}
+	
 
 }

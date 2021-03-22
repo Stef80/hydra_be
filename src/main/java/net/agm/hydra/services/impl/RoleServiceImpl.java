@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import net.agm.hydra.datamodel.Activation;
 import net.agm.hydra.datamodel.Role;
 import net.agm.hydra.exception.RoleException;
 import net.agm.hydra.model.Roles;
@@ -47,9 +48,9 @@ public class RoleServiceImpl implements RoleService {
 			
 			Users tmpUser = userService.getUserByMail(email);
 			logger.info("addRoleToUser-usermail: " + tmpUser );
-			if(!tmpUser.isActived() ) {
+			if(tmpUser.getActived().equals(Activation.TO_CONFIRM)) {
 				logger.info("addRoleToUser-updateUser: " );
-				tmpUser.setActived(true);
+				tmpUser.setActived(Activation.ACTIVE);
 				tmpUser = userService.updateUser(tmpUser);
 				logger.info("addRoleToUser-User Updated : " + tmpUser );
 			}
@@ -105,4 +106,7 @@ public class RoleServiceImpl implements RoleService {
 		roleDto.setRole(roleList);
 		return roleDto;
 	}
+	
+	
+	
 }

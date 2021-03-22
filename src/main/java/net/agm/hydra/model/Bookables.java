@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
+// Generated 19-mar-2021 16.54.53 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,12 +21,12 @@ import net.agm.hydra.model.base.BaseEntity;
  */
 @Entity
 @Table(name = "bookables")
-public class Bookables extends BaseEntity  {
+public class Bookables extends BaseEntity {
 
 	private Long id;
+	private License license;
 	private String name;
 	private String description;
-	private String tenantId;
 	private Set<Books> bookses = new HashSet<Books>(0);
 
 	public Bookables() {
@@ -34,10 +36,10 @@ public class Bookables extends BaseEntity  {
 		this.name = name;
 	}
 
-	public Bookables(String name, String description, String tenantId, Set<Books> bookses) {
+	public Bookables(License license, String name, String description, Set<Books> bookses) {
+		this.license = license;
 		this.name = name;
 		this.description = description;
-		this.tenantId = tenantId;
 		this.bookses = bookses;
 	}
 
@@ -51,6 +53,16 @@ public class Bookables extends BaseEntity  {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id")
+	public License getLicense() {
+		return this.license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
 	}
 
 	@Column(name = "name", nullable = false)
@@ -69,15 +81,6 @@ public class Bookables extends BaseEntity  {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Column(name = "tenant_id")
-	public String getTenantId() {
-		return this.tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bookables")

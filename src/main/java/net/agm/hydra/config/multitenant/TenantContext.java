@@ -1,19 +1,18 @@
 package net.agm.hydra.config.multitenant;
 
-
 public class TenantContext {
 
 	 private TenantContext() {}
 	 
 	
+	    private static InheritableThreadLocal<Long> currentTenant = new InheritableThreadLocal<>();
 
-	    private static InheritableThreadLocal<String> currentTenant = new InheritableThreadLocal<>();
-
-	    public static void setTenantId(String tenantId) {
+	    public static void setTenantId(Long tenantId) {
+	    	System.out.println("tenantContext-setTenantId " + tenantId);
 	        currentTenant.set(tenantId);
 	    }
 
-	    public static String getTenantId() {
+	    public static Long getTenantId() {
 	        return currentTenant.get();
 	    }
 

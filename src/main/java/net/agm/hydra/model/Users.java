@@ -1,18 +1,25 @@
 package net.agm.hydra.model;
-// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
+// Generated 19-mar-2021 16.54.53 by Hibernate Tools 5.2.12.Final
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import net.agm.hydra.datamodel.Activation;
 import net.agm.hydra.model.base.BaseEntity;
 
 /**
@@ -20,17 +27,17 @@ import net.agm.hydra.model.base.BaseEntity;
  */
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Users extends BaseEntity  {
+public class Users extends BaseEntity {
 
 	private Long id;
+	private License license;
 	private String email;
 	private String name;
 	private String surname;
 	private String password;
 	private String workplace;
 	private String expertiseArea;
-	private boolean actived;
-	private String tenantId;
+	private Activation actived;
 	private Set<Roles> roleses = new HashSet<Roles>(0);
 	private Set<Books> bookses = new HashSet<Books>(0);
 	private Set<Assigned> assigneds = new HashSet<Assigned>(0);
@@ -38,19 +45,16 @@ public class Users extends BaseEntity  {
 	public Users() {
 	}
 
-	public Users(String email, String name, String surname, String password, String workplace, String expertiseArea,
-			boolean actived) {
+	public Users(String email, String password, String workplace, Activation actived) {
 		this.email = email;
-		this.name = name;
-		this.surname = surname;
 		this.password = password;
 		this.workplace = workplace;
-		this.expertiseArea = expertiseArea;
 		this.actived = actived;
 	}
 
-	public Users(String email, String name, String surname, String password, String workplace, String expertiseArea,
-			boolean actived, String tenantId, Set<Roles> roleses, Set<Books> bookses, Set<Assigned> assigneds) {
+	public Users(License license, String email, String name, String surname, String password, String workplace,
+			String expertiseArea, Activation actived, Set<Roles> roleses, Set<Books> bookses, Set<Assigned> assigneds) {
+		this.license = license;
 		this.email = email;
 		this.name = name;
 		this.surname = surname;
@@ -58,7 +62,6 @@ public class Users extends BaseEntity  {
 		this.workplace = workplace;
 		this.expertiseArea = expertiseArea;
 		this.actived = actived;
-		this.tenantId = tenantId;
 		this.roleses = roleses;
 		this.bookses = bookses;
 		this.assigneds = assigneds;
@@ -76,6 +79,16 @@ public class Users extends BaseEntity  {
 		this.id = id;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id")
+	public License getLicense() {
+		return this.license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
+	}
+
 	@Column(name = "email", unique = true, nullable = false)
 	public String getEmail() {
 		return this.email;
@@ -85,7 +98,7 @@ public class Users extends BaseEntity  {
 		this.email = email;
 	}
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name")
 	public String getName() {
 		return this.name;
 	}
@@ -94,7 +107,7 @@ public class Users extends BaseEntity  {
 		this.name = name;
 	}
 
-	@Column(name = "surname", nullable = false)
+	@Column(name = "surname")
 	public String getSurname() {
 		return this.surname;
 	}
@@ -121,7 +134,7 @@ public class Users extends BaseEntity  {
 		this.workplace = workplace;
 	}
 
-	@Column(name = "expertise_area", nullable = false)
+	@Column(name = "expertise_area")
 	public String getExpertiseArea() {
 		return this.expertiseArea;
 	}
@@ -130,22 +143,14 @@ public class Users extends BaseEntity  {
 		this.expertiseArea = expertiseArea;
 	}
 
-	@Column(name = "actived", nullable = false)
-	public boolean isActived() {
+	@Column(name = "actived", nullable = false, length = 19)
+	@Enumerated(EnumType.STRING)
+	public Activation getActived() {
 		return this.actived;
 	}
 
-	public void setActived(boolean actived) {
+	public void setActived(Activation actived) {
 		this.actived = actived;
-	}
-
-	@Column(name = "tenant_id")
-	public String getTenantId() {
-		return this.tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "users")

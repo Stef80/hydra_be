@@ -11,11 +11,14 @@
 			hibernate-type="net.agm.hydra.datamodel.Status" length="20"
 			not-null="true">
 		</sql-type>
-
+		<sql-type jdbc-type="VARCHAR"
+			hibernate-type="net.agm.hydra.datamodel.Activation" length="19"
+			not-null="true">
+		</sql-type>
 		<sql-type jdbc-type="BIGINT" hibernate-type="java.lang.Long"
 			not-null="true">
 		</sql-type>
-		
+
 
 	</type-mapping>
 	<table-filter match-name="assigned" match-schema="public"></table-filter>
@@ -25,6 +28,7 @@
 	<table-filter match-name="users" match-schema="public"></table-filter>
 	<table-filter match-name="bookables" match-schema="public"></table-filter>
 	<table-filter match-name="books" match-schema="public"></table-filter>
+	<table-filter match-name="license" match-schema="public"></table-filter>
 	<table name="assigned">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
@@ -64,7 +68,7 @@
 			<key-column name="ID" />
 		</primary-key>
 	</table>
-<table name="bookables">
+	<table name="bookables">
 		<primary-key>
 			<!-- setting up a specific id generator for a table -->
 			<generator class="identity"></generator>
@@ -78,7 +82,13 @@
 			<key-column name="ID" />
 		</primary-key>
 	</table>
+	<table name="license">
+		<primary-key>
+			<!-- setting up a specific id generator for a table -->
+			<generator class="identity"></generator>
+			<key-column name="tenant_id" />
+		</primary-key>
+	</table>
 
-	
-	
+
 </hibernate-reverse-engineering>

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -51,7 +50,7 @@ public class BooksController {
 	
 	
 	@PostMapping("/addbook")
-	public BooksDto newBooks(@RequestBody Map<String, Object> books, @RequestHeader(value= TENANT_ID) String tenantId, Authentication auth) {
+	public BooksDto newBooks(@RequestBody Map<String, Object> books, @RequestHeader(value= TENANT_ID) Long tenantId, Authentication auth) {
 		BooksDto dto = null;
 		if(books != null) {
 			Long bookableId =  Long.valueOf((Integer)books.get("bookable"));

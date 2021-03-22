@@ -3,16 +3,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.PreRemove;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +25,7 @@ import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Tasks;
 import net.agm.hydra.model.dto.TasksDto;
+import net.agm.hydra.services.LicenseService;
 import net.agm.hydra.services.TasksService;
 import net.agm.hydra.services.UsersService;
 
@@ -44,20 +41,28 @@ public class TasksController {
 	@Autowired
 	UsersService userService;
 	
+	@Autowired
+	LicenseService licenseService;
+	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@GetMapping
-	public List<Tasks> getAll(){
-		return taskService.getAll();
+	public List<TasksDto> getAll(){
+		List<TasksDto> listDto = new ArrayList<>();
+		List<Tasks> tasksList =  taskService.getAll();
+		for (Tasks tasks : tasksList) {
+			listDto.add(taskService.toDto(tasks));
+		}
+		return listDto;
 	}
 	
 	@PostMapping("/addtask")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Tasks newTask(@RequestBody TasksDto t, @RequestHeader(value=TENANT_ID) String tenantId) {
+	public TasksDto newTask(@RequestBody TasksDto t, @RequestHeader(value=TENANT_ID) Long tenantId) {
 	logger.info("task-newTask:" + t);
 		Tasks newTask= taskService.fromDto(t);
 		logger.info("task-newTask tenantid: " + tenantId);
-		newTask.setTenantId(tenantId);
+		newTask.setLicense(licenseService.getLicenseById(tenantId));
 		newTask.setRevision(0);
 		try {
 			newTask = taskService.newTask(newTask);
@@ -65,13 +70,13 @@ public class TasksController {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		return newTask;
+		return taskService.toDto(newTask);
 	}
 	
 	
 	@PostMapping("/update/{projectid}")
 	@PreAuthorize("hasRole('ROLE_WORKER')")
-	public Tasks updateTask(@RequestBody Tasks t, @PathVariable("projectid") Long projectId, Authentication auth) {
+	public TasksDto updateTask(@RequestBody Tasks t, @PathVariable("projectid") Long projectId, Authentication auth) {
 		logger.info("task-updateTask:" + t);
 		Tasks newTask = null;
 		try {
@@ -82,12 +87,12 @@ public class TasksController {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		} 
-		return newTask;
+		return taskService.toDto(newTask);
 	}
 	
 	
 	@GetMapping("/{id}")
-	public Tasks getTaskById(@PathVariable("id") Long id) {
+	public TasksDto getTaskById(@PathVariable("id") Long id) {
 		logger.info("task-getTaskById");
 		Tasks task = null;
 		try {
@@ -96,7 +101,7 @@ public class TasksController {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
-		return task;
+		return taskService.toDto(task);
 	}
 	
 	@GetMapping("/user/{id}")
@@ -123,7 +128,7 @@ public class TasksController {
 	
 	@GetMapping("project/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or @userSecurity.hasUserIn(authentication, #id)")
-	public List<Tasks> getTasksByProjectId(@PathVariable("id") Long id) {
+	public List<TasksDto> getTasksByProjectId(@PathVariable("id") Long id) {
 		logger.info("task-getTaskByProjectId");
 		List<Tasks> tasksList = null;
 		try {
@@ -132,8 +137,12 @@ public class TasksController {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
+		List<TasksDto> dtoList = new ArrayList<>();
+		for (Tasks task : tasksList) {
+			dtoList.add(taskService.toDto(task));
+		}
 		
-		return tasksList;
+		return dtoList;
 	}
 	
 	
@@ -154,11 +163,11 @@ public class TasksController {
 	
 	@PostMapping("/assign/{user_id}/{task_id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId, @RequestHeader(value=TENANT_ID) String tenantId) {
+	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId) {
 		logger.info("task-addUserToTask");
 		Assigned newAssign = null;
 		try {
-			newAssign = taskService.assignUserToTask(userId, taskId, tenantId);
+			newAssign = taskService.assignUserToTask(userId, taskId);
 		} catch (UserNotFoundException|TaskException e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

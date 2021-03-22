@@ -13,18 +13,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.agm.hydra.datamodel.Activation;
 import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Roles;
 import net.agm.hydra.model.Users;
 
 
 public class CustomUserDetails extends Users implements UserDetails {
-	
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
 	public CustomUserDetails(Users u) {
-		super(u.getEmail(), u.getName(),u.getSurname(),u.getPassword(),u.getWorkplace(), u.getExpertiseArea(),u.isActived(),u.getTenantId(), u.getRoleses(),u.getBookses(), u.getAssigneds());
+		super(u.getLicense(),u.getEmail(), u.getName(),u.getSurname(),u.getPassword(),u.getWorkplace(), u.getExpertiseArea(),u.getActived(), u.getRoleses(),u.getBookses(), u.getAssigneds());
 		logger.info("userdetails " + u);
 	}
 
@@ -62,8 +63,8 @@ public class CustomUserDetails extends Users implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
+	  return getActived().equals(Activation.ACTIVE);
+			
 	}
 
 }

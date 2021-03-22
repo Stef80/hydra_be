@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
+// Generated 19-mar-2021 16.54.53 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,9 +24,9 @@ import net.agm.hydra.model.base.BaseEntity;
 public class Roles extends BaseEntity {
 
 	private Long id;
+	private License license;
 	private Users users;
 	private Role role;
-	private String tenantId;
 
 	public Roles() {
 	}
@@ -36,10 +36,10 @@ public class Roles extends BaseEntity {
 		this.role = role;
 	}
 
-	public Roles(Users users, Role role, String tenantId) {
+	public Roles(License license, Users users, Role role) {
+		this.license = license;
 		this.users = users;
 		this.role = role;
-		this.tenantId = tenantId;
 	}
 
 	@Id
@@ -52,6 +52,16 @@ public class Roles extends BaseEntity {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id")
+	public License getLicense() {
+		return this.license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -72,15 +82,6 @@ public class Roles extends BaseEntity {
 
 	public void setRole(Role role) {
 		this.role = role;
-	}
-
-	@Column(name = "tenant_id")
-	public String getTenantId() {
-		return this.tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 }

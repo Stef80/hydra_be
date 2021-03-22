@@ -15,6 +15,7 @@
         <mapping class="net.agm.hydra.model.Books"/>
         <mapping class="net.agm.hydra.model.Projects"/>
         <mapping class="net.agm.hydra.model.Bookables"/>
+        <mapping class="net.agm.hydra.model.License"/>
         <mapping class="net.agm.hydra.model.Assigned"/>
         <mapping class="net.agm.hydra.model.Tasks"/>
         <mapping class="net.agm.hydra.model.Users"/>

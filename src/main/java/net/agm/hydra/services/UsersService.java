@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Users;
+import net.agm.hydra.model.dto.UsersDto;
 
 public interface UsersService {
 	
@@ -17,6 +18,10 @@ public interface UsersService {
 	
 	Users updateUser(Users u)throws UserNotFoundException;
 	
-	Users deleteUserById(Long id);
+	Users deleteUserByIdLogically(Long id);
+	
+	Users deleteUserByIdFisically(Long id);
+	
+	UsersDto toDto(Users user);
 
 }

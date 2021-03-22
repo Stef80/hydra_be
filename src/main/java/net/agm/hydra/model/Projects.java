@@ -1,5 +1,5 @@
 package net.agm.hydra.model;
-// Generated 17-mar-2021 15.35.45 by Hibernate Tools 5.2.12.Final
+// Generated 19-mar-2021 16.54.53 by Hibernate Tools 5.2.12.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,15 +24,15 @@ import net.agm.hydra.model.base.BaseEntity;
  */
 @Entity
 @Table(name = "projects")
-public class Projects extends BaseEntity  {
+public class Projects extends BaseEntity {
 
 	private Long id;
+	private License license;
 	private String name;
 	private String description;
 	private Date startDate;
 	private Date endDate;
 	private int totalDays;
-	private String tenantId;
 	private Set<Tasks> taskses = new HashSet<Tasks>(0);
 
 	public Projects() {
@@ -43,14 +45,14 @@ public class Projects extends BaseEntity  {
 		this.totalDays = totalDays;
 	}
 
-	public Projects(String name, String description, Date startDate, Date endDate, int totalDays, String tenantId,
+	public Projects(License license, String name, String description, Date startDate, Date endDate, int totalDays,
 			Set<Tasks> taskses) {
+		this.license = license;
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.totalDays = totalDays;
-		this.tenantId = tenantId;
 		this.taskses = taskses;
 	}
 
@@ -64,6 +66,16 @@ public class Projects extends BaseEntity  {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tenant_id")
+	public License getLicense() {
+		return this.license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
 	}
 
 	@Column(name = "name", nullable = false)
@@ -111,15 +123,6 @@ public class Projects extends BaseEntity  {
 
 	public void setTotalDays(int totalDays) {
 		this.totalDays = totalDays;
-	}
-
-	@Column(name = "tenant_id")
-	public String getTenantId() {
-		return this.tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "projects")
