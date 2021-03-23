@@ -55,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
 				logger.info("addRoleToUser-User Updated : " + tmpUser );
 			}
 			
-		    newRole = roleRepository.save(new Roles(tmpUser,trueRole));
+		    newRole = roleRepository.save(new Roles(tmpUser.getLicense(),tmpUser,trueRole));
 		    tmpUser.getRoleses().add(newRole);    
 		    List<Roles> rList = tmpUser.getRoleses().parallelStream().collect(Collectors.toList());
 		    
@@ -87,7 +87,6 @@ public class RoleServiceImpl implements RoleService {
 				roleRepository.deleteRolesByUsers_Id(userId);
 				return true;
 			}catch (RuntimeException e){
-				//simulo il return false dal mock
 				return false;
 			}
 		}

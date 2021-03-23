@@ -26,8 +26,6 @@ public interface TasksService {
 	
 	List<Tasks> getTasksByUserAndProjectId(Long userId, Long projectId) throws UserNotFoundException,ProjectException;
 	
-	Assigned assignUserToTask(Long userId, Long tasksId ) throws UserNotFoundException,TaskException;
-	
 	Tasks addTasksRevisioning(Long projectId, String taskName,Float hours, Long userId) throws TaskException, UserException ;
 	
     TasksDto toDto(Tasks t);

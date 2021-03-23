@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.model.Projects;
+import net.agm.hydra.model.dto.ProjectDto;
 import net.agm.hydra.repository.ProjectsRepository;
 import net.agm.hydra.services.ProjectsService;
 @Service
@@ -64,6 +65,20 @@ public class ProjectsServiceImpl implements ProjectsService {
 			return p;
 		}
 		return null;
+	}
+
+	@Override
+	public ProjectDto toDto(Projects project) {
+		ProjectDto dto = new ProjectDto();
+		if(project != null) {
+			dto.setLicenseName(project.getLicense().getBusinessName());
+			dto.setName(project.getName());
+			dto.setDescription(project.getDescription());
+			dto.setStartDate(project.getStartDate());
+			dto.setEndDate(project.getEndDate());
+			dto.setTotalDays(project.getTotalDays());
+		}
+		return dto;
 	}
 
 }

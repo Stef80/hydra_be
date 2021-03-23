@@ -1,8 +1,11 @@
 package net.agm.hydra.apicontrollers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import net.agm.hydra.exception.BooksException;
 import net.agm.hydra.model.Bookables;
+import net.agm.hydra.model.dto.BookableDto;
 import net.agm.hydra.services.BookablesService;
 
 @RestController
@@ -30,34 +34,48 @@ public class BookableController {
 	@Autowired
 	BookablesService bookableService;
 	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	
 	@GetMapping
-	public List<Bookables> getAll() {
-		return bookableService.getAll();
+	public List<BookableDto> getAll() {
+		logger.info("getAll()");
+		List<BookableDto> dtoList = new ArrayList<>();
+		List<Bookables> bookablesList = bookableService.getAll();
+		for (Bookables bookables : bookablesList) {
+		   dtoList.add(bookableService.toDto(bookables));	
+		}
+		return dtoList ;
 	}
 	
 	
 	@PostMapping("/addbookable")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Bookables newBookable(@RequestBody Map<String,String> bookable, @RequestHeader(value= TENANT_ID) Long tenant) {
+	public BookableDto newBookable(@RequestBody Map<String,String> bookable, @RequestHeader(value= TENANT_ID) Long tenant) {
+		logger.info("newBookable ");
 		Bookables newBookable = null;
 		if(bookable != null) {
+			logger.info("newBookable-map " + bookable);
 			String name = bookable.get("name");
 			String description = bookable.get("description");
 			newBookable = bookableService.newBookable(name, description, tenant);
+			logger.info("newBookable-newBookable " + newBookable);
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		return newBookable;
+		return bookableService.toDto(newBookable);
 	}
 	
 	
 	@PutMapping("/update/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Bookables update(@RequestBody Bookables bookable,@PathVariable("id") Long id ) {
+	public BookableDto update(@RequestBody Bookables bookable,@PathVariable("id") Long id ) {
+		logger.info("update-bookable " + bookable);
 		Bookables updated = null;
 		if(bookable != null && id != null && id > 0 ) {
 			try {
 				updated = bookableService.update(bookable, id);
+				logger.info("update-updated " + updated);
 			}catch (BooksException e) {
 				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
@@ -66,22 +84,25 @@ public class BookableController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 		
-		return updated;
+		return bookableService.toDto(updated);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Bookables deleteById(@PathVariable Long id) {
+	public BookableDto deleteById(@PathVariable Long id) {
+		logger.info("deleteById-id " + id);
 		Bookables bookables = null;
 		if(id != null && id > 0 ) {
 			try {
 				bookables = bookableService.deleteBookable(id);
+				logger.info("deleteById-bookables " + bookables);
+
 			} catch (BooksException e) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());			}
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		return bookables;
+		return bookableService.toDto(bookables);
 	}
 	
 

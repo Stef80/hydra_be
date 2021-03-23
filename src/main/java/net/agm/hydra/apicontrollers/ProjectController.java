@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.model.Projects;
+import net.agm.hydra.model.dto.ProjectDto;
 import net.agm.hydra.services.ProjectsService;
 
 @RestController
@@ -41,11 +42,12 @@ public class ProjectController {
 	
 	@PostMapping("/addproject")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Projects newProject(@RequestBody Projects p) {
+	public ProjectDto newProject(@RequestBody Projects p) {
 		logger.info("project-addproject: " + p);
+		Projects newProjects = null;
 		if(p != null) {
 			try {
-				return projectService.newProject(p);
+			   newProjects = projectService.newProject(p);
 			}catch (ProjectException e) {
 				e.printStackTrace();
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -53,12 +55,13 @@ public class ProjectController {
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
+		return projectService.toDto(newProjects);
 	}
 	
 	
 	@GetMapping("{id}")
     @PreAuthorize("hasRole('ROLE_WORKER','ROLE_ADMIN')")
-	public Projects getProjectById(@PathVariable("id") Long id) {
+	public ProjectDto getProjectById(@PathVariable("id") Long id) {
 		logger.info("project-getProjectById: ");
 		Projects tmp = null;
 		if(id > 0 && id != null) {
@@ -71,12 +74,12 @@ public class ProjectController {
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		return tmp;
+		return projectService.toDto(tmp);
 	}
 	
 	@PutMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Projects updateProject(@RequestBody Projects p) {
+	public ProjectDto updateProject(@RequestBody Projects p) {
 		logger.info("project-updateProject: " + p);
 		Projects tmp = null;
 	try {
@@ -85,7 +88,7 @@ public class ProjectController {
 		 e.printStackTrace();
 		 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
 	}
-	 return tmp;
+	 return projectService.toDto(tmp);
 	}
 
 

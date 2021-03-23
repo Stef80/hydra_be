@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.model.Projects;
+import net.agm.hydra.model.dto.ProjectDto;
 
 public interface ProjectsService {
 	
@@ -18,6 +19,8 @@ public interface ProjectsService {
 	
 	
 	Projects deleteProjectById(Long id)throws ProjectException;
+	
+	ProjectDto toDto(Projects project);
 	
 	
 	

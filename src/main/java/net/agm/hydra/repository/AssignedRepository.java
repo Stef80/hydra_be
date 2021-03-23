@@ -18,4 +18,6 @@ public interface AssignedRepository extends JpaRepository<Assigned, Long> {
 	
 	 @Query("SELECT p from Assigned p WHERE p.id = :id")
 	    Optional<Assigned> findById(Long id);
+	 
+	 Assigned findByUsers_idAndTasks_id(Long userId,Long tasksId);
 }

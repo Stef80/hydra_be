@@ -2,12 +2,16 @@ package net.agm.hydra.services.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import net.agm.hydra.exception.BooksException;
 import net.agm.hydra.model.Bookables;
+import net.agm.hydra.model.License;
+import net.agm.hydra.model.dto.BookableDto;
 import net.agm.hydra.repository.BookablesRepository;
 import net.agm.hydra.services.BookablesService;
 import net.agm.hydra.services.LicenseService;
@@ -21,7 +25,8 @@ public class BookablesServiceImpl implements BookablesService{
 	@Autowired
 	LicenseService licenseService;
 	
-	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Override
 	public List<Bookables> getAll() {
 		return bookablesRepository.findAll();
@@ -33,7 +38,9 @@ public class BookablesServiceImpl implements BookablesService{
 		if(name != null && !name.isEmpty()) {
 			newBookable.setName(name);
 			newBookable.setDescription(description);
-			newBookable.setLicense(licenseService.getLicenseById(tenantId));
+			License license = licenseService.getLicenseById(tenantId);
+			logger.info("newBookable-license " + license);
+			newBookable.setLicense(license);
 			newBookable = bookablesRepository.save(newBookable);
 		}
 		return newBookable;
@@ -77,6 +84,19 @@ public class BookablesServiceImpl implements BookablesService{
 			
 		}
 		return bookable;
+	}
+
+	@Override
+	public BookableDto toDto(Bookables bookable) {
+		BookableDto dto = new BookableDto();
+		if(bookable != null) {
+			logger.info("toDto-licenseName " + bookable.getLicense().getBusinessName());
+			dto.setLicenseName(bookable.getLicense().getBusinessName());
+			dto.setName(bookable.getName());
+			dto.setDescription(bookable.getDescription());
+		}
+
+		return dto;
 	}
 
 }

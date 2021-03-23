@@ -127,27 +127,6 @@ public class TasksServiceImpl  implements TasksService {
 		return tasksList;
 	}
 
-	@Override
-	public Assigned assignUserToTask(Long userId, Long taskId) {
-		logger.info("TaskService-assignUserToTask");
-		Assigned as = null;
-		if(userId > 0  && taskId > 0 ) {
-			Users user = usersRepository.findById(userId).orElse(null);
-			if(  user != null ) {
-				Tasks task = tasksRepositroy.findById(taskId).orElse(null);  
-				if(task != null) {
-				Assigned asi = new Assigned(task.getLicense(),task, user);
-				    as =  assignedRepository.save(asi);
-				}else {
-					throw new UserNotFoundException();
-				}
-			} else {
-				throw new TaskException();
-			}
-		}
-	   return as;
-	}
-	
 	
 
 	@Override
@@ -185,6 +164,7 @@ public class TasksServiceImpl  implements TasksService {
 	public TasksDto toDto(Tasks t) {
          TasksDto dto = new TasksDto();
          dto.setProjectId((t.getProjects().getId()));
+         dto.setProjectName(t.getProjects().getName());
          dto.setTaskName(t.getTaskName());
          dto.setDateOfRegistration(t.getDateOfRegistration());
          dto.setStatus(t.getStatus());
@@ -199,22 +179,22 @@ public class TasksServiceImpl  implements TasksService {
 	
 	@Override
 	public Tasks fromDto(TasksDto d) {
-		Tasks t  = new Tasks();
+		Tasks dto  = new Tasks();
 		logger.info("service-fromdto taskDto: " + d);
 		Projects project = projectsRepository.findById(d.getProjectId()).orElse(null);
 		if(project != null) {
-			t.setProjects(project);
-			t.setTaskName(d.getTaskName());
-			t.setDateOfRegistration(d.getDateOfRegistration());
-			t.setDateOfPublish(d.getDateOfPublish());
-			t.setHoursOfWorking(d.getHoursOfWorking());
+			dto.setProjects(project);
+			dto.setTaskName(d.getTaskName());
+			dto.setDateOfRegistration(d.getDateOfRegistration());
+			dto.setDateOfPublish(d.getDateOfPublish());
+			dto.setHoursOfWorking(d.getHoursOfWorking());
 			logger.info("status " +  d.getStatus());
-			t.setStatus(d.getStatus());	
+			dto.setStatus(d.getStatus());	
 		}else {
 			throw new ProjectException();
 		}
 		
-		return t;
+		return dto;
 	}
 
 }

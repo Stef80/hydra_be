@@ -33,8 +33,10 @@ public class CustomUserDetails extends Users implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authority = new ArrayList<>();
+		if(getActived().equals(Activation.ACTIVE)) {
 		getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority("ROLE_"+ r.getRole())));
 		logger.info("userdetails-getAuthorities authorities" + authority);
+		}
 		return authority;
 	}
 

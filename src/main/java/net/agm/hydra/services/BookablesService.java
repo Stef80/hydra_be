@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.agm.hydra.exception.BooksException;
 import net.agm.hydra.model.Bookables;
+import net.agm.hydra.model.dto.BookableDto;
 
 public interface BookablesService {
 	
@@ -18,5 +19,7 @@ public interface BookablesService {
 	Bookables update(Bookables bookable, Long id);
 	
 	Bookables deleteBookable(Long id);
+	
+	BookableDto toDto(Bookables bookable);
 
 }

@@ -30,7 +30,7 @@ import net.agm.hydra.services.LicenseService;
 @NoArgsConstructor
 @FilterDef(name = "tenantFilter", parameters = {@ParamDef(name = "tenantId", type = "long")})
 @Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
-//@EntityListeners(TenantListener.class)
+@EntityListeners(TenantListener.class)
 public abstract class BaseEntity implements TenantAware, Serializable{
 
 	@Autowired
@@ -43,7 +43,7 @@ public abstract class BaseEntity implements TenantAware, Serializable{
 	@JoinColumn(name = "tenant_id")
 	private License license;
 
-
+ 
 
 	public BaseEntity(Long tenantId) {
 		//	this.tenantId = id;
@@ -51,8 +51,11 @@ public abstract class BaseEntity implements TenantAware, Serializable{
 	}
 
 
+	
+	
 
 
+	
 
 
 }

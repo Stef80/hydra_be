@@ -4,6 +4,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
+import org.hibernate.service.spi.InjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class TenantListener {
 	        final Long tenantId = TenantContext.getTenantId();
 	        logger.info("setTenant-service " + service);
 	        License license = service.getLicenseById(tenantId);
+	        //BaseEntity tmp = new BaseEntity(tenantId) ;
 	        logger.info("setTenant-license " + license);
 	        entity.setLicense(license);
 	    }

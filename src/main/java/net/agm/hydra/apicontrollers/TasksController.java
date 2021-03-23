@@ -161,19 +161,6 @@ public class TasksController {
 	}
 	
 	
-	@PostMapping("/assign/{user_id}/{task_id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public Assigned addUserToTask(@PathVariable("user_id") Long userId, @PathVariable("task_id") Long taskId) {
-		logger.info("task-addUserToTask");
-		Assigned newAssign = null;
-		try {
-			newAssign = taskService.assignUserToTask(userId, taskId);
-		} catch (UserNotFoundException|TaskException e) {
-			e.printStackTrace();
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		} 
-		return newAssign;
-	}
 	
 	
 }

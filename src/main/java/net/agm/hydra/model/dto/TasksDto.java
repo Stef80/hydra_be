@@ -17,6 +17,7 @@ public class TasksDto {
 	
 	
 	private Long projectId;
+	private String projectName;
 	private String taskName;
 	private Date dateOfRegistration;
 	private Status status;
