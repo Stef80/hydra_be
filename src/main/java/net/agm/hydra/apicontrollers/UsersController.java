@@ -96,12 +96,10 @@ public class UsersController {
 	}
 
 	@PostMapping("/adduser")
-	public UsersDto newUser(@RequestBody Users user,@RequestHeader(value=TENANT_ID) Long tenantId) {
+	public UsersDto newUser(@RequestBody Users user) {
 		Users newUser = null;
 		logger.info("Log: newUser()");
 		try {
-			License license = licenseService.getLicenseById(tenantId);
-			user.setLicense(license);
 			newUser = userService.newUser(user);
 		} catch (RuntimeException e) {
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-INSERT INTO Licence (email, business_name, start_date, end_date,cost, paid) values
+INSERT INTO License (email, business_name, start_date, end_date,cost, paid) values
 ('stefano.longobucco@agmsolutions.net','AGM','2021-01-01','2026-12-31',2000.00, 2000.00),
 ('stefano.longobucco@nextre.it','nextre','2021-01-01','2026-12-31',2000.00, 2000.00);
 
@@ -27,5 +27,7 @@ INSERT INTO tasks(task_name, project_fk,date_of_registration, status,revision, t
 ('analisi Base di dati', 2, '22-01-2021','OPEN',0,2),
 ('analisi End Point', 2, '22-01-2021','OPEN',0,2);
 
-
---INSERT INTO bookables(name, desription, tenant_id)
+INSERT INTO bookables(name, desription, tenant_id) values
+  ('aula blu', 'aula per conferenze',1),
+  ('aula rossa, 'aula riunioni e beefing',1);
+  

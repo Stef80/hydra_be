@@ -65,7 +65,7 @@ public class BooksController {
 	
 	@PostMapping("/addbook")
 	@PreAuthorize("#auth != null")
-	public BooksDto newBooks(@RequestBody Map<String, Object> books, @RequestHeader(value= TENANT_ID) Long tenantId, Authentication auth) {
+	public BooksDto newBooks(@RequestBody Map<String, Object> books,  Authentication auth) {
 		logger.info("deleteById() ");
 		BooksDto dto = null;
 		if(books != null) {
@@ -76,7 +76,7 @@ public class BooksController {
 			try {
 				Users user = userService.getUserByMail(auth.getName());
 				Bookables bookable = bookableService.getBookableById(bookableId);
-				dto = booksService.newBooks(bookable, user, startDate, endDate,tenantId);
+				dto = booksService.newBooks(bookable, user, startDate, endDate);
 				logger.info("deleteById-dto" + dto);
 			} catch (UserNotFoundException e) {
 				e.printStackTrace();

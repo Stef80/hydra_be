@@ -58,11 +58,9 @@ public class TasksController {
 	
 	@PostMapping("/addtask")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public TasksDto newTask(@RequestBody TasksDto t, @RequestHeader(value=TENANT_ID) Long tenantId) {
+	public TasksDto newTask(@RequestBody TasksDto t) {
 	logger.info("task-newTask:" + t);
 		Tasks newTask= taskService.fromDto(t);
-		logger.info("task-newTask tenantid: " + tenantId);
-		newTask.setLicense(licenseService.getLicenseById(tenantId));
 		newTask.setRevision(0);
 		try {
 			newTask = taskService.newTask(newTask);

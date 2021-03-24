@@ -38,7 +38,7 @@ public class AssignServiceImpl implements AssignService {
 		if(userId > 0  && taskId > 0 ) {
 			Users user = userService.getUserById(userId);
 			Tasks task = tasksService.getTaskById(taskId);  
-			Assigned asi = new Assigned(task.getLicense(),task, user);
+			Assigned asi = new Assigned(task, user);
 			as =  assignedRepository.save(asi);
 
 		}
@@ -48,6 +48,7 @@ public class AssignServiceImpl implements AssignService {
 
 	@Override
 	public Assigned deleteUserToTask(Long userId, Long taskId) throws UserNotFoundException, TaskException {
+		logger.info("deleteUserToTask()");
 		Assigned assigned = null;
 		if(userId > 0  && taskId > 0 ) {
 			assigned = assignedRepository.findByUsers_idAndTasks_id(userId, taskId);
@@ -59,6 +60,7 @@ public class AssignServiceImpl implements AssignService {
 
 	@Override
 	public AssignedDto toDto(Assigned assigned) {
+		logger.info("toDto-assigned " + assigned);
 		AssignedDto dto = new AssignedDto();
 		dto.setTask(tasksService.toDto(assigned.getTasks()));
 		dto.setUsesr(userService.toDto(assigned.getUsers()));

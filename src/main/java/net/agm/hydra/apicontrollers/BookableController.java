@@ -51,14 +51,14 @@ public class BookableController {
 	
 	@PostMapping("/addbookable")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public BookableDto newBookable(@RequestBody Map<String,String> bookable, @RequestHeader(value= TENANT_ID) Long tenant) {
+	public BookableDto newBookable(@RequestBody Map<String,String> bookable) {
 		logger.info("newBookable ");
 		Bookables newBookable = null;
 		if(bookable != null) {
 			logger.info("newBookable-map " + bookable);
 			String name = bookable.get("name");
 			String description = bookable.get("description");
-			newBookable = bookableService.newBookable(name, description, tenant);
+			newBookable = bookableService.newBookable(name, description);
 			logger.info("newBookable-newBookable " + newBookable);
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

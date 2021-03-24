@@ -14,7 +14,7 @@ public interface BooksService {
 	
 	List<Books> findAll();
 	
-	BooksDto newBooks(Bookables bookable,Users user, Date starDate, Date endDate,Long tenantId)throws BooksException;
+	BooksDto newBooks(Bookables bookable,Users user, Date starDate, Date endDate)throws BooksException;
 	
 	BooksDto updateBook(BooksDto book , Long id)throws BooksException;
 	

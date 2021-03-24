@@ -55,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
 				logger.info("addRoleToUser-User Updated : " + tmpUser );
 			}
 			
-		    newRole = roleRepository.save(new Roles(tmpUser.getLicense(),tmpUser,trueRole));
+		    newRole = roleRepository.save(new Roles(tmpUser,trueRole));
 		    tmpUser.getRoleses().add(newRole);    
 		    List<Roles> rList = tmpUser.getRoleses().parallelStream().collect(Collectors.toList());
 		    

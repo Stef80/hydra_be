@@ -33,14 +33,12 @@ public class BookablesServiceImpl implements BookablesService{
 	}
 
 	@Override
-	public Bookables newBookable(String name, String description, Long tenantId) {
+	public Bookables newBookable(String name, String description) {
 		Bookables newBookable = new Bookables();
 		if(name != null && !name.isEmpty()) {
 			newBookable.setName(name);
 			newBookable.setDescription(description);
-			License license = licenseService.getLicenseById(tenantId);
-			logger.info("newBookable-license " + license);
-			newBookable.setLicense(license);
+		
 			newBookable = bookablesRepository.save(newBookable);
 		}
 		return newBookable;

@@ -10,7 +10,7 @@ public interface BookablesService {
 	
 	List<Bookables> getAll();
 	
-	Bookables newBookable(String name, String description, Long tenantId);
+	Bookables newBookable(String name, String description);
 	
 	Bookables getBookableById(Long id)throws BooksException;
 	

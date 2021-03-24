@@ -46,7 +46,7 @@ public class BooksServiceImpl implements BooksService {
 	}
 
 	@Override
-	public BooksDto newBooks(Bookables bookable, Users user, Date startDate, Date endDate,Long tenantId) {
+	public BooksDto newBooks(Bookables bookable, Users user, Date startDate, Date endDate) {
 		Books newBook = new Books();
 		if(bookable != null && startDate != null && endDate != null) {
 			if(isFree(bookable,startDate,endDate)) {
@@ -54,7 +54,6 @@ public class BooksServiceImpl implements BooksService {
 				newBook.setUsers(user);
 				newBook.setStartDate(startDate);
 				newBook.setEndDate(endDate);
-				newBook.setLicense(licenseService.getLicenseById(tenantId));
 				booksRepository.save(newBook);
 			}else {
 				throw new BooksException("Booking's not possible for this bookable");

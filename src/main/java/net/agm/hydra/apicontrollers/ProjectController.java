@@ -1,5 +1,6 @@
 package net.agm.hydra.apicontrollers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -33,10 +34,14 @@ public class ProjectController {
 
 	
 	@GetMapping
-	public List<Projects> getAll(){
+	public List<ProjectDto> getAll(){
+		List<ProjectDto> dtoList = new ArrayList<>();
 		List<Projects> list =projectService.getAll();
 		logger.info("project-getAll()" + list.toString());
-		return list;
+		for (Projects projects : list) {
+			dtoList.add(projectService.toDto(projects));
+		}
+		return dtoList;
 	}
 	
 	

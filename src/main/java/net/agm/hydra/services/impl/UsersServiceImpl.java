@@ -81,7 +81,12 @@ public class UsersServiceImpl implements UsersService {
 			final String body = "New user "+ u.getEmail()+" registered\nplease add role to confirm his registration! ";
 			for (Users users : userList) {
 				logger.info("userService-sendMail");
-				sender.sendMessage(users.getEmail(),"new subscription", body);
+				try {
+					sender.sendMessage(users.getEmail(),"new subscription", body);
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}else {
 			throw new UserException();
