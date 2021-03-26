@@ -33,6 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		Users user = userRepository.findUsersByEmail(username);
 		Hibernate.initialize(user.getRoleses());
+		Hibernate.initialize(user.getLicense());
 		if (user == null) {
 			throw new UsernameNotFoundException("Username "+ username + " not found" );
 		}

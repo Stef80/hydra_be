@@ -14,5 +14,9 @@ public interface LicenseService {
 	
 	public License getLicenseById(Long id)throws LicenseException ;
 	
+	public License updateLicense(License license, Long id)throws LicenseException;
+	
+	public License deleteLicenseById(Long id)throws LicenseException;
+	
 
 }

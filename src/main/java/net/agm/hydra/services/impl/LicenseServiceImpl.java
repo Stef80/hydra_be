@@ -46,4 +46,25 @@ public class LicenseServiceImpl implements LicenseService {
 		return license;
 	}
 
+	@Override
+	public License updateLicense(License license, Long id) {
+		License upLicense = null;
+		if(id > 0 && id != null) {
+			getLicenseById(id);
+			license.setId(id);
+			upLicense =licenseRepository.save(license);
+		}
+		return upLicense;
+	}
+
+	@Override
+	public License deleteLicenseById(Long id) {
+		License license = null;
+		if(id > 0 && id != null) {
+			license = getLicenseById(id);
+			licenseRepository.delete(license);
+		}
+		return license;
+	}
+
 }

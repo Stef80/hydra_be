@@ -1,5 +1,7 @@
 package net.agm.hydra.config.multitenant;
 
+import java.util.Date;
+
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
@@ -11,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import net.agm.hydra.model.License;
 import net.agm.hydra.repository.LicenseRepository;
-import net.agm.hydra.services.LicenseService;
-import net.agm.hydra.services.impl.LicenseServiceImpl;
 
 @Component
 public class TenantListener {
@@ -33,9 +33,10 @@ public class TenantListener {
 		final Long tenantId = TenantContext.getTenantId();
 		logger.info("setTenant-service " + licenseRepository);
 		License license = licenseRepository.findById(tenantId).orElse(null);
-		//BaseEntity tmp = new BaseEntity(tenantId) ;
+		if(license!= null && license.getEndDate().after(new Date())) {
 		logger.info("setTenant-license " + license);
 		entity.setLicense(license);
+		}
 	}
 	
 	

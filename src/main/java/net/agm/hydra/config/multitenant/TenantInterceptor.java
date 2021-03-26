@@ -20,14 +20,13 @@ public class TenantInterceptor implements WebRequestInterceptor {
 	LicenseService licenseService;
 
 	@Override
-	
 	public void preHandle(WebRequest request) throws Exception {
 	     String tenantId = null;
 	        if (request.getHeader("X-TENANT-ID") != null) {
 	            tenantId = request.getHeader("X-TENANT-ID");
 	            logger.info("preHandle tenantId " + tenantId);
 	        } else {
-	            throw new Exception();
+	            tenantId = "0";
 	        }
 	        TenantContext.setTenantId(Long.parseLong(tenantId));
 

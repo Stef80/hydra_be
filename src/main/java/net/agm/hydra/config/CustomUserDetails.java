@@ -2,6 +2,7 @@ package net.agm.hydra.config;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class CustomUserDetails extends Users implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authority = new ArrayList<>();
-		if(getActived().equals(Activation.ACTIVE)) {
+		if(getActived().equals(Activation.ACTIVE) && getLicense().getEndDate().after(new Date())) {
 		getRoleses().stream().forEach(r -> authority.add(new SimpleGrantedAuthority("ROLE_"+ r.getRole())));
 		logger.info("userdetails-getAuthorities authorities" + authority);
 		}
@@ -48,18 +49,17 @@ public class CustomUserDetails extends Users implements UserDetails {
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return true;
+		return  getLicense().getEndDate().after(new Date());
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return true;
+		return  getLicense().getEndDate().after(new Date());
 	}
 
 	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
+	public boolean isCredentialsNonExpired() { 
 		return true;
 	}
 
