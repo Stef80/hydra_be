@@ -22,8 +22,7 @@ public class TenantFilterAspect {
 	    public void afterOpenSession(Object session) {
 	        if (session != null && Session.class.isInstance(session)) {
 	            final Long tenantId = TenantContext.getTenantId();
-                logger.info("afteropensession tenantId: " + tenantId);
- 
+                logger.debug("afteropensession tenantId: " + tenantId);
 	            if (tenantId != null) {
 	                org.hibernate.Filter filter = ((Session) session).enableFilter("tenantFilter");
 	                logger.info("afteropensession filter: " + filter.getName());

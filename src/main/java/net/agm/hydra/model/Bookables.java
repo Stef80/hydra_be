@@ -23,6 +23,7 @@ import net.agm.hydra.model.base.BaseEntity;
 @Table(name = "bookables")
 public class Bookables extends BaseEntity {
 
+	
 	private Long id;
 	private License license;
 	private String name;

@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import net.agm.hydra.datamodel.Activation;
@@ -18,7 +16,6 @@ import net.agm.hydra.model.Roles;
 import net.agm.hydra.model.Users;
 import net.agm.hydra.model.dto.RolesDto;
 import net.agm.hydra.repository.RolesRepository;
-import net.agm.hydra.repository.UsersRepository;
 import net.agm.hydra.services.RoleService;
 import net.agm.hydra.services.UsersService;
 

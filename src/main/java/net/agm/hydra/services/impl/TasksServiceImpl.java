@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.agm.hydra.datamodel.Status;
 import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.exception.TaskException;
 import net.agm.hydra.exception.UserException;
@@ -24,7 +23,6 @@ import net.agm.hydra.repository.ProjectsRepository;
 import net.agm.hydra.repository.TasksRepository;
 import net.agm.hydra.repository.UsersRepository;
 import net.agm.hydra.services.LicenseService;
-import net.agm.hydra.services.ProjectsService;
 import net.agm.hydra.services.TasksService;
 @Service
 public class TasksServiceImpl  implements TasksService {

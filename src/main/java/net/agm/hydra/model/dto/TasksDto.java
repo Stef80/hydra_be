@@ -1,7 +1,6 @@
 package net.agm.hydra.model.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

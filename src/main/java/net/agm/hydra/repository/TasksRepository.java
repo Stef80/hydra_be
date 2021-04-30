@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import net.agm.hydra.model.Projects;
 import net.agm.hydra.model.Tasks;
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Long> {

@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import net.agm.hydra.exception.BooksException;
 import net.agm.hydra.model.Bookables;
-import net.agm.hydra.model.License;
 import net.agm.hydra.model.dto.BookableDto;
 import net.agm.hydra.repository.BookablesRepository;
 import net.agm.hydra.services.BookablesService;

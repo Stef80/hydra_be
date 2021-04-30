@@ -2,7 +2,6 @@ package net.agm.hydra.model.base;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,11 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import net.agm.hydra.config.multitenant.TenantAware;
 import net.agm.hydra.config.multitenant.TenantListener;
 import net.agm.hydra.model.License;
@@ -32,6 +27,12 @@ import net.agm.hydra.services.LicenseService;
 @Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 @EntityListeners(TenantListener.class)
 public abstract class BaseEntity implements TenantAware, Serializable{
+	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -66861807366942413L;
 
 	@Autowired
 	LicenseService licenseService;

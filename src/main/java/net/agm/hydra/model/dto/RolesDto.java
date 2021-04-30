@@ -2,8 +2,6 @@ package net.agm.hydra.model.dto;
 
 import java.util.List;
 
-import org.springframework.boot.context.properties.ConstructorBinding;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

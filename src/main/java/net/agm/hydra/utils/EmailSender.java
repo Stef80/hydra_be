@@ -14,39 +14,24 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import net.agm.hydra.services.EmailService;
 
 @Component
 public class EmailSender implements EmailService{
-	
-	
-	
-	
+
+
+
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-//	@Override
-//	public void sendMessage(String to,String subject, String body ) {
-//		logger.info("EmailSender-sendMessage");
-//		SimpleMailMessage msg = new SimpleMailMessage();
-//		msg.setFrom("slongobucco1@studenti.uninsubria.it");
-//		msg.setTo(to);
-//		msg.setSubject(subject);
-//		msg.setText(body);
-//		
-//		mailSender.send(msg);
-//	}
-	
+
 	private final Properties properties = System.getProperties();
 	@Autowired
 	private Environment env;
-	
+
 
 	public void sendMessage(String to, String subject, String body) throws MessagingException {
 		setMailProperties(properties, env);

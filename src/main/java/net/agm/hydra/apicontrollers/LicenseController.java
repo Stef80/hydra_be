@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class LicenseController {
 	
 	
 	@PostMapping("/addlicense")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public License newLicense(@RequestBody License license) {
 		License newLicense = null;
 		try {
@@ -46,6 +48,7 @@ public class LicenseController {
 	
 	
 	@PutMapping("/update/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public License updateLicense(@RequestBody License license, @PathVariable(value ="id") Long id) {
 		License update = null;
 		try {
@@ -58,6 +61,7 @@ public class LicenseController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public License deleteLicense(@PathVariable(value="id") Long id) {
 		License update = null;
 		try {

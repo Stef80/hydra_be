@@ -7,7 +7,6 @@ import javax.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import net.agm.hydra.exception.UserNotFoundException;
 import net.agm.hydra.model.Users;
 import net.agm.hydra.model.dto.UsersDto;
 import net.agm.hydra.repository.UsersRepository;
-import net.agm.hydra.services.EmailService;
 import net.agm.hydra.services.UsersService;
 import net.agm.hydra.utils.EmailSender;
 
@@ -99,7 +97,6 @@ public class UsersServiceImpl implements UsersService {
 	public Users updateUser(Users u) {
 		logger.info("UserService-updateUser");
 		Users user = null;
-		UsersDto userDto = null;
 		if(u != null ) {
 			user = usersRepository.findById(u.getId()).orElse(null);
 			if(user != null ){

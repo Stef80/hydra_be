@@ -42,7 +42,6 @@ import net.bytebuddy.asm.Advice.Return;
 @RequestMapping("/api/user")
 public class UsersController {
 	
-	private final String TENANT_ID = "X-TENANT-ID";
 
 	@Autowired
 	RoleService roleService;

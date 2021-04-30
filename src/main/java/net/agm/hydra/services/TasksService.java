@@ -6,7 +6,6 @@ import net.agm.hydra.exception.ProjectException;
 import net.agm.hydra.exception.TaskException;
 import net.agm.hydra.exception.UserException;
 import net.agm.hydra.exception.UserNotFoundException;
-import net.agm.hydra.model.Assigned;
 import net.agm.hydra.model.Tasks;
 import net.agm.hydra.model.dto.TasksDto;
 
