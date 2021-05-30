@@ -16,7 +16,7 @@ public class OAuth2ResourceServer extends ResourceServerConfigurerAdapter {
 	        http
 	            .authorizeRequests()
 	            .antMatchers("/api/**").authenticated()
-	            .antMatchers("/").permitAll()
+	            .antMatchers("/api/user/adduser").permitAll()
 	            .and()
 	    		.formLogin()
 	    		.permitAll()
